@@ -48,15 +48,19 @@ public class MemoryBlock implements IMemoryStream {
 	/** {@inheritDoc} **/
 	@Override
 	public byte readByte(final int address) throws IllegalAccessException {
-		// TODO : Implement memory addressing check.
-		return data[address];
+		if (address < offset || address >= (address + size)) {
+			throw new IllegalAccessException();
+		}
+		return data[address - offset];
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
-		// TODO : Implement memory addressing check.
-		data[address] = value;
+		if (address < offset || address >= (address + size)) {
+			throw new IllegalAccessException();
+		}
+		data[address - offset] = value;
 	}
 
 }

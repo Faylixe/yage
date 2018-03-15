@@ -14,23 +14,10 @@ public final class AddressBus implements IMemoryStream {
 	private final NavigableMap<Integer, MemoryBlock> memory;
 
 	/**
-	 * 
+	 * Default constructor.
 	 */
 	public AddressBus() {
 		this.memory = new TreeMap<>();
-	}
-
-	/**
-	 * 
-	 * @param address
-	 * @return
-	 */
-	private MemoryBlock getAddressable(final int address) {
-		final Integer nearAddressableOffset = memory.floorKey(address);
-		if (nearAddressableOffset == null) {
-			// TODO : Return optional ?
-		}
-		return memory.get(nearAddressableOffset);
 	}
 
 	/**
@@ -41,8 +28,7 @@ public final class AddressBus implements IMemoryStream {
 		if (memoryBlock == null) {
 			throw new IllegalArgumentException();
 		}
-		final int offset = memoryBlock.getOffset();
-		final MemoryBlock nearest = getAddressable(offset);
+		// final int offset = memoryBlock.getOffset();
 		// TODO : Check for address conflict.
 		memory.put(memoryBlock.getOffset(), memoryBlock);
 	}
@@ -60,18 +46,30 @@ public final class AddressBus implements IMemoryStream {
 		}
 	}
 
-	/** {@inheritDoc} **/
-	@Override
-	public byte readByte(final int address) {
-		// TODO : Read memory from address bus.
-		return 0;
+	/**
+	 * TODO : Document. Ensure behavior.
+	 * @param address
+	 * @return
+	 * @throws IllegalAccessException
+	 */
+	private MemoryBlock getMemoryBlock(final int address) throws IllegalAccessException {
+		final Integer nearAddressableOffset = memory.floorKey(address);
+		if (nearAddressableOffset == null) {
+			throw new IllegalAccessException("Unreachable memory address");
+		}
+		return memory.get(nearAddressableOffset);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
-	public void writeByte(final byte value, final int address) {
-		// TODO : Check feasability.
-		// TODO : write.
+	public byte readByte(final int address) throws IllegalAccessException {
+		return getMemoryBlock(address).readByte(address);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public void writeByte(final byte value, final int address) throws IllegalAccessException {
+		getMemoryBlock(address).writeByte(value, address);
 	}
 
 }
