@@ -2,6 +2,8 @@ package fr.faylixe.jgb.cpu;
 
 /**
  * 
+ * https://stackoverflow.com/questions/2188660/convert-short-to-byte-in-java
+ * 
  * @author fv
  */
 public class Register {

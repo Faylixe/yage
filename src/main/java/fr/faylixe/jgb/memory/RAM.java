@@ -14,17 +14,18 @@ package fr.faylixe.jgb.memory;
  */
 public class RAM implements IConnectable {
 
-	/** **/
+	/** First Work RAM block. **/
 	private final MemoryBlock wram0;
 
-	/** **/
+	/** Second Work RAM block. **/
 	private final MemoryBlock wram1;
 
-	/** **/
+	/** Video RAM block. **/
 	private final MemoryBlock vram;
 
 	/**
-	 * 
+	 * Default constructor.
+	 * Initializes associated memory blocks.
 	 */
 	public RAM() {
 		this.vram = new MemoryBlock(8 * 1024, 0x8000);
@@ -35,9 +36,9 @@ public class RAM implements IConnectable {
 	/** {@inheritDoc} **/
 	@Override
 	public void connect(final AddressBus addressBus) {
-		addressBus.connect(vram); 	// 8000-9FFF
-		addressBus.connect(wram0); 	// C000-CFFF
-		addressBus.connect(wram1); 	// D000-DFFF
+		addressBus.connect(vram);
+		addressBus.connect(wram0);
+		addressBus.connect(wram1); 
 	}
 
 }

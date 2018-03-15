@@ -3,6 +3,7 @@ package fr.faylixe.jgb.storage;
 import fr.faylixe.jgb.memory.AddressBus;
 import fr.faylixe.jgb.memory.IConnectable;
 import fr.faylixe.jgb.memory.MemoryBlock;
+import fr.faylixe.jgb.memory.ReadOnlyMemoryBlock;
 
 /**
  * 
@@ -24,8 +25,8 @@ public final class Cartridge implements IConnectable {
 	 */
 	protected Cartridge() {
 		this.eram = new MemoryBlock(8 * 1024, 0xA000);
-		this.rom0 = new MemoryBlock(16 * 1024, 0x0000);
-		this.rom1 = new MemoryBlock(16 * 1024, 0x4000);
+		this.rom0 = new ReadOnlyMemoryBlock(16 * 1024, 0x0000);
+		this.rom1 = new ReadOnlyMemoryBlock(16 * 1024, 0x4000);
 	}
 
 	/** {@inheritDoc} **/

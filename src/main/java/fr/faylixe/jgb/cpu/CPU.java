@@ -1,5 +1,7 @@
 package fr.faylixe.jgb.cpu;
 
+import fr.faylixe.jgb.memory.IMemoryStream;
+
 /**
  * CPU implementation for SharpLR35902 model.
  * 
@@ -39,11 +41,16 @@ public class CPU {
 	/** **/
 	private final ExtendedRegister PC;
 
+	/** **/
+	private final IMemoryStream memoryStream;
+
 	/**
 	 * Default constructor.
 	 * Initializes registers and clock.
+	 * 
+	 * @param memoryStream
 	 */
-	public CPU() {
+	public CPU(final IMemoryStream memoryStream) {
 		this.A = new Register();
 		this.B = new Register();
 		this.C = new Register();
@@ -54,6 +61,17 @@ public class CPU {
 		this.F = new FlagsRegister();
 		this.SP = new ExtendedRegister();
 		this.PC = new ExtendedRegister();
+		this.memoryStream = memoryStream;
+	}
+	
+	/**
+	 * 
+	 */
+	public void tick() {
+		// TODO : Read opcode (one byte).
+		// TODO : if opcode == CB16 => extended set.
+			// TODO : Read next byte.
+		// TODO : else => main set.
 	}
 
 }

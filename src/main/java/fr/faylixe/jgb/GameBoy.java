@@ -29,8 +29,9 @@ public class GameBoy {
 	 */
 	private GameBoy() {
 		this.addressBus = new AddressBus();
+		this.cpu = new CPU(addressBus);
 		this.ram = new RAM();
-		this.cpu = new CPU();
+		this.ram.connect(addressBus);
 		this.lcd = new LCD();
 	}
 
