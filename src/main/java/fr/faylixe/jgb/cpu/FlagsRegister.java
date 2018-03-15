@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.cpu.register;
+package fr.faylixe.jgb.cpu;
 
 /**
  * TODO : Consider using symmetric flag setter.

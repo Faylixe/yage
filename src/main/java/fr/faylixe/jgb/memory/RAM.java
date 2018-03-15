@@ -12,28 +12,28 @@ package fr.faylixe.jgb.memory;
  * - FFFF        Interrupt Enable Register
  * @author fv
  */
-public class RAM {
+public class RAM implements IConnectable {
 
 	/** **/
-	private final WorkRAM wram0;
+	private final MemoryBlock wram0;
 
 	/** **/
-	private final WorkRAM wram1;
+	private final MemoryBlock wram1;
 
 	/** **/
-	private final VideoRAM vram;
+	private final MemoryBlock vram;
 
-	/** **/
-	public RAM() {
-		this.vram = new VideoRAM();
-		this.wram0 = new WorkRAM((short) 0xC000);
-		this.wram1 = new WorkRAM((short) 0xD000);
-	}
-	
 	/**
 	 * 
-	 * @param addressBus
 	 */
+	public RAM() {
+		this.vram = new MemoryBlock(8 * 1024, 0x8000);
+		this.wram0 = new MemoryBlock(4 * 1024, 0xC000);
+		this.wram1 = new MemoryBlock(4 * 1024, 0xD000);
+	}
+	
+	/** {@inheritDoc} **/
+	@Override
 	public void connect(final AddressBus addressBus) {
 		addressBus.connect(vram); 	// 8000-9FFF
 		addressBus.connect(wram0); 	// C000-CFFF

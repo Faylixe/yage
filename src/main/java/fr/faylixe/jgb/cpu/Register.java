@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.cpu.register;
+package fr.faylixe.jgb.cpu;
 
 /**
  * 
@@ -35,7 +35,6 @@ public interface Register {
 	 * @param compositeState
 	 */
 	static void setCompositeState(final Register high, final Register low, final short compositeState) {
-		// Note: Big endian here. (reverse for little endian).
 		// TODO : Ensure big endian is used.  
 		high.setState((byte)(compositeState >> 8));
 		low.setState((byte) compositeState);

@@ -16,6 +16,6 @@ public interface IAddressable {
 	 * 
 	 * @return
 	 */
-	short getOffset();
+	int getOffset();
 
 }

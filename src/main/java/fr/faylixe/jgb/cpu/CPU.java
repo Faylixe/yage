@@ -1,9 +1,5 @@
 package fr.faylixe.jgb.cpu;
 
-import fr.faylixe.jgb.cpu.register.DefaultRegister;
-import fr.faylixe.jgb.cpu.register.FlagsRegister;
-import fr.faylixe.jgb.cpu.register.Register;
-
 /**
  * {@link CPU} implementation for SharpLR35902 model.
  * 

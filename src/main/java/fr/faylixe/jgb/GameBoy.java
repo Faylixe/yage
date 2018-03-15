@@ -26,16 +26,12 @@ public class GameBoy {
 
 	/**
 	 * 
-	 * @param cpu
-	 * @param lcd
 	 */
-	private GameBoy(
-			final CPU cpu,
-			final LCD lcd) {
+	private GameBoy() {
 		this.addressBus = new AddressBus();
 		this.ram = new RAM();
-		this.cpu = cpu;
-		this.lcd = lcd;
+		this.cpu = new CPU();
+		this.lcd = new LCD();
 	}
 
 	/**
@@ -43,6 +39,8 @@ public class GameBoy {
 	 * @param cartridge
 	 */
 	public void insertCartridge(final Cartridge cartridge) {
+		cartridge.connect(addressBus);
+		// TODO : Load data from cartridge ?
 	}
 	
 	/**
@@ -50,6 +48,7 @@ public class GameBoy {
 	 */
 	public void removeCartridge() {
 		
+		addressBus.disconnect(null);
 	}
 
 	/**
@@ -60,4 +59,5 @@ public class GameBoy {
 		// TODO : Create motherboard.
 		return null;
 	}
+
 }

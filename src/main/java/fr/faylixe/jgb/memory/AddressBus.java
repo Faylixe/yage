@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public final class AddressBus {
 
 	/** **/
-	private final NavigableMap<Short, IAddressable> memories;
+	private final NavigableMap<Integer, IAddressable> memories;
 
 	/**
 	 * 
@@ -25,8 +25,8 @@ public final class AddressBus {
 	 * @param address
 	 * @return
 	 */
-	private IAddressable getAddressable(final short address) {
-		final Short nearAddressableOffset = memories.floorKey(address);
+	private IAddressable getAddressable(final int address) {
+		final Integer nearAddressableOffset = memories.floorKey(address);
 		if (nearAddressableOffset == null) {
 			// TODO : Return optional ?
 		}
@@ -38,11 +38,11 @@ public final class AddressBus {
 	 * @param offset
 	 * @param addressable
 	 */
-	protected void connect(final IAddressable addressable) {
+	public void connect(final IAddressable addressable) {
 		if (addressable == null) {
 			throw new IllegalArgumentException();
 		}
-		final short offset = addressable.getOffset();
+		final int offset = addressable.getOffset();
 		final IAddressable nearest = getAddressable(offset);
 		// TODO : Check for address conflict.
 		memories.put(addressable.getOffset(), addressable);
