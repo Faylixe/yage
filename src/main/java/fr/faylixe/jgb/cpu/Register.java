@@ -4,19 +4,26 @@ package fr.faylixe.jgb.cpu;
  * 
  * @author fv
  */
-public interface Register {
+public class Register {
+
+	/** **/
+	private byte state;
 
 	/**
 	 * 
 	 * @return
 	 */
-	byte getState();
+	public byte getState() {
+		return state;
+	}
 
 	/**
 	 * 
 	 * @param newState
 	 */
-	void setState(byte newState);
+	public void setState(final byte newState) {
+		this.state = newState;
+	}
 
 	/**
 	 * 

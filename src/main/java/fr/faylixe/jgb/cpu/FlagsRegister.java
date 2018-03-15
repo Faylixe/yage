@@ -5,7 +5,7 @@ package fr.faylixe.jgb.cpu;
  * 
  * @author fv
  */
-public final class FlagsRegister extends DefaultRegister {
+public final class FlagsRegister extends Register {
 
 	/**
 	 * Indicates if zero flag (Z) is settled.

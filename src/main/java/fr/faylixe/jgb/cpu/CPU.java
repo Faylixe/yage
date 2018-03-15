@@ -1,7 +1,7 @@
 package fr.faylixe.jgb.cpu;
 
 /**
- * {@link CPU} implementation for SharpLR35902 model.
+ * CPU implementation for SharpLR35902 model.
  * 
  * The timings assume a CPU clock frequency of 4.194304 MHz
  * 
@@ -10,35 +10,50 @@ package fr.faylixe.jgb.cpu;
 public class CPU {
 
 	/** **/
-	private byte A;
+	private final Register A;
+
+	/** **/
+	private final Register B;
+
+	/** **/
+	private final Register C;
+
+	/** **/
+	private final Register D;
+
+	/** **/
+	private final Register E;
+
+	/** **/
+	private final Register H;
+
+	/** **/
+	private final Register L;
 
 	/** Flags register. **/
-	private FlagsRegister F;
+	private final FlagsRegister F;
+
+	/** Stack Pointer register. **/
+	private final ExtendedRegister SP;
 
 	/** **/
-	private Register B;
-
-	/** **/
-	private Register C;
-
-	/** **/
-	private Register D;
-
-	/** **/
-	private Register E;
-
-	/** **/
-	private Register H;
-
-	/** **/
-	private Register L;
-
-	// TODO : Add SP and PC
+	private final ExtendedRegister PC;
 
 	/**
-	 * 
+	 * Default constructor.
+	 * Initializes registers and clock.
 	 */
 	public CPU() {
+		this.A = new Register();
+		this.B = new Register();
+		this.C = new Register();
+		this.D = new Register();
+		this.E = new Register();
+		this.H = new Register();
+		this.L = new Register();
+		this.F = new FlagsRegister();
+		this.SP = new ExtendedRegister();
+		this.PC = new ExtendedRegister();
 	}
 
 }
