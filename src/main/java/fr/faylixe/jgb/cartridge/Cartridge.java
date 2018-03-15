@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.storage;
+package fr.faylixe.jgb.cartridge;
 
 import fr.faylixe.jgb.memory.AddressBus;
 import fr.faylixe.jgb.memory.IConnectable;

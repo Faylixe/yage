@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.cpu;
+package fr.faylixe.jgb.cpu.register;
 
 /**
  * 

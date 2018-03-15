@@ -1,5 +1,8 @@
 package fr.faylixe.jgb.cpu;
 
+import fr.faylixe.jgb.cpu.register.ExtendedRegister;
+import fr.faylixe.jgb.cpu.register.FlagsRegister;
+import fr.faylixe.jgb.cpu.register.Register;
 import fr.faylixe.jgb.memory.IMemoryStream;
 
 /**
@@ -9,7 +12,7 @@ import fr.faylixe.jgb.memory.IMemoryStream;
  * 
  * @author fv
  */
-public class CPU {
+public class CPU implements Runnable {
 
 	/** **/
 	private final Register A;
@@ -44,13 +47,17 @@ public class CPU {
 	/** **/
 	private final IMemoryStream memoryStream;
 
+	/** **/
+	private final IInstructionStream instructionStream;
+
 	/**
 	 * Default constructor.
 	 * Initializes registers and clock.
 	 * 
 	 * @param memoryStream
+	 * @param instructionStream
 	 */
-	public CPU(final IMemoryStream memoryStream) {
+	public CPU(final IMemoryStream memoryStream, final IInstructionStream instructionStream) {
 		this.A = new Register();
 		this.B = new Register();
 		this.C = new Register();
@@ -62,12 +69,20 @@ public class CPU {
 		this.SP = new ExtendedRegister();
 		this.PC = new ExtendedRegister();
 		this.memoryStream = memoryStream;
+		this.instructionStream = instructionStream;
 	}
 	
-	/**
-	 * 
-	 */
-	public void tick() {
+	/** {@inheritDoc} **/
+	@Override
+	public void run() {
+		final byte prefix = instructionStream.nextByte();
+		final byte opcode;
+		if (prefix == 0) { // TODO : Check for CB prefix value.
+			opcode = instructionStream.nextByte();
+		}
+		else {
+			opcode = prefix;
+		}
 		// TODO : Read opcode (one byte).
 		// TODO : if opcode == CB16 => extended set.
 			// TODO : Read next byte.

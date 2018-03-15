@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.storage;
+package fr.faylixe.jgb.cartridge;
 
 /**
  * 

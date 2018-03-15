@@ -1,10 +1,9 @@
 package fr.faylixe.jgb;
 
+import fr.faylixe.jgb.cartridge.Cartridge;
 import fr.faylixe.jgb.cpu.CPU;
-import fr.faylixe.jgb.display.LCD;
 import fr.faylixe.jgb.memory.AddressBus;
 import fr.faylixe.jgb.memory.RAM;
-import fr.faylixe.jgb.storage.Cartridge;
 
 /**
  * 
@@ -19,9 +18,6 @@ public class GameBoy {
 	private final RAM ram;
 
 	/** **/
-	private final LCD lcd;
-
-	/** **/
 	private final AddressBus addressBus;
 
 	/**
@@ -29,10 +25,9 @@ public class GameBoy {
 	 */
 	private GameBoy() {
 		this.addressBus = new AddressBus();
-		this.cpu = new CPU(addressBus);
+		this.cpu = new CPU(addressBus, null);
 		this.ram = new RAM();
 		this.ram.connect(addressBus);
-		this.lcd = new LCD();
 	}
 
 	/**
