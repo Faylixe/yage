@@ -1,6 +1,6 @@
 package fr.faylixe.jgb.memory;
 
-import fr.faylixe.jgb.memory.bank.MemoryBank;
+import fr.faylixe.jgb.memory.bank.ArrayMemoryBank;
 
 /**
  *
@@ -17,22 +17,22 @@ import fr.faylixe.jgb.memory.bank.MemoryBank;
 public class RAM implements IConnectable {
 
 	/** First Work RAM block. **/
-	private final MemoryBank wram0;
+	private final ArrayMemoryBank wram0;
 
 	/** Second Work RAM block. **/
-	private final MemoryBank wram1;
+	private final ArrayMemoryBank wram1;
 
 	/** Video RAM block. **/
-	private final MemoryBank vram;
+	private final ArrayMemoryBank vram;
 
 	/**
 	 * Default constructor.
 	 * Initializes associated memory blocks.
 	 */
 	public RAM() {
-		this.vram = new MemoryBank(8 * 1024, 0x8000);
-		this.wram0 = new MemoryBank(4 * 1024, 0xC000);
-		this.wram1 = new MemoryBank(4 * 1024, 0xD000);
+		this.vram = new ArrayMemoryBank(8 * 1024, 0x8000);
+		this.wram0 = new ArrayMemoryBank(4 * 1024, 0xC000);
+		this.wram1 = new ArrayMemoryBank(4 * 1024, 0xD000);
 	}
 	
 	/** {@inheritDoc} **/

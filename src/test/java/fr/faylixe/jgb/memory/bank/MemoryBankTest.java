@@ -12,7 +12,7 @@ public final class MemoryBankTest implements IMemoryBankTest {
 	/** {@inheritDoc} **/
 	@Override
 	public IMemoryBank getTestMemoryBank() {
-		final IMemoryBank bank = new MemoryBank(TEST_SIZE, TEST_OFFSET);
+		final IMemoryBank bank = new ArrayMemoryBank(TEST_SIZE, TEST_OFFSET);
 		// TODO : Fill up with data layout.
 		return bank;
 	}

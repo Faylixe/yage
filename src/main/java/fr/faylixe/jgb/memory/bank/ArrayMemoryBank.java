@@ -1,10 +1,12 @@
 package fr.faylixe.jgb.memory.bank;
 
 /**
+ * Memory bank implementation using a simple
+ * byte array as storage datastructure.
  * 
  * @author fv
  */
-public class MemoryBank extends AbstractMemoryBank {
+public final class ArrayMemoryBank extends AbstractMemoryBank {
 	
 	/** Data this memory bank can hold. **/
 	private final byte[] data;
@@ -12,24 +14,12 @@ public class MemoryBank extends AbstractMemoryBank {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param size Size of this memory block (in bytes).
+	 * @param size Size of this memory bank (in bytes).
 	 * @param offset Starting address offset.
 	 */
-	public MemoryBank(final int size, final int offset) {
+	public ArrayMemoryBank(final int size, final int offset) {
 		super(size, offset);
 		this.data = new byte[size];
-	}
-
-	/**
-	 * Ensures the given <tt>address</tt> is covered by this memory bank.
-	 * 
-	 * @param address Address to ensure validity.
-	 * @throws IllegalAccessException If the given <tt>address</tt> is not covered by this bank.
-	 */
-	private void verifyAddress(final int address) throws IllegalAccessException {
-		if (address < getOffset() || address >= (getOffset() + getSize())) {
-			throw new IllegalAccessException();
-		}
 	}
 
 	/** {@inheritDoc} **/

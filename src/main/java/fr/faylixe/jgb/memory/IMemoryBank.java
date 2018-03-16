@@ -1,6 +1,9 @@
 package fr.faylixe.jgb.memory;
 
 /**
+ * Generic interface that represents a memory bank.
+ * Such bank have I/O operation provided thanks to
+ * IMemoryStream interface.
  * 
  * @author fv
  */

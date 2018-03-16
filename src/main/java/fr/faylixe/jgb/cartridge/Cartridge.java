@@ -2,7 +2,7 @@ package fr.faylixe.jgb.cartridge;
 
 import fr.faylixe.jgb.memory.AddressBus;
 import fr.faylixe.jgb.memory.IConnectable;
-import fr.faylixe.jgb.memory.bank.MemoryBank;
+import fr.faylixe.jgb.memory.bank.ArrayMemoryBank;
 import fr.faylixe.jgb.memory.bank.ReadOnlyMemoryBank;
 
 /**
@@ -12,21 +12,21 @@ import fr.faylixe.jgb.memory.bank.ReadOnlyMemoryBank;
 public final class Cartridge implements IConnectable {
 
 	/** External RAM switchable bank. **/
-	private final MemoryBank eram;
+	private final ArrayMemoryBank eram;
 
 	/** ROM fixed bank 00. **/
-	private final MemoryBank rom0;
+	private final ArrayMemoryBank rom0;
 
 	/** ROM switchable bank number **/
-	private final MemoryBank rom1;
+	private final ArrayMemoryBank rom1;
 
 	/**
 	 * Default constructor.
 	 */
 	protected Cartridge() {
-		this.eram = new MemoryBank(8 * 1024, 0xA000);
-		this.rom0 = new ReadOnlyMemoryBank(16 * 1024, 0x0000);
-		this.rom1 = new ReadOnlyMemoryBank(16 * 1024, 0x4000);
+		this.eram = new ArrayMemoryBank(8 * 1024, 0xA000);
+		this.rom0 = null;//new ReadOnlyMemoryBank(16 * 1024, 0x0000);
+		this.rom1 = null;//new ReadOnlyMemoryBank(16 * 1024, 0x4000);
 	}
 
 	/** {@inheritDoc} **/
