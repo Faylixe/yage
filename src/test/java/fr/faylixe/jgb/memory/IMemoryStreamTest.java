@@ -76,24 +76,16 @@ public interface IMemoryStreamTest {
 	/**
 	 * Ensures the given <tt>value</tt> is the one expected
 	 * for the first memory byte, namely (1,0,1,0,1,0,1,0).
-	 * 
-	 * @param value Value to verify.
-	 */
-	default void verifyFirstByte(final byte value) {
-		for (int i = 0; i < 8; i++) {
-			verifyBit(value, i, i % 2);
-		}
-	}
-	
-	/**
-	 * Ensures the given <tt>value</tt> is the one expected
 	 * for the second memory byte, namely (1,1,1,1,0,0,0,0).
 	 * 
-	 * @param value Value to verify.
+	 * @param bytes
 	 */
-	default void verifySecondByte(final byte value) {
+	default void verifyBytes(final Byte[] bytes) {
 		for (int i = 0; i < 8; i++) {
-			verifyBit(value, i, i < 4 ? 0 : 1);
+			verifyBit(bytes[0], i, i % 2);
+		}
+		for (int i = 0; i < 8; i++) {
+			verifyBit(bytes[1], i, i < 4 ? 0 : 1);
 		}
 	}
 
@@ -102,8 +94,27 @@ public interface IMemoryStreamTest {
 	default void testAllowedReading() {
 		performStreamTest(stream -> {
 			try {
-				verifyFirstByte(stream.readByte(TEST_OFFSET));
-				verifySecondByte(stream.readByte(TEST_OFFSET + 1));
+				verifyBytes(new Byte[] {
+						stream.readByte(TEST_OFFSET),
+						stream.readByte(TEST_OFFSET + 1)
+				});
+			}
+			catch (final IllegalAccessException e) {
+				fail(e);
+			}			
+		});
+	}
+	
+	/** Test reading valid addresses. **/
+	@Test
+	default void testAllowedReadings() {
+		performStreamTest(stream -> {
+			try {
+				final byte[] bytes = stream.readBytes(TEST_OFFSET, 2);
+				verifyBytes(new Byte[] {
+						bytes[0],
+						bytes[1]
+				});
 			}
 			catch (final IllegalAccessException e) {
 				fail(e);
@@ -111,12 +122,22 @@ public interface IMemoryStreamTest {
 		});
 	}
 
-	/** Test reading wrong addresses. **/
+	/** Test reading wrong address. **/
 	@Test
 	default void testUnallowedReading() {
 		performStreamTest(stream -> {
 			assertThrows(IllegalAccessException.class, () -> stream.readByte(TEST_OFFSET - 1));
 			assertThrows(IllegalAccessException.class, () -> stream.readByte(TEST_OFFSET + TEST_SIZE));
+		});
+	}
+	
+	/** Test reading wrong addresses **/
+	@Test
+	default void testUnallowedReadings() {
+		performStreamTest(stream -> {
+			assertThrows(IllegalAccessException.class, () -> stream.readBytes(0, 2));
+			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET - 1, 2));
+			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET, 6));
 		});
 	}
 

@@ -7,7 +7,7 @@ import fr.faylixe.jgb.memory.IMemoryBankTest;
  * 
  * @author fv
  */
-public final class MemoryBankTest implements IMemoryBankTest {
+public final class ArrayMemoryBankTest implements IMemoryBankTest {
 
 	/** {@inheritDoc} **/
 	@Override

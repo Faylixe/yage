@@ -18,10 +18,8 @@ public final class ReadOnlyMemoryBankTest implements IMemoryBankTest {
 	/** {@inheritDoc} **/
 	@Override
 	public IMemoryBank getTestMemoryBank() {
-		final ReadOnlyMemoryBank bank = new ReadOnlyMemoryBank(
-				TEST_SIZE,
-				TEST_OFFSET);
-		// TODO : Insert data layout into memory.
+		
+		final ReadOnlyMemoryBank bank = new ReadOnlyMemoryBank(null);
 		return bank;
 	}
 	
