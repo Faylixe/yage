@@ -1,9 +1,7 @@
 package fr.faylixe.jgb.memory.bank;
 
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static java.util.stream.IntStream.range;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
