@@ -18,8 +18,8 @@ public final class ReadOnlyMemoryBankTest implements IMemoryBankTest {
 	/** {@inheritDoc} **/
 	@Override
 	public IMemoryBank getTestMemoryBank() {
-		
-		final ReadOnlyMemoryBank bank = new ReadOnlyMemoryBank(null);
+		final IMemoryBank mock = IMemoryBankTest.createMemoryBankMock();
+		final ReadOnlyMemoryBank bank = new ReadOnlyMemoryBank(mock);
 		return bank;
 	}
 	

@@ -2,7 +2,10 @@ package fr.faylixe.jgb.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.BitSet;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
@@ -10,14 +13,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 /**
- * Generic test for memory bank. Assumes that tested memory
- * bank always has the same properties, namely a 2 byte size and
- * a 4 address offset. Also as the memory bank is also a memory
- * stream, it assumes that the memory as the following data layout:
+ * Generic test for memory bank. Ensures size and offset
+ * properties, based on IMemoryStreamTest testing contract.
  * 
- * (4) -> 0 1 0 1 0 1 0 1
- * (5) -> 1 1 1 1 0 0 0 0
- * 
+ * @see IMemoryStreamTest
  * @author fv
  */
 @TestInstance(Lifecycle.PER_CLASS)
@@ -59,6 +58,25 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 	@Test
 	default void testBankOffset() {
 		performBankTest(bank -> assertEquals(TEST_OFFSET, bank.getOffset()));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	static IMemoryBank createMemoryBankMock() {
+		final IMemoryBank mockBank = mock(IMemoryBank.class);
+		when(mockBank.getSize()).thenReturn(TEST_SIZE);
+		when(mockBank.getOffset()).thenReturn(TEST_OFFSET);
+		try {
+			// TODO : Compute byte value (use bit set ?)
+			when(mockBank.readByte(TEST_OFFSET)).thenReturn((byte) 0);
+			when(mockBank.readByte(TEST_OFFSET + 1)).thenReturn((byte) 0);
+		}
+		catch (final IllegalAccessException e) {
+			// Do nothing.
+		}
+		return mockBank;
 	}
 
 }

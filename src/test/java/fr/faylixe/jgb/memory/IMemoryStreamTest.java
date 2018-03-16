@@ -38,7 +38,7 @@ public interface IMemoryStreamTest {
 	static final int TEST_SIZE = 3;
 
 	/** Expected offset of the memory to be tested. **/
-	static final int TEST_OFFSET = 0;
+	static final int TEST_OFFSET = 4;
 
 	/**
 	 * Factory method that creates a target testing instance.
