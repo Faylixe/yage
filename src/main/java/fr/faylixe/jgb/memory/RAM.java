@@ -1,5 +1,7 @@
 package fr.faylixe.jgb.memory;
 
+import fr.faylixe.jgb.memory.bank.MemoryBank;
+
 /**
  *
  * - 8000-9FFF   8KB Video RAM (VRAM) (switchable bank 0-1 in CGB Mode)
@@ -15,22 +17,22 @@ package fr.faylixe.jgb.memory;
 public class RAM implements IConnectable {
 
 	/** First Work RAM block. **/
-	private final MemoryBlock wram0;
+	private final MemoryBank wram0;
 
 	/** Second Work RAM block. **/
-	private final MemoryBlock wram1;
+	private final MemoryBank wram1;
 
 	/** Video RAM block. **/
-	private final MemoryBlock vram;
+	private final MemoryBank vram;
 
 	/**
 	 * Default constructor.
 	 * Initializes associated memory blocks.
 	 */
 	public RAM() {
-		this.vram = new MemoryBlock(8 * 1024, 0x8000);
-		this.wram0 = new MemoryBlock(4 * 1024, 0xC000);
-		this.wram1 = new MemoryBlock(4 * 1024, 0xD000);
+		this.vram = new MemoryBank(8 * 1024, 0x8000);
+		this.wram0 = new MemoryBank(4 * 1024, 0xC000);
+		this.wram1 = new MemoryBank(4 * 1024, 0xD000);
 	}
 	
 	/** {@inheritDoc} **/

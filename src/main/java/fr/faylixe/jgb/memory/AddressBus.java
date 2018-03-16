@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public final class AddressBus implements IMemoryStream {
 
 	/** **/
-	private final NavigableMap<Integer, MemoryBlock> memory;
+	private final NavigableMap<Integer, IMemoryBank> memory;
 
 	/**
 	 * Default constructor.
@@ -24,7 +24,7 @@ public final class AddressBus implements IMemoryStream {
 	 * 
 	 * @param memoryBlock
 	 */
-	public void connect(final MemoryBlock memoryBlock) {
+	public void connect(final IMemoryBank memoryBlock) {
 		if (memoryBlock == null) {
 			throw new IllegalArgumentException();
 		}
@@ -37,7 +37,7 @@ public final class AddressBus implements IMemoryStream {
 	 * 
 	 * @param memoryBlock
 	 */
-	public void disconnect(final MemoryBlock memoryBlock) {
+	public void disconnect(final IMemoryBank memoryBlock) {
 		if (memoryBlock == null) {
 			throw new IllegalArgumentException();
 		}
@@ -52,24 +52,25 @@ public final class AddressBus implements IMemoryStream {
 	 * @return
 	 * @throws IllegalAccessException
 	 */
-	private MemoryBlock getMemoryBlock(final int address) throws IllegalAccessException {
+	private IMemoryStream getMemoryStream(final int address) throws IllegalAccessException {
 		final Integer nearAddressableOffset = memory.floorKey(address);
 		if (nearAddressableOffset == null) {
 			throw new IllegalAccessException("Unreachable memory address");
 		}
+		// TODO : Check for more coverage ?
 		return memory.get(nearAddressableOffset);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	public byte readByte(final int address) throws IllegalAccessException {
-		return getMemoryBlock(address).readByte(address);
+		return getMemoryStream(address).readByte(address);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
-		getMemoryBlock(address).writeByte(value, address);
+		getMemoryStream(address).writeByte(value, address);
 	}
 
 }

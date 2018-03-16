@@ -1,11 +1,11 @@
-package fr.faylixe.jgb.memory;
+package fr.faylixe.jgb.memory.bank;
 
 /**
- * Simple memory block extension that prevents writing.
+ * Simple memory bank extension that prevents writing.
  * 
  * @author fv
  */
-public class ReadOnlyMemoryBlock extends MemoryBlock {
+public final class ReadOnlyMemoryBank extends MemoryBank {
 
 	/**
 	 * Default constructor.
@@ -13,7 +13,7 @@ public class ReadOnlyMemoryBlock extends MemoryBlock {
 	 * @param size Size of this memory block (in bytes).
 	 * @param offset Starting address offset.
 	 */
-	public ReadOnlyMemoryBlock(final int size, final int offset) {
+	public ReadOnlyMemoryBank(final int size, final int offset) {
 		super(size, offset);
 	}
 
