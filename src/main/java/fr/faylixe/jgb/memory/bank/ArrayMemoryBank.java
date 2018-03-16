@@ -1,8 +1,10 @@
 package fr.faylixe.jgb.memory.bank;
 
+import java.util.Arrays;
+
 /**
  * Memory bank implementation using a simple
- * byte array as storage datastructure.
+ * byte array as storage data structure.
  * 
  * @author fv
  */
@@ -31,9 +33,23 @@ public final class ArrayMemoryBank extends AbstractMemoryBank {
 
 	/** {@inheritDoc} **/
 	@Override
+	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
+		return Arrays.copyOfRange(data, address - getOffset(), length);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
 		verifyAddress(address);
 		data[address - getOffset()] = value;
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
+		verifyAddress(address);
+		verifyAddress(address + values.length);
+		System.arraycopy(values, 0, data, address - getOffset(), values.length);
 	}
 
 }

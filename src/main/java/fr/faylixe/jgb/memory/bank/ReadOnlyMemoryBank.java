@@ -9,18 +9,16 @@ import fr.faylixe.jgb.memory.IMemoryBank;
  */
 public final class ReadOnlyMemoryBank implements IMemoryBank {
 
-	/** **/
+	/** Delegate memory bank that is protected from write operation. **/
 	private final IMemoryBank delegate;
 
 	/**
 	 * Default constructor.
 	 * 
-	 * @param size Size of this memory block (in bytes).
-	 * @param offset Starting address offset.
+	 * @param delegate Delegate memory bank that should be write protected.
 	 */
-	public ReadOnlyMemoryBank(final int size, final int offset) {
-		//super(size, offset);
-		this.delegate = null;
+	public ReadOnlyMemoryBank(final IMemoryBank delegate) {
+		this.delegate = delegate;
 	}
 
 	/** {@inheritDoc} **/
