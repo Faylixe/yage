@@ -37,7 +37,7 @@ public final class BitSetMemoryBank extends AbstractMemoryBank {
 	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
 		verifyAddress(address);
 		verifyAddress(address + length - 1);
-		final int start = address - getOffset();
+		final int start = (address - getOffset()) * 8;
 		try {
 			return data
 					.get(start, start + (8 * length))
