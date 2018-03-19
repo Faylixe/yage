@@ -23,7 +23,7 @@ public final class BitSetMemoryBank extends AbstractMemoryBank {
 	 */
 	public BitSetMemoryBank(final int size, final int offset) {
 		super(size, offset);
-		this.data = new BitSet(size);
+		this.data = new BitSet(size * 8);
 	}
 
 	/** {@inheritDoc} **/
@@ -36,9 +36,7 @@ public final class BitSetMemoryBank extends AbstractMemoryBank {
 	@Override
 	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
 		verifyAddress(address);
-		if (length > 1) {
-			verifyAddress(address + length);
-		}
+		verifyAddress(address + length - 1);
 		final int start = address - getOffset();
 		try {
 			return data
@@ -59,11 +57,10 @@ public final class BitSetMemoryBank extends AbstractMemoryBank {
 	/** {@inheritDoc} **/
 	@Override
 	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
-		// TODO : Ensures values is little endian or recode it.
 		final BitSet bits = BitSet.valueOf(values);
-		// TODO : Check if reading bit per bit is more faster.
-		for (int i = 0; i < values.length * 8; i++) {
-			data.set(address + i, bits.get(i));
+		final int base = (address - getOffset()) * 8;
+		for (int i = 0; i < bits.size(); i++) {
+			data.set(base + i, bits.get(i));
 		}
 	}
 
