@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.BitSet;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
@@ -61,8 +60,10 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 	}
 
 	/**
+	 * Factory method for creating an IMemoryBank mock instance.
+	 * Such mock instance is designed to match expected test properties.
 	 * 
-	 * @return
+	 * @return Created mock instance.
 	 */
 	static IMemoryBank createMemoryBankMock() {
 		final IMemoryBank mockBank = mock(IMemoryBank.class);
