@@ -22,26 +22,26 @@ public final class AddressBus implements IMemoryStream {
 
 	/**
 	 * 
-	 * @param memoryBlock
+	 * @param memoryBank
 	 */
-	public void connect(final IMemoryBank memoryBlock) {
-		if (memoryBlock == null) {
+	public void connect(final IMemoryBank memoryBank) {
+		if (memoryBank == null) {
 			throw new IllegalArgumentException();
 		}
 		// final int offset = memoryBlock.getOffset();
 		// TODO : Check for address conflict.
-		memory.put(memoryBlock.getOffset(), memoryBlock);
+		memory.put(memoryBank.getOffset(), memoryBank);
 	}
 	
 	/**
 	 * 
-	 * @param memoryBlock
+	 * @param memoryBank
 	 */
-	public void disconnect(final IMemoryBank memoryBlock) {
-		if (memoryBlock == null) {
+	public void disconnect(final IMemoryBank memoryBank) {
+		if (memoryBank == null) {
 			throw new IllegalArgumentException();
 		}
-		if (memory.remove(memoryBlock.getOffset()) == null) {
+		if (memory.remove(memoryBank.getOffset()) == null) {
 			throw new IllegalArgumentException();
 		}
 	}
@@ -69,8 +69,20 @@ public final class AddressBus implements IMemoryStream {
 
 	/** {@inheritDoc} **/
 	@Override
+	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
+		return getMemoryStream(address).readBytes(address, length);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
 		getMemoryStream(address).writeByte(value, address);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
+		getMemoryStream(address).writeBytes(values, address);
 	}
 
 }
