@@ -71,7 +71,7 @@ public class CPU implements Runnable {
 		this.memoryStream = memoryStream;
 		this.instructionStream = instructionStream;
 	}
-	
+
 	/** {@inheritDoc} **/
 	@Override
 	public void run() {
