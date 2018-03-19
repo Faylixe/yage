@@ -18,7 +18,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
  * the following data layout:
  * 
  * (4) -> 1 0 1 0 1 0 1 0
- * (5) -> 1 1 1 1 0 0 0 0
+ * (5) -> 1 1 1 1 0 0 0 0 
  * (6) -> X X X X X X X X
  * 
  * The last memory row is dedicated to writing tests and so is not
@@ -81,11 +81,19 @@ public interface IMemoryStreamTest {
 	 * @param bytes
 	 */
 	default void verifyBytes(final Byte[] bytes) {
-		for (int i = 0; i < 8; i++) {
-			verifyBit(bytes[0], i, i % 2);
+		// Note : value can be checked in BinaryBenchmark tests.
+		// Note : 10101010 -> 85 as signed byte.
+		assertEquals((byte) 85, (byte) bytes[0]);
+		for (int i = 0; i < 8; i += 2) {
+			verifyBit(bytes[0], i, 1);
 		}
+		for (int i = 1; i < 8; i += 2) {
+			verifyBit(bytes[0], i, 0);
+		}
+		// Note : 11110000 -> 15 as signed byte.
+		assertEquals((byte) 15, (byte) bytes[1]);
 		for (int i = 0; i < 8; i++) {
-			verifyBit(bytes[1], i, i < 4 ? 0 : 1);
+			verifyBit(bytes[1], i, i < 4 ? 1 : 0);
 		}
 	}
 

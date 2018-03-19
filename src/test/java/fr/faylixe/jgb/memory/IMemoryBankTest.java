@@ -2,6 +2,7 @@ package fr.faylixe.jgb.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,9 +71,21 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 		when(mockBank.getSize()).thenReturn(TEST_SIZE);
 		when(mockBank.getOffset()).thenReturn(TEST_OFFSET);
 		try {
-			// TODO : Compute byte value (use bit set ?)
-			when(mockBank.readByte(TEST_OFFSET)).thenReturn((byte) 0);
-			when(mockBank.readByte(TEST_OFFSET + 1)).thenReturn((byte) 0);
+			// Note : Value per layout can be computed through BinaryBenchmark.
+			when(mockBank.readByte(anyInt())).thenAnswer(invocationMock -> {
+				final int address = invocationMock.getArgument(0);
+				if (address == TEST_OFFSET) {
+					return (byte) 85;
+				}
+				else if (address == TEST_OFFSET + 1) {
+					return (byte) 15;
+				}
+				else if (address == TEST_OFFSET + 2) {
+					return (byte) 0;
+				}
+				throw new IllegalAccessException();
+			});
+			when(mockBank.readBytes(anyInt(), anyInt())).thenCallRealMethod();
 		}
 		catch (final IllegalAccessException e) {
 			// Do nothing.

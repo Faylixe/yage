@@ -1,9 +1,12 @@
 package fr.faylixe.jgb.memory.bank;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import fr.faylixe.jgb.memory.IMemoryBank;
 import fr.faylixe.jgb.memory.IMemoryBankTest;
 
 /**
+ * Unit test case for the array based memory bank.
  * 
  * @author fv
  */
@@ -13,7 +16,13 @@ public final class ArrayMemoryBankTest implements IMemoryBankTest {
 	@Override
 	public IMemoryBank getTestMemoryBank() {
 		final IMemoryBank bank = new ArrayMemoryBank(TEST_SIZE, TEST_OFFSET);
-		// TODO : Fill up with data layout.
+		try {
+			bank.writeByte((byte) 85, TEST_OFFSET);
+			bank.writeByte((byte) 15, TEST_OFFSET + 1);
+		}
+		catch (final IllegalAccessException e) {
+			fail(e);
+		}
 		return bank;
 	}
 

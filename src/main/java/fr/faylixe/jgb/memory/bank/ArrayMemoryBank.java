@@ -34,6 +34,8 @@ public final class ArrayMemoryBank extends AbstractMemoryBank {
 	/** {@inheritDoc} **/
 	@Override
 	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
+		verifyAddress(address);
+		verifyAddress(address + length - 1);
 		return Arrays.copyOfRange(data, address - getOffset(), length);
 	}
 
@@ -48,7 +50,7 @@ public final class ArrayMemoryBank extends AbstractMemoryBank {
 	@Override
 	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
 		verifyAddress(address);
-		verifyAddress(address + values.length);
+		verifyAddress(address + values.length - 1);
 		System.arraycopy(values, 0, data, address - getOffset(), values.length);
 	}
 

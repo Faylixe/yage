@@ -57,12 +57,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>2.11.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
 			<version>1.0.1</version>
@@ -71,7 +65,13 @@
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
 			<artifactId>junit-vintage-engine</artifactId>
-			<version>4.12.1</version>
+			<version>5.1.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.11.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
