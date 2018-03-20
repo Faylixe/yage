@@ -5,7 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.function.Consumer;
 
 /**
+ * Assuming following memory layout :
  * 
+ * 0 -> 0
+ * 1 -> 1
+ * . -> .
+ * n -> n
+ * 
+ * And following registers state :
+ * 
+ * A -> 0x01, F -> 0x00
+ * B -> 0x02, C -> 0x03
+ * D -> 0x04, E -> 0x05
+ * H -> 0x06, L -> 0x07
+ * SP -> 0x08
+ * PC -> 0x09
  * @author fv
  */
 public interface IInstructionTest {
