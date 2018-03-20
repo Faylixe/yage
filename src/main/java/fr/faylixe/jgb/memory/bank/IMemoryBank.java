@@ -1,4 +1,6 @@
-package fr.faylixe.jgb.memory;
+package fr.faylixe.jgb.memory.bank;
+
+import fr.faylixe.jgb.memory.IMemoryStream;
 
 /**
  * Generic interface that represents a memory bank.

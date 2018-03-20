@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import fr.faylixe.jgb.memory.bank.IMemoryBank;
+
 /**
  * Generic test for memory bank. Ensures size and offset
  * properties, based on IMemoryStreamTest testing contract.

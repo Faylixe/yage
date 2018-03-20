@@ -1,7 +1,5 @@
 package fr.faylixe.jgb.memory.bank;
 
-import fr.faylixe.jgb.memory.IMemoryBank;
-
 /**
  * Simple memory bank decoration that prevents writing.
  * 

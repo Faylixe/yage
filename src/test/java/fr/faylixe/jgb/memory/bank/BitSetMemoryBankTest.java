@@ -2,7 +2,6 @@ package fr.faylixe.jgb.memory.bank;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import fr.faylixe.jgb.memory.IMemoryBank;
 import fr.faylixe.jgb.memory.IMemoryBankTest;
 
 /**

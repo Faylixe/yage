@@ -1,8 +1,9 @@
 package fr.faylixe.jgb.cpu;
 
-import fr.faylixe.jgb.cpu.register.ExtendedRegister;
+import fr.faylixe.jgb.cpu.register.ShortRegister;
 import fr.faylixe.jgb.cpu.register.FlagsRegister;
-import fr.faylixe.jgb.cpu.register.Register;
+import fr.faylixe.jgb.cpu.instruction.IInstructionStream;
+import fr.faylixe.jgb.cpu.register.ByteRegister;
 import fr.faylixe.jgb.memory.IMemoryStream;
 
 /**
@@ -15,34 +16,34 @@ import fr.faylixe.jgb.memory.IMemoryStream;
 public class CPU implements Runnable {
 
 	/** **/
-	private final Register A;
+	private final ByteRegister A;
 
 	/** **/
-	private final Register B;
+	private final ByteRegister B;
 
 	/** **/
-	private final Register C;
+	private final ByteRegister C;
 
 	/** **/
-	private final Register D;
+	private final ByteRegister D;
 
 	/** **/
-	private final Register E;
+	private final ByteRegister E;
 
 	/** **/
-	private final Register H;
+	private final ByteRegister H;
 
 	/** **/
-	private final Register L;
+	private final ByteRegister L;
 
 	/** Flags register. **/
 	private final FlagsRegister F;
 
 	/** Stack Pointer register. **/
-	private final ExtendedRegister SP;
+	private final ShortRegister SP;
 
 	/** **/
-	private final ExtendedRegister PC;
+	private final ShortRegister PC;
 
 	/** **/
 	private final IMemoryStream memoryStream;
@@ -58,16 +59,16 @@ public class CPU implements Runnable {
 	 * @param instructionStream
 	 */
 	public CPU(final IMemoryStream memoryStream, final IInstructionStream instructionStream) {
-		this.A = new Register();
-		this.B = new Register();
-		this.C = new Register();
-		this.D = new Register();
-		this.E = new Register();
-		this.H = new Register();
-		this.L = new Register();
+		this.A = new ByteRegister();
+		this.B = new ByteRegister();
+		this.C = new ByteRegister();
+		this.D = new ByteRegister();
+		this.E = new ByteRegister();
+		this.H = new ByteRegister();
+		this.L = new ByteRegister();
 		this.F = new FlagsRegister();
-		this.SP = new ExtendedRegister();
-		this.PC = new ExtendedRegister();
+		this.SP = new ShortRegister();
+		this.PC = new ShortRegister();
 		this.memoryStream = memoryStream;
 		this.instructionStream = instructionStream;
 	}

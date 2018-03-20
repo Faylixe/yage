@@ -5,7 +5,7 @@ package fr.faylixe.jgb.cpu.register;
  * 
  * @author fv
  */
-public final class FlagsRegister extends Register {
+public final class FlagsRegister extends ByteRegister {
 
 	/**
 	 * Indicates if zero flag (Z) is settled.
@@ -13,7 +13,7 @@ public final class FlagsRegister extends Register {
 	 * @return <tt>true</tt> if zero flag is settled, <tt>false</tt> otherwise.
 	 */
 	public boolean isZero() {
-		return ((getState() >> 7) & 1) == 1;
+		return ((get() >> 7) & 1) == 1;
 	}
 
 	/**
@@ -22,7 +22,7 @@ public final class FlagsRegister extends Register {
 	 * @return <tt>true</tt> if substraction flag is settled, <tt>false</tt> otherwise.
 	 */
 	public boolean isSubstraction() {
-		return ((getState() >> 6) & 1) == 1;
+		return ((get() >> 6) & 1) == 1;
 	}
 
 	/**
@@ -31,7 +31,7 @@ public final class FlagsRegister extends Register {
 	 * @return <tt>true</tt> if half carry flag is settled, <tt>false</tt> otherwise.
 	 */
 	public boolean isHalfCarry() {
-		return ((getState() >> 5) & 1) == 1;
+		return ((get() >> 5) & 1) == 1;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public final class FlagsRegister extends Register {
 	 * @return <tt>true</tt> if carry flag is settled, <tt>false</tt> otherwise.
 	 */
 	public boolean isCarry() {
-		return ((getState() >> 4) & 1) == 1;
+		return ((get() >> 4) & 1) == 1;
 	}
 
 }

@@ -4,7 +4,7 @@ package fr.faylixe.jgb.cpu.register;
  * 
  * @author fv
  */
-public class ExtendedRegister {
+public class ShortRegister {
 
 	/** **/
 	private short state;

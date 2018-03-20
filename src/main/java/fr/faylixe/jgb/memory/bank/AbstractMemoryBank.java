@@ -1,7 +1,5 @@
 package fr.faylixe.jgb.memory.bank;
 
-import fr.faylixe.jgb.memory.IMemoryBank;
-
 /**
  * Abstract memory bank implementation that handles size and offset.
  * 

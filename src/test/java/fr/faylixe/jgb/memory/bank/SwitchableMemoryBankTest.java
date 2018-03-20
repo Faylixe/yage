@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.faylixe.jgb.memory.IMemoryBank;
 import fr.faylixe.jgb.memory.IMemoryBankTest;
 
 /**

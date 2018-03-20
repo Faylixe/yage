@@ -3,6 +3,8 @@ package fr.faylixe.jgb.memory;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import fr.faylixe.jgb.memory.bank.IMemoryBank;
+
 /**
  * - 16-bit address bus.
  * 
