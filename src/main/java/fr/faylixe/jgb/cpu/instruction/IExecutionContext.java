@@ -1,5 +1,6 @@
 package fr.faylixe.jgb.cpu.instruction;
 
+import fr.faylixe.jgb.cpu.register.IRegister.ExtendedRegisters;
 import fr.faylixe.jgb.cpu.register.IRegister.Registers;
 import fr.faylixe.jgb.cpu.register.IRegisterProvider;
 import fr.faylixe.jgb.memory.IMemoryStream;
@@ -10,11 +11,75 @@ import fr.faylixe.jgb.memory.IMemoryStream;
  */
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
-	default void setRegister(
-			final Registers destination,
-			final Registers lowAddress,
-			final Registers highAddress) {
-		getRegister(destination).set(read(lowAddress, highAddress));
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 */
+	default void loadFromRegister(final Registers source, final Registers destination) {
+		getRegister(destination).set(getRegister(source).get());
+	}
+	
+	/**
+	 * 
+	 * @param destination
+	 * @param address
+	 */
+	default void loadFromAddress(final Registers destination, final ExtendedRegisters address) {
+		//getRegister(destination).set(read(lowAddress, highAddress));
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 * @param offset
+	 */
+	default void loadFromAddress(final Registers destination, final Registers source, final int offset) {
+		//
+	}
+
+	/**
+	 * 
+	 * @param destination
+	 */
+	default void loadFromAddress(final Registers destination) {
+		// TODO : Read two immediate and load.
+	}
+	
+	/**
+	 * 
+	 * @param destination
+	 */
+	default void loadFromValue(final Registers destination) {
+		// TODO : Read value from next immediate.
+	}
+
+	/**
+	 * 
+	 * @param source
+	 * @param address
+	 */
+	default void putToAddress(final Registers source, final ExtendedRegisters address) {
+		
+	}
+
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 * @param offset
+	 */
+	default void putToAddress(final Registers source, final Registers destination, final int offset) {
+		
+	}
+
+	/**
+	 * 
+	 * @param source
+	 */
+	default void putToAddress(final Registers source) {
+		// TODO : Read two immediate and put
 	}
 
 	/**

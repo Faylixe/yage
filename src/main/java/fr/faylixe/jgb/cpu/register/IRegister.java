@@ -10,10 +10,9 @@ public interface IRegister {
 	 * 
 	 * @author fv
 	 */
-	public enum Registers {
-		A, B, C, D, E, F, H, L,
-		BC, DE, HL, SP, PC
-	}
+	public enum Registers { A, B, C, D, E, F, H, L }
+	
+	public enum ExtendedRegisters { BC, DE, HL, SP, PC }
 
 	/**
 	 * 

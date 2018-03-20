@@ -1,5 +1,6 @@
 package fr.faylixe.jgb.cpu.register;
 
+import fr.faylixe.jgb.cpu.register.IRegister.ExtendedRegisters;
 import fr.faylixe.jgb.cpu.register.IRegister.Registers;
 
 /**
@@ -20,21 +21,12 @@ public interface IRegisterProvider {
 	 * @param name
 	 * @return
 	 */
-	IShortRegister getExtendedRegister(Registers name);
+	IShortRegister getExtendedRegister(ExtendedRegisters name);
 	
 	/**
 	 * 
 	 * @return
 	 */
 	FlagsRegister getF();
-
-	/**
-	 * 
-	 * @param source
-	 * @param destination
-	 */
-	default void copyRegister(final Registers source, final Registers destination) {
-		getRegister(destination).set(getRegister(source).get());
-	}
 
 }
