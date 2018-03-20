@@ -1,4 +1,4 @@
-package fr.faylixe.jgb.memory;
+package fr.faylixe.jgb.memory.bank;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import fr.faylixe.jgb.memory.IMemoryStream;
+import fr.faylixe.jgb.memory.IMemoryStreamTest;
 import fr.faylixe.jgb.memory.bank.IMemoryBank;
 
 /**

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.faylixe.jgb.memory.bank.IMemoryBank;
+import fr.faylixe.jgb.memory.bank.IMemoryBankTest;
 
 /**
  * 

@@ -2,8 +2,6 @@ package fr.faylixe.jgb.memory.bank;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import fr.faylixe.jgb.memory.IMemoryBankTest;
-
 /**
  * Unit test case for the bitset based memory bank.
  * 

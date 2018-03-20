@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import fr.faylixe.jgb.memory.IMemoryBankTest;
-
 /**
  * Unit test case for the read only memory bank.
  * 

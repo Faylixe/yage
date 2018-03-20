@@ -10,8 +10,6 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.faylixe.jgb.memory.IMemoryBankTest;
-
 /**
  * Unit test case for the switchable memory bank.
  * 
