@@ -25,7 +25,7 @@ public final class AddressBusTest implements IMemoryStreamTest {
 	/** **/
 	@BeforeEach
 	public void setup() {
-		addressBus = new AddressBus();
+		addressBus = new AddressBus(16);
 		bank1 = IMemoryBankTest.createMemoryBankMock();
 		addressBus.connect(bank1);
 	}

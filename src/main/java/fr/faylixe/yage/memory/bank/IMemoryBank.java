@@ -12,6 +12,15 @@ import fr.faylixe.yage.memory.IMemoryStream;
 public interface IMemoryBank extends IMemoryStream {
 
 	/**
+	 * Name access getter.
+	 * 
+	 * @return {@link #toString()} representation of this object by default.
+	 */
+	default String getName() {
+		return toString();
+	}
+
+	/**
 	 * Getter for the size of this memory block.
 	 * 
 	 * @return Size of this memory block (in bytes).
@@ -24,5 +33,14 @@ public interface IMemoryBank extends IMemoryStream {
 	 * @return Starting address offset of this block.
 	 */
 	int getOffset();
+
+	/**
+	 * Indicates if the given <tt>address</tt> is covered
+	 * by this memory bank.
+	 * 
+	 * @param address Address to check.
+	 * @return <tt>true</tt> if the given <tt>address</tt> is covered, <tt>false</tt> otherwise.
+	 */
+	boolean isAddressCovered(int address);
 
 }

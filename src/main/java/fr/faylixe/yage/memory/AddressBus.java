@@ -1,66 +1,106 @@
 package fr.faylixe.yage.memory;
 
+import static java.lang.Math.pow;
+
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import fr.faylixe.yage.memory.bank.IMemoryBank;
 
 /**
- * - 16-bit address bus.
+ * Address bus class which is driven by the {@link IMemoryStream} contract.
+ * Such address bus indexes memory banks through a navigable map which
+ * provide a fast access for a given address.
  * 
  * @author fv
  */
 public final class AddressBus implements IMemoryStream {
 
-	/** **/
-	private final NavigableMap<Integer, IMemoryBank> memory;
+	/** Memory bank connected to this address bus. **/
+	private final NavigableMap<Integer, IMemoryBank> memoryBanks;
+
+	/** Size of this address bus (expressed in number of addresses available). **/
+	private final int size;
 
 	/**
-	 * Default constructor.
+	 * Default constructor. Turns the given bit size
+	 * into address bound such as :
+	 * 
+	 * <code>bound = 2<sup>size</sup></code>.
+	 * 
+	 * @param size Size of this address bus (expressed in bit).
 	 */
-	public AddressBus() {
-		this.memory = new TreeMap<>();
+	public AddressBus(final int size) {
+		this.size = (int) pow(2, size);
+		this.memoryBanks = new TreeMap<>();
 	}
 
 	/**
+	 * Ensures the given <tt>address</tt> do not collide with any
+	 * address this address bus can already handle. Aims to be used
+	 * for bank connection only.
 	 * 
-	 * @param memoryBank
+	 * @param address Address to verify.
+	 * @throws IllegalArgumentException if the given <tt>address</tt> is already covered.
+	 */
+	private void verifyAddressCollision(final int address) {
+		final Integer start = memoryBanks.floorKey(address);
+		if (start != null) {
+			final IMemoryBank lowerBank = memoryBanks.get(start);
+			if (lowerBank.isAddressCovered(address)) {
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
+	/**
+	 * Connects the given <tt>memoryBank</tt> to this address bus.  
+	 * Such bank can be connected if the bank offset is not covered
+	 * already by another bank, as the (offset + size) address.
+	 * 
+	 * @param memoryBank Bank to connect.
+	 * @throws IllegalArgumentException If given bank is <tt>null</tt> or conflicting with already connected.
 	 */
 	public void connect(final IMemoryBank memoryBank) {
 		if (memoryBank == null) {
 			throw new IllegalArgumentException();
 		}
-		// final int offset = memoryBlock.getOffset();
-		// TODO : Check for address conflict.
-		memory.put(memoryBank.getOffset(), memoryBank);
+		verifyAddressCollision(memoryBank.getOffset());
+		verifyAddressCollision(memoryBank.getOffset() + memoryBank.getSize());
+		memoryBanks.put(memoryBank.getOffset(), memoryBank);
 	}
 	
 	/**
+	 * Disconnect the given <tt>memoryBank</tt>.
 	 * 
-	 * @param memoryBank
+	 * @param memoryBank Bank to disconnect.
+	 * @throws IllegalArgumentException If given bank is <tt>null</tt> or not connected to this bus.
 	 */
 	public void disconnect(final IMemoryBank memoryBank) {
 		if (memoryBank == null) {
 			throw new IllegalArgumentException();
 		}
-		if (memory.remove(memoryBank.getOffset()) == null) {
+		if (memoryBanks.remove(memoryBank.getOffset()) == null) {
 			throw new IllegalArgumentException();
 		}
 	}
 
 	/**
-	 * TODO : Document. Ensure behavior.
-	 * @param address
-	 * @return
-	 * @throws IllegalAccessException
+	 * Shortcut method for memory bank access for a given <tt>address</tt>.
+	 * 
+	 * @param address Address to get stream for.
+	 * @return Target memory stream associated to the given <tt>address</tt>.
+	 * @throws IllegalAccessException If the address is not covered by this bus, or not connected.
 	 */
 	private IMemoryStream getMemoryStream(final int address) throws IllegalAccessException {
-		final Integer nearAddressableOffset = memory.floorKey(address);
-		if (nearAddressableOffset == null) {
-			throw new IllegalAccessException("Unreachable memory address");
+		if (address < 0 || address >= size) {
+			throw new IllegalAccessException("Address not covered by this bus");			
 		}
-		// TODO : Check for more coverage ?
-		return memory.get(nearAddressableOffset);
+		final Integer nearAddressableOffset = memoryBanks.floorKey(address);
+		if (nearAddressableOffset == null) {
+			throw new IllegalAccessException("Address not covered by this bus");
+		}
+		return memoryBanks.get(nearAddressableOffset);
 	}
 
 	/** {@inheritDoc} **/

@@ -33,6 +33,12 @@ public final class ReadOnlyMemoryBank implements IMemoryBank {
 
 	/** {@inheritDoc} **/
 	@Override
+	public boolean isAddressCovered(final int address) {
+		return delegate.isAddressCovered(address);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
 		throw new IllegalAccessException("Attemping to write into read only memory block.");
 	}
