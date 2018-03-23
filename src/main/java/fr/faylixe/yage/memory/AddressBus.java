@@ -5,8 +5,6 @@ import static java.lang.Math.pow;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import fr.faylixe.yage.memory.bank.IMemoryBank;
-
 /**
  * Address bus class which is driven by the {@link IMemoryStream} contract.
  * Such address bus indexes memory banks through a navigable map which

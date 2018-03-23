@@ -1,6 +1,4 @@
-package fr.faylixe.yage.memory.bank;
-
-import fr.faylixe.yage.memory.IMemoryStream;
+package fr.faylixe.yage.memory;
 
 /**
  * Generic interface that represents a memory bank.

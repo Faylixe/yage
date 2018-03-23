@@ -10,7 +10,8 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.faylixe.yage.memory.bank.IMemoryBank;
+import fr.faylixe.yage.memory.IMemoryBank;
+import fr.faylixe.yage.memory.IMemoryBankTest;
 import fr.faylixe.yage.memory.bank.SwitchableMemoryBank;
 
 /**

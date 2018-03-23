@@ -1,5 +1,7 @@
 package fr.faylixe.yage.memory.bank;
 
+import fr.faylixe.yage.memory.IMemoryBank;
+
 /**
  * Abstract memory bank implementation that handles size and offset.
  * 

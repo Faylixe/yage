@@ -1,7 +1,6 @@
 package fr.faylixe.yage.memory;
 
 import fr.faylixe.yage.memory.bank.ArrayMemoryBank;
-import fr.faylixe.yage.memory.bank.IMemoryBank;
 
 /**
  * - 8000-9FFF   8KB Video RAM (VRAM) (switchable bank 0-1 in CGB Mode)

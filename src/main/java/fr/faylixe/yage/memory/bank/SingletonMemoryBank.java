@@ -1,5 +1,7 @@
 package fr.faylixe.yage.memory.bank;
 
+import fr.faylixe.yage.memory.IMemoryBank;
+
 /**
  * A memory bank that holds a single address / value pair.
  * 

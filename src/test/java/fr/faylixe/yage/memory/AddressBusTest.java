@@ -1,12 +1,11 @@
 package fr.faylixe.yage.memory;
 
+import static fr.faylixe.yage.memory.IMemoryBankTest.createIOLessMemoryBankMock;
+import static fr.faylixe.yage.memory.IMemoryBankTest.createMemoryBankMock;
 import static java.lang.Math.pow;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
-
-import static fr.faylixe.yage.memory.bank.IMemoryBankTest.createMemoryBankMock;
-import static fr.faylixe.yage.memory.bank.IMemoryBankTest.createIOLessMemoryBankMock;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.function.Executable;
 
 import fr.faylixe.yage.memory.AddressBus;
 import fr.faylixe.yage.memory.IMemoryStream;
-import fr.faylixe.yage.memory.bank.IMemoryBank;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package fr.faylixe.yage.memory.bank;
+package fr.faylixe.yage.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import fr.faylixe.yage.memory.IMemoryBank;
 import fr.faylixe.yage.memory.IMemoryStream;
-import fr.faylixe.yage.memory.IMemoryStreamTest;
-import fr.faylixe.yage.memory.bank.IMemoryBank;
 
 /**
  * Generic test for memory bank. Ensures size and offset

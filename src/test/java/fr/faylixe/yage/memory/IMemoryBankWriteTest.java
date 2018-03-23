@@ -1,6 +1,8 @@
-package fr.faylixe.yage.memory.bank;
+package fr.faylixe.yage.memory;
 
 import static org.junit.jupiter.api.Assertions.fail;
+
+import fr.faylixe.yage.memory.IMemoryBank;
 
 /**
  * {@link IMemoryBankTest} extension that handles

@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import fr.faylixe.yage.memory.bank.IMemoryBank;
+import fr.faylixe.yage.memory.IMemoryBank;
+import fr.faylixe.yage.memory.IMemoryBankTest;
 import fr.faylixe.yage.memory.bank.ReadOnlyMemoryBank;
 
 /**

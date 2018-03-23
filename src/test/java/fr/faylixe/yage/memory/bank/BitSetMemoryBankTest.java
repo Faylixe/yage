@@ -1,7 +1,8 @@
 package fr.faylixe.yage.memory.bank;
 
+import fr.faylixe.yage.memory.IMemoryBank;
+import fr.faylixe.yage.memory.IMemoryBankWriteTest;
 import fr.faylixe.yage.memory.bank.BitSetMemoryBank;
-import fr.faylixe.yage.memory.bank.IMemoryBank;
 
 /**
  * Unit test case for the bitset based memory bank.

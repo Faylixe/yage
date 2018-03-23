@@ -1,5 +1,7 @@
 package fr.faylixe.yage.memory.bank;
 
+import fr.faylixe.yage.memory.IMemoryBank;
+
 /**
  * Simple memory bank decoration that prevents writing.
  * 
