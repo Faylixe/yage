@@ -1,7 +1,5 @@
 package fr.faylixe.yage.memory.bank;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import fr.faylixe.yage.memory.bank.BitSetMemoryBank;
 import fr.faylixe.yage.memory.bank.IMemoryBank;
 
@@ -10,20 +8,12 @@ import fr.faylixe.yage.memory.bank.IMemoryBank;
  * 
  * @author fv
  */
-public final class BitSetMemoryBankTest implements IMemoryBankTest {
+public final class BitSetMemoryBankTest implements IMemoryBankWriteTest {
 
 	/** {@inheritDoc} **/
 	@Override
-	public IMemoryBank getTestMemoryBank() {
-		final IMemoryBank bank = new BitSetMemoryBank(TEST_SIZE, TEST_OFFSET);
-		try {
-			bank.writeByte((byte) 85, TEST_OFFSET);
-			bank.writeByte((byte) 15, TEST_OFFSET + 1);
-		}
-		catch (final IllegalAccessException e) {
-			fail(e);
-		}
-		return bank;
+	public IMemoryBank createTestMemoryBank(final int size, final int offset) {
+		return new BitSetMemoryBank(size, offset);
 	}
 
 }
