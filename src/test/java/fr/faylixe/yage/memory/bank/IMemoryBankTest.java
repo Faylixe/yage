@@ -65,26 +65,35 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 	}
 
 	/**
+	 * Creates a standard memory bank with 3 bytes at offset 4.
+	 * 
+	 * @return Created instance.
+	 */
+	static IMemoryBank createMemoryBankMock() {
+		return createMemoryBankMock(TEST_SIZE, TEST_OFFSET);
+	}
+
+	/**
 	 * Factory method for creating an IMemoryBank mock instance.
 	 * Such mock instance is designed to match expected test properties.
 	 * 
+	 * @param size Size of the expected mock memory bank.
+	 * @param offset Offset of the expected mock memory bank.
 	 * @return Created mock instance.
 	 */
-	static IMemoryBank createMemoryBankMock() {
-		final IMemoryBank mockBank = mock(IMemoryBank.class);
-		when(mockBank.getSize()).thenReturn(TEST_SIZE);
-		when(mockBank.getOffset()).thenReturn(TEST_OFFSET);
+	static IMemoryBank createMemoryBankMock(final int size, final int offset) {
+		final IMemoryBank mockBank = createIOLessMemoryBankMock(size, offset);
 		try {
 			// Note : Value per layout can be computed through BinaryBenchmark.
 			when(mockBank.readByte(anyInt())).thenAnswer(invocationMock -> {
 				final int address = invocationMock.getArgument(0);
-				if (address == TEST_OFFSET) {
+				if (address == offset) {
 					return (byte) 85;
 				}
-				else if (address == TEST_OFFSET + 1) {
+				else if (address == offset + 1) {
 					return (byte) 15;
 				}
-				else if (address == TEST_OFFSET + 2) {
+				else if (address == offset + 2) {
 					return (byte) 0;
 				}
 				throw new IllegalAccessException();
@@ -94,6 +103,21 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 		catch (final IllegalAccessException e) {
 			// Do nothing.
 		}
+		return mockBank;
+	}
+	
+	/**
+	 * Factory method for creating an IMemoryBank mock instance.
+	 * Such mock instance only provides properties getter method.
+	 * 
+	 * @param size Size of the mocked memory bank.
+	 * @param offset Offset of the mocked memory bank.
+	 * @return Created mock instance.
+	 */
+	static IMemoryBank createIOLessMemoryBankMock(final int size, final int offset) {
+		final IMemoryBank mockBank = mock(IMemoryBank.class);
+		when(mockBank.getSize()).thenReturn(size);
+		when(mockBank.getOffset()).thenReturn(offset);
 		return mockBank;
 	}
 
