@@ -99,6 +99,7 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 				throw new IllegalAccessException();
 			});
 			when(mockBank.readBytes(anyInt(), anyInt())).thenCallRealMethod();
+			when(mockBank.isAddressCovered(anyInt())).thenCallRealMethod();
 		}
 		catch (final IllegalAccessException e) {
 			// Do nothing.

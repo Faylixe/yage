@@ -36,6 +36,22 @@ public final class AddressBus implements IMemoryStream {
 	}
 
 	/**
+	 * Ensures the given <tt>address</tt> do not collide with the
+	 * bank denoted by the given <tt>boundOffset</tt>.
+	 * 
+	 * @param address Address to verify.
+	 * @param boundOffset Index of the bank to check collision with.
+	 */
+	private void verifyAddressCollision(final int address, final Integer boundOffset) {
+		if (boundOffset != null) {
+			final IMemoryBank boundBank = memoryBanks.get(boundOffset);
+			if (boundBank.isAddressCovered(address)) {
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
+	/**
 	 * Ensures the given <tt>address</tt> do not collide with any
 	 * address this address bus can already handle. Aims to be used
 	 * for bank connection only.
@@ -44,13 +60,11 @@ public final class AddressBus implements IMemoryStream {
 	 * @throws IllegalArgumentException if the given <tt>address</tt> is already covered.
 	 */
 	private void verifyAddressCollision(final int address) {
-		final Integer start = memoryBanks.floorKey(address);
-		if (start != null) {
-			final IMemoryBank lowerBank = memoryBanks.get(start);
-			if (lowerBank.isAddressCovered(address)) {
-				throw new IllegalArgumentException();
-			}
+		if (address < 0 || address >= size) {
+			throw new IllegalArgumentException();
 		}
+		verifyAddressCollision(address, memoryBanks.floorKey(address));
+		verifyAddressCollision(address, memoryBanks.ceilingKey(address));
 	}
 
 	/**

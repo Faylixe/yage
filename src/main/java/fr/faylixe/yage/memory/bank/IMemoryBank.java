@@ -41,6 +41,8 @@ public interface IMemoryBank extends IMemoryStream {
 	 * @param address Address to check.
 	 * @return <tt>true</tt> if the given <tt>address</tt> is covered, <tt>false</tt> otherwise.
 	 */
-	boolean isAddressCovered(int address);
+	default boolean isAddressCovered(final int address) {
+		return (address < getOffset() || address >= (getOffset() + getSize()));
+	}
 
 }

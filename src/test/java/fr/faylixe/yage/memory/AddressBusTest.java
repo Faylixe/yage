@@ -80,7 +80,7 @@ public final class AddressBusTest implements IMemoryStreamTest {
 				dynamicTest("address out of space", buildIllegalConnectTest((int) pow(2, 16))),
 				dynamicTest("copy", buildIllegalConnectTest(TEST_OFFSET)),
 				dynamicTest("lower overlap", buildIllegalConnectTest(TEST_OFFSET - 1)),
-				dynamicTest("upper overlap", buildIllegalConnectTest(TEST_OFFSET + TEST_SIZE))
+				dynamicTest("upper overlap", buildIllegalConnectTest(TEST_OFFSET + TEST_SIZE - 1))
 		);
 	}
 

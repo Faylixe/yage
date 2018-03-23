@@ -38,12 +38,6 @@ public abstract class AbstractMemoryBank implements IMemoryBank {
 
 	/** {@inheritDoc} **/
 	@Override
-	public final boolean isAddressCovered(final int address) {
-		return (address < getOffset() || address >= (getOffset() + getSize()));
-	}
-
-	/** {@inheritDoc} **/
-	@Override
 	public final int getSize() {
 		return size;
 	}
