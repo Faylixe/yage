@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.faylixe</groupId>
-	<artifactId>jgb</artifactId>
+	<artifactId>yage</artifactId>
 	<version>0.0.0</version>
-	<name>JGB</name>
+	<name>YAGE</name>
 	<description>A simple Java based GameBoy emulator</description>
-	<url>https://github.com/Faylixe/jgb</url>
+	<url>https://github.com/Faylixe/yage</url>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
