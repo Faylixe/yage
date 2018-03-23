@@ -1,4 +1,4 @@
-# jgb
+# YAGE : Yet Another Gameboy emulator
 
 [![CircleCI](https://circleci.com/gh/Faylixe/jgb/tree/master.svg?style=shield)](https://circleci.com/gh/Faylixe/jgb/tree/master)
 
