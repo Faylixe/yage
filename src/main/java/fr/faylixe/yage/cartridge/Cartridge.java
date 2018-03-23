@@ -3,7 +3,6 @@ package fr.faylixe.yage.cartridge;
 import fr.faylixe.yage.memory.AddressBus;
 import fr.faylixe.yage.memory.IConnectable;
 import fr.faylixe.yage.memory.bank.ArrayMemoryBank;
-import fr.faylixe.yage.memory.bank.ReadOnlyMemoryBank;
 
 /**
  * 
@@ -35,6 +34,12 @@ public final class Cartridge implements IConnectable {
 		addressBus.connect(eram); 
 		addressBus.connect(rom0);
 		addressBus.connect(rom1);
+	}
+
+	@Override
+	public void disconnect(AddressBus addressBus) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

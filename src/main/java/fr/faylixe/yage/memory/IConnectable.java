@@ -5,7 +5,6 @@ package fr.faylixe.yage.memory;
  * 
  * @author fv
  */
-@FunctionalInterface
 public interface IConnectable {
 
 	/**
@@ -14,5 +13,11 @@ public interface IConnectable {
 	 * @param addressBus Address bus to connect to.
 	 */
 	void connect(AddressBus addressBus);
+
+	/**
+	 * 
+	 * @param addressBus
+	 */
+	void disconnect(AddressBus addressBus);
 
 }
