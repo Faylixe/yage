@@ -57,6 +57,8 @@ public final class BitSetMemoryBank extends AbstractMemoryBank {
 	/** {@inheritDoc} **/
 	@Override
 	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
+		verifyAddress(address);
+		verifyAddress(address + values.length - 1);
 		final BitSet bits = BitSet.valueOf(values);
 		final int base = (address - getOffset()) * 8;
 		for (int i = 0; i < bits.size(); i++) {
