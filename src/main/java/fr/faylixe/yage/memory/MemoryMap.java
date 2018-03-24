@@ -16,27 +16,35 @@ import fr.faylixe.yage.memory.bank.ArrayMemoryBank;
 public class MemoryMap implements IConnectable {
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank vram;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank wram0;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank wram1;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank echo;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank oam;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank io;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank hram;
 
 	/** **/
+	@SuppressWarnings("unused")
 	private IMemoryBank ier;
 
 	/**
