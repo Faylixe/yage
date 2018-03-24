@@ -35,10 +35,38 @@ public final class SingletonMemoryBank implements IMemoryBank {
 
 	/** {@inheritDoc} **/
 	@Override
+	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
+		if (address != offset) {
+			throw new IllegalAccessException();
+		}
+		if (length > 1) {
+			throw new IllegalAccessException();
+		}
+		return new byte[]{ value };
+	}
+
+	/** {@inheritDoc} **/
+	@Override
 	public void writeByte(final byte value, final int address) throws IllegalAccessException {
 		if (address != offset) {
 			throw new IllegalAccessException();
 		}
+		this.value = value;
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
+		if (values == null || values.length == 0) {
+			throw new IllegalArgumentException();
+		}
+		if (address != offset) {
+			throw new IllegalAccessException();
+		}
+		if (values.length > 1) {
+			throw new IllegalAccessException();
+		}
+		value = values[0];
 	}
 
 	/** {@inheritDoc} **/
