@@ -1,8 +1,12 @@
 package fr.faylixe.yage.memory;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.junit.jupiter.api.Test;
+
 import fr.faylixe.yage.memory.IMemoryBank;
+import fr.faylixe.yage.utils.ErrorlessTest;
 
 /**
  * {@link IMemoryBankTest} extension that handles
@@ -35,6 +39,39 @@ public interface IMemoryBankWriteTest extends IMemoryBankTest {
 			fail(e);
 		}
 		return bank;
+	}
+
+	/** Test writing wrong address **/
+	@Test
+	default void testAlllowedWriting() {
+		performStreamTest(stream -> {
+			ErrorlessTest.run(() -> stream.writeByte((byte) 42, 6));
+		});
+	}
+	
+	/** Test writing wrong address **/
+	@Test
+	default void testAlllowedWritings() {
+		performStreamTest(stream -> {
+			ErrorlessTest.run(() -> stream.writeBytes(new byte[] { 42 }, 6));
+		});
+	}
+
+	/** Test writing wrong address **/
+	@Test
+	default void testUnalllowedWriting() {
+		performStreamTest(stream -> {
+			assertThrows(IllegalAccessException.class, () -> stream.writeByte((byte) 42, 69));
+		});
+	}
+
+	/** Test writing wrong address **/
+	@Test
+	default void testUnalllowedWritings() {
+		performStreamTest(stream -> {
+			assertThrows(IllegalAccessException.class, () -> stream.writeBytes(new byte[] { 42 }, 0));
+			assertThrows(IllegalAccessException.class, () -> stream.writeBytes(new byte[] { 42, 58 }, 6));
+		});
 	}
 
 }

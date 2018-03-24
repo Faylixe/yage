@@ -12,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import fr.faylixe.yage.memory.IMemoryStream;
-import fr.faylixe.yage.utils.ErrorlessTest;
 
 /**
  * Generic test for memory stream. Assumes that tested memory
@@ -149,39 +148,6 @@ public interface IMemoryStreamTest {
 			assertThrows(IllegalAccessException.class, () -> stream.readBytes(0, 2));
 			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET - 1, 2));
 			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET, 6));
-		});
-	}
-
-	/** Test writing wrong address **/
-	@Test
-	default void testAlllowedWriting() {
-		performStreamTest(stream -> {
-			ErrorlessTest.run(() -> stream.writeByte((byte) 42, 6));
-		});
-	}
-	
-	/** Test writing wrong address **/
-	@Test
-	default void testAlllowedWritings() {
-		performStreamTest(stream -> {
-			ErrorlessTest.run(() -> stream.writeBytes(new byte[] { 42 }, 6));
-		});
-	}
-
-	/** Test writing wrong address **/
-	@Test
-	default void testUnalllowedWriting() {
-		performStreamTest(stream -> {
-			assertThrows(IllegalAccessException.class, () -> stream.writeByte((byte) 42, 69));
-		});
-	}
-
-	/** Test writing wrong address **/
-	@Test
-	default void testUnalllowedWritings() {
-		performStreamTest(stream -> {
-			assertThrows(IllegalAccessException.class, () -> stream.writeBytes(new byte[] { 42 }, 0));
-			assertThrows(IllegalAccessException.class, () -> stream.writeBytes(new byte[] { 42, 58 }, 6));
 		});
 	}
 
