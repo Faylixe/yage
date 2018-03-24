@@ -1,4 +1,4 @@
-package fr.faylixe.yage;
+package fr.faylixe.yage.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

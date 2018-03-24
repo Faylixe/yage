@@ -1,4 +1,4 @@
-package fr.faylixe.yage;
+package fr.faylixe.yage.utils;
 
 import java.lang.reflect.Parameter;
 
