@@ -15,8 +15,9 @@ public interface IConnectable {
 	void connect(AddressBus addressBus);
 
 	/**
+	 * Disconnect from the given <tt>addressBus</tt>.
 	 * 
-	 * @param addressBus
+	 * @param addressBus Address bus to disconnect from.
 	 */
 	void disconnect(AddressBus addressBus);
 
