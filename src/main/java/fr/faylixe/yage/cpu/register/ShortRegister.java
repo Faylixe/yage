@@ -1,28 +1,31 @@
 package fr.faylixe.yage.cpu.register;
 
 /**
+ * 16-bit register implementation.
  * 
  * @author fv
  */
 public class ShortRegister {
 
-	/** **/
-	private short state;
+	/** Register associated value. **/
+	private short value;
 
 	/**
+	 * Register value getter.
 	 * 
-	 * @return
+	 * @return Value stored by this extended register.
 	 */
 	public short getState() {
-		return state;
+		return value;
 	}
 
 	/**
+	 * Register value setter.
 	 * 
-	 * @param newState
+	 * @param value New value to set in this extended register.
 	 */
-	public void setState(final short newState) {
-		this.state = newState;
+	public void setState(final short value) {
+		this.value = value;
 	}
 
 }

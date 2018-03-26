@@ -1,61 +1,31 @@
 package fr.faylixe.yage.cpu.register;
 
 /**
- * 
- * https://stackoverflow.com/questions/2188660/convert-short-to-byte-in-java
+ * 8-bit register implementation.
  * 
  * @author fv
  */
-public class ByteRegister implements IByteRegister {
+public class ByteRegister {
 
-	/** **/
-	private byte state;
+	/** Register associated value. **/
+	private byte value;
 
 	/**
+	 * Register value getter.
 	 * 
-	 * @return
+	 * @return Value stored by this register.
 	 */
-
-	@Override
-	public Registers getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public byte get() {
-		return state;
+		return value;
 	}
 
 	/**
+	 * Register value setter.
 	 * 
-	 * @param newState
+	 * @param value New value to set in this register.
 	 */
-	@Override
-	public void set(final byte newState) {
-		this.state = newState;
-	}
-
-	/**
-	 * 
-	 * @param high
-	 * @param low
-	 * @return
-	 */
-	static short getCompositeState(final ByteRegister high, final ByteRegister low) {
-		return (short) ((high.get() << 8) | low.get());
-	}
-
-	/**
-	 * 
-	 * @param high
-	 * @param low
-	 * @param compositeState
-	 */
-	static void setCompositeState(final ByteRegister high, final ByteRegister low, final short compositeState) {
-		// TODO : Ensure big endian is used.  
-		high.set((byte)(compositeState >> 8));
-		low.set((byte) compositeState);
+	public void set(final byte value) {
+		this.value = value;
 	}
 
 }

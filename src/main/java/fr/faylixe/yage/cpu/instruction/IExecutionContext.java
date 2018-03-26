@@ -1,8 +1,6 @@
 package fr.faylixe.yage.cpu.instruction;
 
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
-import fr.faylixe.yage.cpu.register.IRegister.ExtendedRegisters;
-import fr.faylixe.yage.cpu.register.IRegister.Registers;
 import fr.faylixe.yage.memory.IMemoryStream;
 
 /**
@@ -16,7 +14,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param source
 	 * @param destination
 	 */
-	default void loadFromRegister(final Registers source, final Registers destination) {
+	default void loadFromRegister(final Register source, final Register destination) {
 		getRegister(destination).set(getRegister(source).get());
 	}
 	
@@ -25,7 +23,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param destination
 	 * @param address
 	 */
-	default void loadFromAddress(final Registers destination, final ExtendedRegisters address) {
+	default void loadFromAddress(final Register destination, final ExtendedRegister address) {
 		//getRegister(destination).set(read(lowAddress, highAddress));
 	}
 	
@@ -35,7 +33,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param destination
 	 * @param offset
 	 */
-	default void loadFromAddress(final Registers destination, final Registers source, final int offset) {
+	default void loadFromAddress(final Register destination, final Register source, final int offset) {
 		//
 	}
 
@@ -43,7 +41,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * 
 	 * @param destination
 	 */
-	default void loadFromAddress(final Registers destination) {
+	default void loadFromAddress(final Register destination) {
 		// TODO : Read two immediate and load.
 	}
 	
@@ -51,7 +49,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * 
 	 * @param destination
 	 */
-	default void loadFromValue(final Registers destination) {
+	default void loadFromValue(final Register destination) {
 		// TODO : Read value from next immediate.
 	}
 
@@ -60,7 +58,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param source
 	 * @param address
 	 */
-	default void putToAddress(final Registers source, final ExtendedRegisters address) {
+	default void putToAddress(final Register source, final ExtendedRegister address) {
 		
 	}
 
@@ -70,7 +68,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param destination
 	 * @param offset
 	 */
-	default void putToAddress(final Registers source, final Registers destination, final int offset) {
+	default void putToAddress(final Register source, final Register destination, final int offset) {
 		
 	}
 
@@ -78,7 +76,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * 
 	 * @param source
 	 */
-	default void putToAddress(final Registers source) {
+	default void putToAddress(final Register source) {
 		// TODO : Read two immediate and put
 	}
 
@@ -88,7 +86,7 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param high
 	 * @return
 	 */
-	default byte read(final Registers low, final Registers high) {
+	default byte read(final Register low, final Register high) {
 		return 0;
 	}
 	

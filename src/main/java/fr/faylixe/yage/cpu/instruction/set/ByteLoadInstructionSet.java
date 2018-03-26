@@ -1,7 +1,7 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
-import static fr.faylixe.yage.cpu.register.IRegister.ExtendedRegisters.*;
-import static fr.faylixe.yage.cpu.register.IRegister.Registers.*;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
