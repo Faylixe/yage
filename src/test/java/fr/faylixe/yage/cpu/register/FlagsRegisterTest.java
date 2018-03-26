@@ -2,12 +2,14 @@ package fr.faylixe.yage.cpu.register;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
 /**
+ * Test flag register operations.
  * 
  * @author fv
  */
@@ -22,11 +24,11 @@ public final class FlagsRegisterTest {
 	 */
 	private void performFlagsRegisterTest(final Consumer<FlagsRegister> test) {
 		final FlagsRegister register = new FlagsRegister();
+		assertEquals(0, register.get());
 		assertFalse(register.isZero());
-		assertFalse(register.isSubstraction());
+		assertFalse(register.isSubtraction());
 		assertFalse(register.isHalfCarry());
 		assertFalse(register.isCarry());
-		assertEquals(0, register.get());
 		test.accept(register);
 	
 	}
@@ -35,19 +37,25 @@ public final class FlagsRegisterTest {
 	@Test
 	public void testZeroFlag() {
 		performFlagsRegisterTest(register -> {
-			// TODO : Set zero flag.
-			// TODO : Check register byte value.
-			// TODO : Check register state.
+			register.setZero();
+			assertEquals(-128, register.get());
+			assertTrue(register.isZero());
+			assertFalse(register.isSubtraction());
+			assertFalse(register.isHalfCarry());
+			assertFalse(register.isCarry());
 		});
 	}
 
-	/** Test substraction flag operations. **/
+	/** Test subtraction flag operations. **/
 	@Test
-	public void testSubstractionFlag() {
+	public void testSubtractionFlag() {
 		performFlagsRegisterTest(register -> {
-			// TODO : Set zero flag.
-			// TODO : Check register byte value.
-			// TODO : Check register state.
+			register.setSubtraction();
+			assertEquals(64, register.get());
+			assertFalse(register.isZero());
+			assertTrue(register.isSubtraction());
+			assertFalse(register.isHalfCarry());
+			assertFalse(register.isCarry());
 		});
 	}
 
@@ -55,9 +63,12 @@ public final class FlagsRegisterTest {
 	@Test
 	public void testHalfCarryFlag() {
 		performFlagsRegisterTest(register -> {
-			// TODO : Set zero flag.
-			// TODO : Check register byte value.
-			// TODO : Check register state.
+			register.setHalfCarry();
+			assertEquals(32, register.get());
+			assertFalse(register.isZero());
+			assertFalse(register.isSubtraction());
+			assertTrue(register.isHalfCarry());
+			assertFalse(register.isCarry());
 		});
 	}
 
@@ -65,9 +76,12 @@ public final class FlagsRegisterTest {
 	@Test
 	public void testCarryFlag() {
 		performFlagsRegisterTest(register -> {
-			// TODO : Set zero flag.
-			// TODO : Check register byte value.
-			// TODO : Check register state.
+			register.setCarry();
+			assertEquals(16, register.get());
+			assertFalse(register.isZero());
+			assertFalse(register.isSubtraction());
+			assertFalse(register.isHalfCarry());
+			assertTrue(register.isCarry());
 		});
 	}
 
