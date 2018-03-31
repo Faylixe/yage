@@ -15,7 +15,7 @@ public interface IRegisterProvider {
 
 	/** Enumeration of 16-bit extended register name. **/
 	enum ExtendedRegister {
-		BC, DE, HL, SP, PC
+		AF, BC, DE, HL, SP, PC
 	}
 
 	/**

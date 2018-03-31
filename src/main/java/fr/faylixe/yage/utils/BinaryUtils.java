@@ -23,8 +23,7 @@ public final class BinaryUtils {
 	public static short compose(
 			final byte mostSignificant,
 			final byte leastSignificant) {
-		// return (short) ((high.get() << 8) | low.get());
-		return 0;
+		return (short) (((mostSignificant & 0xFF) << 8) | (leastSignificant & 0xFF));
 	}
 
 	/**

@@ -10,10 +10,13 @@ import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 /**
- * 
- * Assuming following register states :
+ * Test interface for components that aims to
+ * deliver access to register. The test scenario
+ * assumes following register states :
  * 
  * ---------------------------------
  * | A | F | B | C | D | E | H | L |
@@ -23,25 +26,35 @@ import org.junit.jupiter.api.Test;
  * 
  * Which implies following extended values :
  * 
- * --------------------
- * | BC  | DE   | HL  |
- * --------------------
- * | 515 | 1029 |     |
- * --------------------
- *
+ * --------------------------
+ * | AF | BC  | DE   | HL   |
+ * --------------------------
+ * | 1  | 770 | 1264 | 1798 |
+ * --------------------------
+ * 
+ * Plus following random values :
+ * 
+ * - SP -> 69
+ * - PC -> 42
+ * 
  * @author fv
  */
+@TestInstance(Lifecycle.PER_CLASS)
 public interface IRegisterProviderTest {
 
 	/**
+	 * Factory method that creates a target testing instance.
 	 * 
-	 * @return
+	 * @return A test instance.
 	 */
 	IRegisterProvider getTestRegisterProvider();
 
 	/**
-	 * 
-	 * @param test
+	 * Retrieves a test register provider instance and
+	 * pass it to the given test. Does not aims to
+	 * be overriden.
+	 *
+	 * @param test Effective provider test to perform.
 	 */
 	default void performRegisterProviderTest(final Consumer<IRegisterProvider> test) {
 		final IRegisterProvider provider = getTestRegisterProvider();
@@ -121,12 +134,20 @@ public interface IRegisterProviderTest {
 			assertEquals(7, provider.getRegister(L).get());
 		});
 	}
-	
+
+	/** Test reading AF extended register. **/
+	@Test
+	default void testAF() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(1, provider.getExtendedRegister(AF).get());
+		});
+	}
+
 	/** Test reading BC extended register. **/
 	@Test
 	default void testBC() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(515, provider.getExtendedRegister(BC).get());
+			assertEquals(770, provider.getExtendedRegister(BC).get());
 		});
 	}
 
@@ -134,7 +155,15 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testDE() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(515, provider.getExtendedRegister(DE).get());
+			assertEquals(1264, provider.getExtendedRegister(DE).get());
+		});
+	}
+
+	/** Test reading HL extended register. **/
+	@Test
+	default void testHL() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(1798, provider.getExtendedRegister(HL).get());
 		});
 	}
 
