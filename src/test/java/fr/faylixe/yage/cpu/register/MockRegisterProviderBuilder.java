@@ -109,6 +109,8 @@ public final class MockRegisterProviderBuilder {
 	 */
 	public IRegisterProvider build() {
 		final IRegisterProvider provider = mock(IRegisterProvider.class);
+		when(provider.getRegister(null)).thenThrow(IllegalArgumentException.class);
+		when(provider.getExtendedRegister(null)).thenThrow(IllegalArgumentException.class);
 		for (final Register name : registers.keySet()) {
 			when(provider.getRegister(name)).thenReturn(registers.get(name));
 		}

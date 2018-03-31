@@ -29,7 +29,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
  * --------------------------
  * | AF | BC  | DE   | HL   |
  * --------------------------
- * | 1  | 770 | 1264 | 1798 |
+ * | 1  | 515 | 1029 | 1543 |
  * --------------------------
  * 
  * Plus following random values :
@@ -139,7 +139,7 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testAF() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(1, provider.getExtendedRegister(AF).get());
+			assertEquals(256, provider.getExtendedRegister(AF).get());
 		});
 	}
 
@@ -147,7 +147,7 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testBC() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(770, provider.getExtendedRegister(BC).get());
+			assertEquals(515, provider.getExtendedRegister(BC).get());
 		});
 	}
 
@@ -155,7 +155,7 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testDE() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(1264, provider.getExtendedRegister(DE).get());
+			assertEquals(1029, provider.getExtendedRegister(DE).get());
 		});
 	}
 
@@ -163,7 +163,23 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testHL() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(1798, provider.getExtendedRegister(HL).get());
+			assertEquals(1543, provider.getExtendedRegister(HL).get());
+		});
+	}
+
+	/** Test reading SP extended register. **/
+	@Test
+	default void testSP() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(69, provider.getExtendedRegister(SP).get());
+		});
+	}
+
+	/** Test reading PC extended register. **/
+	@Test
+	default void testPC() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(42, provider.getExtendedRegister(PC).get());
 		});
 	}
 
