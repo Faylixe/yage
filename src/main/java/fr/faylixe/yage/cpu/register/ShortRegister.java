@@ -15,7 +15,7 @@ public class ShortRegister {
 	 * 
 	 * @return Value stored by this extended register.
 	 */
-	public short getState() {
+	public short get() {
 		return value;
 	}
 
@@ -24,7 +24,7 @@ public class ShortRegister {
 	 * 
 	 * @param value New value to set in this extended register.
 	 */
-	public void setState(final short value) {
+	public void set(final short value) {
 		this.value = value;
 	}
 

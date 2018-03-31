@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 
 import java.util.function.Consumer;
 
@@ -19,6 +20,14 @@ import org.junit.jupiter.api.Test;
  * ---------------------------------
  * | 1 | 0 | 2 | 3 | 4 | 5 | 6 | 7 | 
  * ---------------------------------
+ * 
+ * Which implies following extended values :
+ * 
+ * -------------------
+ * | BC  | DE  | HL  |
+ * -------------------
+ * | 515 |     |     |
+ * -------------------
  *
  * @author fv
  */
@@ -110,6 +119,22 @@ public interface IRegisterProviderTest {
 	default void testL() {
 		performRegisterProviderTest(provider -> {
 			assertEquals(7, provider.getRegister(L).get());
+		});
+	}
+	
+	/** Test reading BC extended register. **/
+	@Test
+	default void testBC() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(515, provider.getExtendedRegister(BC).get());
+		});
+	}
+
+	/** Test reading DE extended register. **/
+	@Test
+	default void testDE() {
+		performRegisterProviderTest(provider -> {
+			assertEquals(515, provider.getExtendedRegister(DE).get());
 		});
 	}
 
