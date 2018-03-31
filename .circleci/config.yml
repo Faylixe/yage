@@ -17,6 +17,8 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}        
       - run: mvn -D=UnitTestSuite test
+      - store_test_results:
+          path: target/surefire-reports
       - save_cache:
           paths:
             - ~/.m2
