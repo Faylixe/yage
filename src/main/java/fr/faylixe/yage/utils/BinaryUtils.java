@@ -18,7 +18,7 @@ public final class BinaryUtils {
 	 * @param mostSignificant Most significant byte to use.
 	 * @param leastSignificant Least significant byte to use.
 	 * @return Composed value as short.
-	 * @see https://stackoverflow.com/questions/2188660/convert-short-to-byte-in-java
+	 * @see https://stackoverflow.com/questions/736815/2-bytes-to-short-java
 	 */
 	public static short compose(
 			final byte mostSignificant,
@@ -31,9 +31,13 @@ public final class BinaryUtils {
 	 * 
 	 * @param value Value to decompose.
 	 * @return Array of byte (most significant first).
+	 * @see https://stackoverflow.com/questions/2188660/convert-short-to-byte-in-java
 	 */
 	public static byte[] decompose(final short value) {
-		return null;
+		final byte [] result = new byte[2];
+		result[0] = (byte) ((value >> 8) & 0xFF);
+		result[1] = (byte) (value & 0xFF);
+		return result;
 	}
 
 }

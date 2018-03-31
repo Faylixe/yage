@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author fv
  */
-public final class BinaryBenchmark {
+public final class BinaryUtilsTest {
 	
 	/** Class logger. **/
-	private static final Logger LOG = LoggerFactory.getLogger(BinaryBenchmark.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BinaryUtilsTest.class);
 
 	/** Test 1 1 1 1 0 0 0 0 layout into a byte. **/
 	@Test
@@ -54,4 +54,22 @@ public final class BinaryBenchmark {
 		assertEquals(1, bytes.length);
 		LOG.info("10101011 as signed byte : {}", bytes[0]);
 	}
+
+	/** Test {@link BinaryUtils#compose(byte, byte)} method. **/
+	@Test
+	public void testComposeShort() {
+		final short composed = BinaryUtils.compose(
+				(byte) 2,
+				(byte) 3);
+		assertEquals(515, composed);
+	}
+	
+	/** Test {@link BinaryUtils#decompose(short)} method. **/
+	@Test
+	public void testDecomposeShort() {
+		final byte [] decomposed = BinaryUtils.decompose((short) 515);
+		assertEquals(2, decomposed[0]);
+		assertEquals(3, decomposed[1]);
+	}
+
 }
