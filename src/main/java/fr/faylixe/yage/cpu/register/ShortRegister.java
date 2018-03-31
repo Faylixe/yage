@@ -5,25 +5,19 @@ package fr.faylixe.yage.cpu.register;
  * 
  * @author fv
  */
-public class ShortRegister {
+public class ShortRegister implements IShortRegister {
 
 	/** Register associated value. **/
 	private short value;
 
-	/**
-	 * Register value getter.
-	 * 
-	 * @return Value stored by this extended register.
-	 */
+	/** {@inheritDoc} **/
+	@Override
 	public short get() {
 		return value;
 	}
 
-	/**
-	 * Register value setter.
-	 * 
-	 * @param value New value to set in this extended register.
-	 */
+	/** {@inheritDoc} **/
+	@Override
 	public void set(final short value) {
 		this.value = value;
 	}

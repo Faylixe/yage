@@ -36,7 +36,7 @@ public interface IRegisterProvider {
 	 * @return {@link ShortRegister} instance if any.
 	 * @throws IllegalArgumentException If the given <tt>name</tt> is <tt>null</tt>.
 	 */
-	ShortRegister getExtendedRegister(ExtendedRegister name);
+	IShortRegister getExtendedRegister(ExtendedRegister name);
 	
 	/**
 	 * Returns the F flags register instance.
@@ -53,28 +53,6 @@ public interface IRegisterProvider {
 			return (FlagsRegister) register;
 		}
 		throw new IllegalStateException();
-	}
-
-	/**
-	 * Note : https://stackoverflow.com/questions/2188660/convert-short-to-byte-in-java
-	 * @param high
-	 * @param low
-	 * @return
-	 */
-	static short getCompositeState(final ByteRegister high, final ByteRegister low) {
-		return (short) ((high.get() << 8) | low.get());
-	}
-
-	/**
-	 * 
-	 * @param high
-	 * @param low
-	 * @param compositeState
-	 */
-	static void setCompositeState(final ByteRegister high, final ByteRegister low, final short compositeState) {
-		// TODO : Ensure big endian is used.  
-		high.set((byte)(compositeState >> 8));
-		low.set((byte) compositeState);
 	}
 
 }
