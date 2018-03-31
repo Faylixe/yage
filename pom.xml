@@ -40,22 +40,38 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.5.5.201112152213</version>
+				<version>0.7.9</version>
 				<executions>
 					<execution>
-						<id>jacoco-initialize</id>
+						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>jacoco-site</id>
-						<phase>package</phase>
+						<id>report</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<dataFile>target/jacoco.exec</dataFile>
+							<outputDirectory>target/site/jacoco</outputDirectory>
+						</configuration>
+					</execution>
 				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
