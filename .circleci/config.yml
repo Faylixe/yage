@@ -17,6 +17,7 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}        
       - run: mvn -D=UnitTestSuite test
+      - run: mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DprojectToken=$CODACY_PROJECT_TOKEN -DapiToken=$CODACY_API_TOKEN
       - store_test_results:
           path: target/surefire-reports
       - save_cache:
