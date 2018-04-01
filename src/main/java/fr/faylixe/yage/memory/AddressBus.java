@@ -117,25 +117,25 @@ public final class AddressBus implements IMemoryStream {
 
 	/** {@inheritDoc} **/
 	@Override
-	public byte readByte(final int address) throws IllegalAccessException {
+	public synchronized byte readByte(final int address) throws IllegalAccessException {
 		return getMemoryStream(address).readByte(address);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
-	public byte[] readBytes(final int address, final int length) throws IllegalAccessException {
+	public synchronized byte[] readBytes(final int address, final int length) throws IllegalAccessException {
 		return getMemoryStream(address).readBytes(address, length);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
-	public void writeByte(final byte value, final int address) throws IllegalAccessException {
+	public synchronized void writeByte(final byte value, final int address) throws IllegalAccessException {
 		getMemoryStream(address).writeByte(value, address);
 	}
 
 	/** {@inheritDoc} **/
 	@Override
-	public void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
+	public synchronized void writeBytes(final byte[] values, final int address) throws IllegalAccessException {
 		getMemoryStream(address).writeBytes(values, address);
 	}
 
