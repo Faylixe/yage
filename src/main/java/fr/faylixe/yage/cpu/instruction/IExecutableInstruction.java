@@ -11,6 +11,6 @@ public interface IExecutableInstruction {
 	 * 
 	 * @param context
 	 */
-	void execute(IExecutionContext context);
+	void execute(IExecutionContext context) throws IllegalAccessException;
 
 }

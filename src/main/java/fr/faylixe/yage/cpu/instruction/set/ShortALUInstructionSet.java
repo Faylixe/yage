@@ -39,7 +39,7 @@ public enum ShortALUInstructionSet implements IInstruction {
 
 	/** {@inheritDoc} **/
 	@Override
-	public void execute(final IExecutionContext context) {
+	public void execute(final IExecutionContext context) throws IllegalAccessException {
 		executable.execute(context);
 	}
 

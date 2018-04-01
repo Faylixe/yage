@@ -29,55 +29,55 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LOAD_A_TO_A(0x7F, 4, context -> {}),
 
 	/** LD B, A **/
-	LOAD_B_TO_A(0x78, 4, context -> context.loadFromRegister(B, A)),
+	LOAD_B_TO_A(0x78, 4, context -> context.copy(B, A)),
 
 	/** LD C, A **/
-	LOAD_C_TO_A(0x79, 4, context -> context.loadFromRegister(C, A)),
+	LOAD_C_TO_A(0x79, 4, context -> context.copy(C, A)),
 
 	/** LD D, A **/
-	LOAD_D_TO_A(0x7A, 4, context -> context.loadFromRegister(D, A)),
+	LOAD_D_TO_A(0x7A, 4, context -> context.copy(D, A)),
 
 	/** LD E, A **/
-	LOAD_E_TO_A(0x7B, 4, context -> context.loadFromRegister(E, A)),
+	LOAD_E_TO_A(0x7B, 4, context -> context.copy(E, A)),
 
 	/** LD H, A **/
-	LOAD_H_TO_A(0x7C, 4, context -> context.loadFromRegister(H, A)),
+	LOAD_H_TO_A(0x7C, 4, context -> context.copy(H, A)),
 
 	/** LD L, A **/
-	LOAD_L_TO_A(0x7D, 4, context -> context.loadFromRegister(L, A)),
+	LOAD_L_TO_A(0x7D, 4, context -> context.copy(L, A)),
 
 	/** LD (BC), A **/
-	LOAD_BC_TO_A(0x0A, 8, context -> context.loadFromAddress(A, BC)),
+	LOAD_BC_TO_A(0x0A, 8, context -> context.loadFromAddress(BC, A)),
 
 	/** LD (DE), A **/
-	LOAD_DE_TO_A(0x1A, 8, context -> context.loadFromAddress(A, DE)),
+	LOAD_DE_TO_A(0x1A, 8, context -> context.loadFromAddress(DE, A)),
 
 	/** LD (HL), A **/
-	LOAD_HL_TO_A(0x7E, 8, context -> context.loadFromAddress(A, HL)),
+	LOAD_HL_TO_A(0x7E, 8, context -> context.loadFromAddress(HL, A)),
 
 	/** LD (nn), A **/
-	LOAD_NN_TO_A(0xFA, 16, context -> context.loadFromAddress(A)),
+	LOAD_NN_TO_A(0xFA, 16, context -> context.loadFromImmediateAddress(A)),
 
 	/** LD #, A **/
-	LOAD_N_TO_A(0x3E, 8, context -> context.loadFromValue(A)),
+	LOAD_N_TO_A(0x3E, 8, context -> context.loadFromImmediateValue(A)),
 
 	/** LD A, B **/
-	LOAD_A_TO_B(0x47, 4, context -> context.loadFromRegister(B, A)),
+	LOAD_A_TO_B(0x47, 4, context -> context.copy(A, B)),
 
 	/** LD A, C **/
-	LOAD_A_TO_C(0x4F, 4, context -> context.loadFromRegister(C, A)),
+	LOAD_A_TO_C(0x4F, 4, context -> context.copy(A, C)),
 
 	/** LD A, D **/
-	LOAD_A_TO_D(0x57, 4, context -> context.loadFromRegister(D, A)),
+	LOAD_A_TO_D(0x57, 4, context -> context.copy(A, D)),
 
 	/** LD A, E **/
-	LOAD_A_TO_E(0x5F, 4, context -> context.loadFromRegister(E, A)),
+	LOAD_A_TO_E(0x5F, 4, context -> context.copy(A, E)),
 
 	/** LD A, H **/
-	LOAD_A_TO_H(0x67, 4, context -> context.loadFromRegister(H, A)),
+	LOAD_A_TO_H(0x67, 4, context -> context.copy(A, H)),
 
 	/** LD A, L **/
-	LOAD_A_TO_L(0x6F, 4, context -> context.loadFromRegister(L, A)),
+	LOAD_A_TO_L(0x6F, 4, context -> context.copy(A, L)),
 
 	/** LD A, (BC) **/
 	LOAD_A_TO_BC(0x02, 8, context -> context.putToAddress(A, BC)),
@@ -92,10 +92,10 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LOAD_A_TO_NN(0x47, 16, context -> context.putToAddress(A)),
 
 	/** LD A, ($FF00 + C) **/
-	LOAD_INTERRUPT_TO_A(0xF2, 8, context -> context.loadFromAddress(A, C, 0xFF00)),
+	//LOAD_INTERRUPT_TO_A(0xF2, 8, context -> context.loadFromAddress(A, C, 0xFF00)),
 
 	/** LD ($FF00 + C), A **/
-	LOAD_A_TO_INTERRUPT(0xE2, 8, context -> context.putToAddress(A, C, 0xFF00)),
+	//LOAD_A_TO_INTERRUPT(0xE2, 8, context -> context.putToAddress(A, C, 0xFF00)),
 
 	;
 
@@ -126,7 +126,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 
 	/** {@inheritDoc} **/
 	@Override
-	public void execute(final IExecutionContext context) {
+	public void execute(final IExecutionContext context) throws IllegalAccessException {
 		executable.execute(context);
 	}
 

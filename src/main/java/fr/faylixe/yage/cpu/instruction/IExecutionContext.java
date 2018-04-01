@@ -10,47 +10,55 @@ import fr.faylixe.yage.memory.IMemoryStream;
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
 	/**
+	 * Copies value from <tt>source</tt> register to the
+	 * given <tt>destination</tt> register.
 	 * 
-	 * @param source
-	 * @param destination
+	 * @param source Register to copy value from.
+	 * @param destination Register to copy value into.
 	 */
-	default void loadFromRegister(final Register source, final Register destination) {
-		getRegister(destination).set(getRegister(source).get());
+	default void copy(final Register source, final Register destination) {
+		final byte value = getRegister(source).get();
+		getRegister(destination).set(value);
 	}
 	
 	/**
+	 * Loads the value at the address held by the given <tt>source</tt>
+	 * register into the given <tt>destination</tt> register.
 	 * 
-	 * @param destination
-	 * @param address
+	 * @param source Register to read target memory address from.
+	 * @param destination Register to load read value into.
+	 * @throws IllegalAccessException If any error occurs while reading target address.
 	 */
-	default void loadFromAddress(final Register destination, final ExtendedRegister address) {
-		//getRegister(destination).set(read(lowAddress, highAddress));
-	}
-	
-	/**
-	 * 
-	 * @param source
-	 * @param destination
-	 * @param offset
-	 */
-	default void loadFromAddress(final Register destination, final Register source, final int offset) {
-		//
+	default void loadFromAddress(final ExtendedRegister source, final Register destination)
+			throws IllegalAccessException {
+		final int address = getExtendedRegister(source).get();
+		final byte value = readByte(address);
+		getRegister(destination).set(value);
 	}
 
 	/**
+	 * Retrieves a memory address from next two immediates and load it
+	 * associated value into the given <tt>destination</tt> register.
 	 * 
-	 * @param destination
+	 * @param destination Register to load read value into.
+	 * @throws IllegalAccessException If any error occurs while reading target address.
 	 */
-	default void loadFromAddress(final Register destination) {
-		// TODO : Read two immediate and load.
+	default void loadFromImmediateAddress(final Register destination)
+			throws IllegalAccessException {
+		final int address = nextShort();
+		final byte value = readByte(address);
+		getRegister(destination).set(value);
 	}
-	
+
 	/**
+	 * Loads value read from next immediate into the given
+	 * <tt>destination</tt> register.
 	 * 
-	 * @param destination
+	 * @param destination Register to load read value into.
 	 */
-	default void loadFromValue(final Register destination) {
-		// TODO : Read value from next immediate.
+	default void loadFromImmediateValue(final Register destination) {
+		final byte value = nextByte();
+		getRegister(destination).set(value);
 	}
 
 	/**
@@ -78,42 +86,6 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 */
 	default void putToAddress(final Register source) {
 		// TODO : Read two immediate and put
-	}
-
-	/**
-	 * 
-	 * @param low
-	 * @param high
-	 * @return
-	 */
-	default byte read(final Register low, final Register high) {
-		return 0;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	default byte readFromImmediates() {
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	default byte nextImmediate() {
-		return nextByte();
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	default short nextImmediates() {
-		final byte low = nextByte();
-		final byte high = nextByte();
-		return 0;
 	}
 
 }
