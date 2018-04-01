@@ -1,5 +1,7 @@
 package fr.faylixe.yage.cpu.instruction;
 
+import static java.lang.Math.pow;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -22,6 +24,7 @@ import fr.faylixe.yage.cpu.instruction.IInstruction;
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
 import fr.faylixe.yage.cpu.register.IRegisterProviderTest;
 import fr.faylixe.yage.memory.AddressBus;
+import fr.faylixe.yage.memory.IMemoryBankTest;
 import fr.faylixe.yage.memory.IMemoryStream;
 import fr.faylixe.yage.memory.IMemoryStreamTest;
 
@@ -50,9 +53,13 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	/** {@inheritDoc} **/
 	@Override
 	default IMemoryStream getTestMemoryStream() {
-		final AddressBus addressBus = new AddressBus(0);
-		//addressBus.connect(memoryBank);
-		return null; // TODO : Create mock address bus.
+		final int size = (int) pow(2, 16);
+		final AddressBus addressBus = new AddressBus(size);
+		addressBus.connect(IMemoryBankTest.createMemoryBankMock(TEST_OFFSET, 0));
+		addressBus.connect(IMemoryBankTest.createMemoryBankMock());
+		final int offset = TEST_OFFSET + TEST_SIZE;
+		addressBus.connect(IMemoryBankTest.createMemoryBankMock(size - offset, offset));
+		return addressBus;
 	}
 
 	/** {@inheritDoc} **/
