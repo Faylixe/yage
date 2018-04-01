@@ -40,6 +40,24 @@ import fr.faylixe.yage.memory.IMemoryStreamTest;
 @TestInstance(Lifecycle.PER_CLASS)
 public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStreamTest, IRegisterProviderTest {
 
+	/** {@inheritDoc} **/
+	@Override
+	default IRegisterProvider getTestRegisterProvider() {
+		return IRegisterProviderTest.createMockRegisterProvider();
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	default IMemoryStream getTestMemoryStream() {
+		return null; // TODO : Create mock address bus.
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	default IInstructionStream getTestInstructionStream() {
+		return null; // TODO : Create mock.
+	}
+
 	/**
 	 * Build a mock {@link IExecutionContext} in order to execute the given
 	 * <tt>instruction</tt>. The context delegate {@link IRegisterProvider},

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import fr.faylixe.yage.cpu.instruction.IInstructionSetTest;
 import fr.faylixe.yage.cpu.instruction.IInstructionStream;
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
+import fr.faylixe.yage.cpu.register.IRegisterProviderTest;
 import fr.faylixe.yage.memory.IMemoryStream;
 
 /**
@@ -20,24 +21,6 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			// TODO : Ensure call here.
 			// TODO : Ensure value here.
 		//});
-	}
-
-	@Override
-	public IInstructionStream getTestInstructionStream() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IMemoryStream getTestMemoryStream() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IRegisterProvider getTestRegisterProvider() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

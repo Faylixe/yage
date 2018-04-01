@@ -183,4 +183,28 @@ public interface IRegisterProviderTest {
 		});
 	}
 
+	/**
+	 * Factory method for creating mock {@link IRegisterProvider} instance.
+	 * 
+	 * @return Built mock instance.
+	 */
+	static IRegisterProvider createMockRegisterProvider() {
+		return new MockRegisterProviderBuilder()
+				.addRegister(A, (byte) 1)
+				.addRegister(B, (byte) 2)
+				.addRegister(C, (byte) 3)
+				.addRegister(D, (byte) 4)
+				.addRegister(E, (byte) 5)
+				.addRegister(F, (byte) 0)
+				.addRegister(H, (byte) 6)
+				.addRegister(L, (byte) 7)
+				.addCompositeRegister(AF, A, F)
+				.addCompositeRegister(BC, B, C)
+				.addCompositeRegister(DE, D, E)
+				.addCompositeRegister(HL, H, L)
+				.addExtendedRegister(SP, (short) 69)
+				.addExtendedRegister(PC, (short) 42)
+				.build();
+	}
+
 }
