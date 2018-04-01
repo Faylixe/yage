@@ -1,6 +1,7 @@
 package fr.faylixe.yage.cpu.instruction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyByte;
@@ -24,6 +25,15 @@ import fr.faylixe.yage.memory.IMemoryStream;
 import fr.faylixe.yage.memory.IMemoryStreamTest;
 
 /**
+ * Basic interface for performing instruction set tests.
+ * Such interface extends test rules from :
+ * 
+ * - {@link IMemoryStreamTest}
+ * - {@link IInstructionStreamTest}
+ * - {@link IRegisterProviderTest}
+ * 
+ * So test must be taking in consideration, memory and register
+ * associated scenario when instruction is executed.
  * 
  * @author fv
  */
@@ -31,17 +41,22 @@ import fr.faylixe.yage.memory.IMemoryStreamTest;
 public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStreamTest, IRegisterProviderTest {
 
 	/**
+	 * Build a mock {@link IExecutionContext} in order to execute the given
+	 * <tt>instruction</tt>. The context delegate {@link IRegisterProvider},
+	 * {@link IMemoryStream} and {@link IInstructionStream} interfaces call
+	 * to concrete test instance. Does not aims to be overriden.
 	 * 
-	 * @param expectedOpcode
-	 * @param expectedCycle
-	 * @param instruction
-	 * @param test
+	 * @param expectedOpcode Expected opcode.
+	 * @param expectedCycle Expected cycle value.
+	 * @param instruction Instruction to test.
+	 * @param test Test to perform.
 	 */
 	default void performInstructionTest(
 			final int expectedOpcode,
 			final int expectedCycle,
 			final IInstruction instruction,
 			final Consumer<IExecutionContext> test) {
+		assertNotNull(instruction);
 		assertEquals(expectedOpcode, instruction.getOpcode());
 		assertEquals(expectedCycle, instruction.getCycle());
 		final IExecutionContext context = mock(IExecutionContext.class);
