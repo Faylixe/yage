@@ -3,6 +3,7 @@ package fr.faylixe.yage.utils;
 import org.mockito.stubbing.Answer;
 
 /**
+ * Static methods for common mockito operation.
  * 
  * @author fv
  */

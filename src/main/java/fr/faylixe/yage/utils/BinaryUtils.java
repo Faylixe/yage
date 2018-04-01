@@ -1,7 +1,7 @@
 package fr.faylixe.yage.utils;
 
 /**
- * Static method for common binary operation.
+ * Static methods for common binary operation.
  * 
  * @author fv
  */
