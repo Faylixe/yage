@@ -21,6 +21,7 @@ import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstruction;
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
 import fr.faylixe.yage.cpu.register.IRegisterProviderTest;
+import fr.faylixe.yage.memory.AddressBus;
 import fr.faylixe.yage.memory.IMemoryStream;
 import fr.faylixe.yage.memory.IMemoryStreamTest;
 
@@ -49,13 +50,15 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	/** {@inheritDoc} **/
 	@Override
 	default IMemoryStream getTestMemoryStream() {
+		final AddressBus addressBus = new AddressBus(0);
+		//addressBus.connect(memoryBank);
 		return null; // TODO : Create mock address bus.
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	default IInstructionStream getTestInstructionStream() {
-		return null; // TODO : Create mock.
+		return IInstructionStreamTest.createMockInstructionStream();
 	}
 
 	/**
