@@ -11,26 +11,30 @@ import fr.faylixe.yage.utils.BinaryUtils;
 public interface IInstructionStream {
 	
 	/**
+	 * Reads next byte from this stream.
 	 * 
-	 * @return
+	 * @return Next immediate byte.
+	 * @throws IllegalAccessException If any error occurs while reading next byte.
 	 */
-	byte nextByte();
+	byte nextByte() throws IllegalAccessException;
 
 	/**
 	 * Reads next two bytes from this stream and
 	 * returns them as a composed short value.
 	 * 
 	 * @return Next two immediate value as a short.
+	 * @throws IllegalAccessException If any error occurs while reading next byte.
 	 */
-	default short nextShort() {
+	default short nextShort() throws IllegalAccessException {
 		final byte leastSignificant = nextByte();
 		final byte mostSignificant = nextByte();
 		return BinaryUtils.compose(mostSignificant, leastSignificant);
 	}
 
 	/**
+	 * Puts the given byte <tt>value</tt> into this stream.
 	 * 
-	 * @param value
+	 * @param value Value to put.
 	 */
 	void sendByte(byte value);
 

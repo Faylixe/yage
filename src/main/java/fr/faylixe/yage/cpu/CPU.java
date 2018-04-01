@@ -76,18 +76,23 @@ public class CPU implements Runnable {
 	/** {@inheritDoc} **/
 	@Override
 	public void run() {
-		final byte prefix = instructionStream.nextByte();
-		final byte opcode;
-		if (prefix == 0) { // TODO : Check for CB prefix value.
-			opcode = instructionStream.nextByte();
+		try {
+			final byte prefix = instructionStream.nextByte();
+			final byte opcode;
+			if (prefix == 0) { // TODO : Check for CB prefix value.
+				opcode = instructionStream.nextByte();
+			}
+			else {
+				opcode = prefix;
+			}
+			// TODO : Read opcode (one byte).
+			// TODO : if opcode == CB16 => extended set.
+				// TODO : Read next byte.
+			// TODO : else => main set.
 		}
-		else {
-			opcode = prefix;
+		catch (final IllegalAccessException e) {
+			// TODO
 		}
-		// TODO : Read opcode (one byte).
-		// TODO : if opcode == CB16 => extended set.
-			// TODO : Read next byte.
-		// TODO : else => main set.
 	}
 
 }

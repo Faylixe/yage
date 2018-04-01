@@ -55,8 +55,10 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * <tt>destination</tt> register.
 	 * 
 	 * @param destination Register to load read value into.
+	 * @throws IllegalAccessException If any error occurs while reading next immediate.
 	 */
-	default void loadFromImmediateValue(final Register destination) {
+	default void loadFromImmediateValue(final Register destination)
+			throws IllegalAccessException {
 		final byte value = nextByte();
 		getRegister(destination).set(value);
 	}

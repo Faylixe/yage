@@ -2,11 +2,14 @@ package fr.faylixe.yage.cpu.instruction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyByte;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import static fr.faylixe.yage.utils.MockitoUtils.toAnswer;
 
 import java.util.function.Consumer;
 
@@ -55,21 +58,18 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	}
 
 	/**
+	 * Binds the given mock execution <tt>context</tt> to
+	 * the given memory <tt>stream</tt>.
 	 * 
-	 * @param context
-	 * @param stream
+	 * @param context Mock execution context to bind stream to.
+	 * @param stream Memory stream to bind.
 	 */
 	static void bindMemoryStream(final IExecutionContext context, final IMemoryStream stream) {
 		try {
-			when(context.readByte(anyInt()))
-				.then(arg -> stream.readByte(arg.getArgument(0)));
-			when(context.readBytes(anyInt(), anyInt()))
-				.then(arg -> stream.readBytes(arg.getArgument(0), arg.getArgument(1)));
-			//when(context)
-			//	.writeByte(anyByte(), anyInt())
-			//	.do();
-			//doAnswer(arg -> stream.writeByte(arg.getArgument(0), arg.getArgument(1)))
-				
+			when(context.readByte(anyInt())).then(toAnswer(stream::readByte));
+			when(context.readBytes(anyInt(), anyInt())).then(toAnswer(stream::readBytes));
+			doAnswer(toAnswer(stream::writeByte)).when(context).writeByte(anyByte(), anyInt());
+			doAnswer(toAnswer(stream::writeBytes)).when(context).writeBytes(any(), anyInt());
 		}
 		catch (final IllegalAccessException e) {
 			fail(e);
@@ -77,21 +77,34 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	}
 
 	/**
+	 * Binds the given mock execution <tt>context</tt> to
+	 * the given instruction <tt>stream</tt>
 	 * 
-	 * @param context
-	 * @param stream
+	 * @param context Mock execution context to bind stream to.
+	 * @param stream Instruction stream to bind.
 	 */
 	static void bindInstructionStream(final IExecutionContext context, final IInstructionStream stream) {
-		// TODO : Implements.
+		try {
+			when(context.nextByte()).then(toAnswer(stream::nextByte));
+			when(context.nextShort()).then(toAnswer(stream::nextShort));
+			// Note : sendByte not already considered.
+		}
+		catch (final IllegalAccessException e) {
+			fail(e);
+		}
 	}
 
 	/**
+	 * Binds the given mock execution <tt>context</tt> to
+	 * the given register <tt>provider</tt>
 	 * 
-	 * @param context
-	 * @param provider
+	 * @param context Mock execution context to bind provider to.
+	 * @param provider Register provider to bind.
 	 */
 	static void bindRegisterProvider(final IExecutionContext context, final IRegisterProvider provider) {
-		// TODO : Implements.
+		when(context.getRegister(any())).then(toAnswer(provider::getRegister));
+		when(context.getFlagsRegister()).then(toAnswer(provider::getFlagsRegister));
+		when(context.getExtendedRegister(any())).then(toAnswer(provider::getExtendedRegister));
 	}
 
 }
