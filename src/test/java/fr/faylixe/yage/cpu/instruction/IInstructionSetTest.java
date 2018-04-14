@@ -107,7 +107,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	 * @param context Mock execution context to bind stream to.
 	 * @param stream Memory stream to bind.
 	 */
-	static void bindMemoryStream(final IExecutionContext context, final IMemoryStream stream) {
+	private static void bindMemoryStream(final IExecutionContext context, final IMemoryStream stream) {
 		try {
 			when(context.readByte(anyInt())).then(toAnswer(stream::readByte));
 			when(context.readBytes(anyInt(), anyInt())).then(toAnswer(stream::readBytes));
@@ -126,7 +126,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	 * @param context Mock execution context to bind stream to.
 	 * @param stream Instruction stream to bind.
 	 */
-	static void bindInstructionStream(final IExecutionContext context, final IInstructionStream stream) {
+	private static void bindInstructionStream(final IExecutionContext context, final IInstructionStream stream) {
 		try {
 			when(context.nextByte()).then(toAnswer(stream::nextByte));
 			when(context.nextShort()).then(toAnswer(stream::nextShort));
@@ -144,7 +144,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	 * @param context Mock execution context to bind provider to.
 	 * @param provider Register provider to bind.
 	 */
-	static void bindRegisterProvider(final IExecutionContext context, final IRegisterProvider provider) {
+	private static void bindRegisterProvider(final IExecutionContext context, final IRegisterProvider provider) {
 		when(context.getRegister(any())).then(toAnswer(provider::getRegister));
 		when(context.getFlagsRegister()).then(toAnswer(provider::getFlagsRegister));
 		when(context.getExtendedRegister(any())).then(toAnswer(provider::getExtendedRegister));

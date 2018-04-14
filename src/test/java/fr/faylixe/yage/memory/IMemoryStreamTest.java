@@ -69,7 +69,7 @@ public interface IMemoryStreamTest {
 	 * @param position Bit position.
 	 * @param expected Expected value.
 	 */
-	default void verifyBit(final byte value, final int position, final int expected) {
+	private void verifyBit(final byte value, final int position, final int expected) {
 		final int bit = (value >> position) & 1;
 		assertEquals(expected, bit);
 	}
@@ -81,7 +81,7 @@ public interface IMemoryStreamTest {
 	 * 
 	 * @param bytes
 	 */
-	default void verifyBytes(final Byte[] bytes) {
+	private void verifyBytes(final Byte[] bytes) {
 		// Note : value can be checked in BinaryBenchmark tests.
 		// Note : 10101010 -> 85 as signed byte.
 		assertEquals((byte) 85, (byte) bytes[0]);
