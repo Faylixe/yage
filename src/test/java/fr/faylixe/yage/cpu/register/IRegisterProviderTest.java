@@ -71,114 +71,30 @@ public interface IRegisterProviderTest {
 		});
 	}
 
-	/** Test reading A register. **/
+	/** Test expected register values. **/
 	@Test
-	default void testA() {
+	default void testRegisters() {
 		performRegisterProviderTest(provider -> {
 			assertEquals(1, provider.getRegister(A).get());
-		});
-	}
-
-	/** Test reading F register. **/
-	@Test
-	default void testF() {
-		performRegisterProviderTest(provider -> {
-			assertEquals(0, provider.getRegister(F).get());
-		});
-	}
-
-	/** Test reading B register. **/
-	@Test
-	default void testB() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(2, provider.getRegister(B).get());
-		});
-	}
-
-	/** Test reading C register. **/
-	@Test
-	default void testC() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(3, provider.getRegister(C).get());
-		});
-	}
-
-	/** Test reading D register. **/
-	@Test
-	default void testD() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(4, provider.getRegister(D).get());
-		});
-	}
-
-	/** Test reading E register. **/
-	@Test
-	default void testE() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(5, provider.getRegister(E).get());
-		});
-	}
-
-	/** Test reading H register. **/
-	@Test
-	default void testH() {
-		performRegisterProviderTest(provider -> {
+			assertEquals(0, provider.getRegister(F).get());
 			assertEquals(6, provider.getRegister(H).get());
-		});
-	}
-
-	/** Test reading L register. **/
-	@Test
-	default void testL() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(7, provider.getRegister(L).get());
-		});
+		});		
 	}
 
-	/** Test reading AF extended register. **/
+	/** Test expected extended register values. **/
 	@Test
-	default void testAF() {
+	default void testExtendedRegisters() {
 		performRegisterProviderTest(provider -> {
 			assertEquals(256, provider.getExtendedRegister(AF).get());
-		});
-	}
-
-	/** Test reading BC extended register. **/
-	@Test
-	default void testBC() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(515, provider.getExtendedRegister(BC).get());
-		});
-	}
-
-	/** Test reading DE extended register. **/
-	@Test
-	default void testDE() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(1029, provider.getExtendedRegister(DE).get());
-		});
-	}
-
-	/** Test reading HL extended register. **/
-	@Test
-	default void testHL() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(1543, provider.getExtendedRegister(HL).get());
-		});
-	}
-
-	/** Test reading SP extended register. **/
-	@Test
-	default void testSP() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(69, provider.getExtendedRegister(SP).get());
-		});
-	}
-
-	/** Test reading PC extended register. **/
-	@Test
-	default void testPC() {
-		performRegisterProviderTest(provider -> {
 			assertEquals(42, provider.getExtendedRegister(PC).get());
 		});
 	}

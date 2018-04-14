@@ -1,6 +1,6 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
-import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.A;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.instruction.set.ByteLoadInstructionSet.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,6 +13,14 @@ import fr.faylixe.yage.cpu.instruction.IInstructionSetTest;
  * @author fv
  */
 public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
+
+	/** Test LD A, A instruction. **/
+	@Test
+	public void testLoadAToA() {
+		performInstructionTest(0x7F, 4, LOAD_A_TO_A, context -> {
+			assertEquals(1, context.getRegister(A).get());
+		});
+	}
 
 	/** Test LD A, A instruction. **/
 	@Test
@@ -54,11 +62,51 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 		});
 	}
 
-	/** Test LD L, A instruction. **/
+	/** Test LD A, B instruction. **/
 	@Test
-	public void testLoadLToA() {
-		performInstructionTest(0x7D, 4, LOAD_L_TO_A, context -> {
-			assertEquals(7, context.getRegister(A).get());
+	public void testLoadAToB() {
+		performInstructionTest(0x47, 4, LOAD_A_TO_B, context -> {
+			assertEquals(1, context.getRegister(B).get());
+		});
+	}
+	
+	/** Test LD A, C instruction. **/
+	@Test
+	public void testLoadAToC() {
+		performInstructionTest(0x4F, 4, LOAD_A_TO_C, context -> {
+			assertEquals(1, context.getRegister(C).get());
+		});
+	}
+
+	/** Test LD A, D instruction. **/
+	@Test
+	public void testLoadAToD() {
+		performInstructionTest(0x57, 4, LOAD_A_TO_D, context -> {
+			assertEquals(1, context.getRegister(D).get());
+		});
+	}
+
+	/** Test LD A, E instruction. **/
+	@Test
+	public void testLoadAToE() {
+		performInstructionTest(0x5F, 4, LOAD_A_TO_E, context -> {
+			assertEquals(1, context.getRegister(E).get());
+		});
+	}
+
+	/** Test LD A, H instruction. **/
+	@Test
+	public void testLoadAToH() {
+		performInstructionTest(0x67, 4, LOAD_A_TO_H, context -> {
+			assertEquals(1, context.getRegister(H).get());
+		});
+	}
+
+	/** Test LD A, L instruction. **/
+	@Test
+	public void testLoadAToL() {
+		performInstructionTest(0x6F, 4, LOAD_A_TO_L, context -> {
+			assertEquals(1, context.getRegister(L).get());
 		});
 	}
 
