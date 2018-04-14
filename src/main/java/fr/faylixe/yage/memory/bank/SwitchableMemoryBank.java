@@ -15,6 +15,12 @@ import fr.faylixe.yage.memory.IMemoryStream;
  */
 public final class SwitchableMemoryBank extends AbstractMemoryBank {
 
+	/** Memory bank this switch handles. **/
+	private final IMemoryStream [] banks;
+
+	/** Pointer into the current activated bank. **/
+	private final AtomicInteger current;
+
 	/**
 	 * SwitchableMemoryBank builder class.
 	 * 
@@ -91,12 +97,6 @@ public final class SwitchableMemoryBank extends AbstractMemoryBank {
 	public static Builder builder(final int size, final int offset) {
 		return new Builder(size, offset);
 	}
-
-	/** Memory bank this switch handles. **/
-	private final IMemoryStream [] banks;
-
-	/** Pointer into the current activated bank. **/
-	private final AtomicInteger current;
 
 	/**
 	 * Default constructor.
