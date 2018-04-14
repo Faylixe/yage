@@ -2,6 +2,7 @@ package fr.faylixe.yage.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -49,6 +50,25 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 		final IMemoryBank bank = getTestMemoryBank();
 		assertNotNull(bank);
 		test.accept(bank);
+	}
+	
+	/** Test reading wrong address. **/
+	@Test
+	default void testUnallowedReading() {
+		performBankTest(bank -> {
+			assertThrows(IllegalAccessException.class, () -> bank.readByte(TEST_OFFSET - 1));
+			assertThrows(IllegalAccessException.class, () -> bank.readByte(TEST_OFFSET + TEST_SIZE));
+		});
+	}
+	
+	/** Test reading wrong addresses **/
+	@Test
+	default void testUnallowedReadings() {
+		performBankTest(bank -> {
+			assertThrows(IllegalAccessException.class, () -> bank.readBytes(0, 2));
+			assertThrows(IllegalAccessException.class, () -> bank.readBytes(TEST_OFFSET - 1, 2));
+			assertThrows(IllegalAccessException.class, () -> bank.readBytes(TEST_OFFSET, 6));
+		});
 	}
 
 	/** Testing bank size property. **/

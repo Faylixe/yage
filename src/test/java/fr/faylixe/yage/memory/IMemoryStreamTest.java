@@ -2,7 +2,6 @@ package fr.faylixe.yage.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.function.Consumer;
@@ -129,25 +128,6 @@ public interface IMemoryStreamTest {
 			catch (final IllegalAccessException e) {
 				fail(e);
 			}			
-		});
-	}
-
-	/** Test reading wrong address. **/
-	@Test
-	default void testUnallowedReading() {
-		performStreamTest(stream -> {
-			assertThrows(IllegalAccessException.class, () -> stream.readByte(TEST_OFFSET - 1));
-			assertThrows(IllegalAccessException.class, () -> stream.readByte(TEST_OFFSET + TEST_SIZE));
-		});
-	}
-	
-	/** Test reading wrong addresses **/
-	@Test
-	default void testUnallowedReadings() {
-		performStreamTest(stream -> {
-			assertThrows(IllegalAccessException.class, () -> stream.readBytes(0, 2));
-			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET - 1, 2));
-			assertThrows(IllegalAccessException.class, () -> stream.readBytes(TEST_OFFSET, 6));
 		});
 	}
 
