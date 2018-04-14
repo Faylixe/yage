@@ -16,9 +16,11 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param source Register to copy value from.
 	 * @param destination Register to copy value into.
 	 */
-	default void copy(final Register source, final Register destination) {
-		final byte value = getRegister(source).get();
-		getRegister(destination).set(value);
+	static IExecutableInstruction load(final Register source, final Register destination) {
+		return context -> {
+			final byte value = context.getRegister(source).get();
+			context.getRegister(destination).set(value);
+		};
 	}
 	
 	/**
@@ -27,13 +29,13 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * 
 	 * @param source Register to read target memory address from.
 	 * @param destination Register to load read value into.
-	 * @throws IllegalAccessException If any error occurs while reading target address.
 	 */
-	default void loadFromAddress(final ExtendedRegister source, final Register destination)
-			throws IllegalAccessException {
-		final int address = getExtendedRegister(source).get();
-		final byte value = readByte(address);
-		getRegister(destination).set(value);
+	static IExecutableInstruction load(final ExtendedRegister source, final Register destination) {
+		return context -> {
+			final int address = context.getExtendedRegister(source).get();
+			final byte value = context.readByte(address);
+			context.getRegister(destination).set(value);
+		};
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
+import static fr.faylixe.yage.cpu.instruction.IExecutionContext.load;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 
@@ -26,34 +27,34 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	// TODO : LD r1, r2
 
 	/** LD A, A **/
-	LOAD_A_TO_A(0x7F, 4, context -> {}),
+	LOAD_A_TO_A(0x7F, 4, NOP),
 
 	/** LD B, A **/
-	LOAD_B_TO_A(0x78, 4, context -> context.copy(B, A)),
+	LOAD_B_TO_A(0x78, 4, load(B, A)),
 
 	/** LD C, A **/
-	LOAD_C_TO_A(0x79, 4, context -> context.copy(C, A)),
+	LOAD_C_TO_A(0x79, 4, load(C, A)),
 
 	/** LD D, A **/
-	LOAD_D_TO_A(0x7A, 4, context -> context.copy(D, A)),
+	LOAD_D_TO_A(0x7A, 4, load(D, A)),
 
 	/** LD E, A **/
-	LOAD_E_TO_A(0x7B, 4, context -> context.copy(E, A)),
+	LOAD_E_TO_A(0x7B, 4, load(E, A)),
 
 	/** LD H, A **/
-	LOAD_H_TO_A(0x7C, 4, context -> context.copy(H, A)),
+	LOAD_H_TO_A(0x7C, 4, load(H, A)),
 
 	/** LD L, A **/
-	LOAD_L_TO_A(0x7D, 4, context -> context.copy(L, A)),
+	LOAD_L_TO_A(0x7D, 4, load(L, A)),
 
 	/** LD (BC), A **/
-	LOAD_BC_TO_A(0x0A, 8, context -> context.loadFromAddress(BC, A)),
+	LOAD_BC_TO_A(0x0A, 8, load(BC, A)),
 
 	/** LD (DE), A **/
-	LOAD_DE_TO_A(0x1A, 8, context -> context.loadFromAddress(DE, A)),
+	LOAD_DE_TO_A(0x1A, 8, load(DE, A)),
 
 	/** LD (HL), A **/
-	LOAD_HL_TO_A(0x7E, 8, context -> context.loadFromAddress(HL, A)),
+	LOAD_HL_TO_A(0x7E, 8, load(HL, A)),
 
 	/** LD (nn), A **/
 	LOAD_NN_TO_A(0xFA, 16, context -> context.loadFromImmediateAddress(A)),
@@ -62,22 +63,22 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LOAD_N_TO_A(0x3E, 8, context -> context.loadFromImmediateValue(A)),
 
 	/** LD A, B **/
-	LOAD_A_TO_B(0x47, 4, context -> context.copy(A, B)),
+	LOAD_A_TO_B(0x47, 4, load(A, B)),
 
 	/** LD A, C **/
-	LOAD_A_TO_C(0x4F, 4, context -> context.copy(A, C)),
+	LOAD_A_TO_C(0x4F, 4, load(A, C)),
 
 	/** LD A, D **/
-	LOAD_A_TO_D(0x57, 4, context -> context.copy(A, D)),
+	LOAD_A_TO_D(0x57, 4, load(A, D)),
 
 	/** LD A, E **/
-	LOAD_A_TO_E(0x5F, 4, context -> context.copy(A, E)),
+	LOAD_A_TO_E(0x5F, 4, load(A, E)),
 
 	/** LD A, H **/
-	LOAD_A_TO_H(0x67, 4, context -> context.copy(A, H)),
+	LOAD_A_TO_H(0x67, 4, load(A, H)),
 
 	/** LD A, L **/
-	LOAD_A_TO_L(0x6F, 4, context -> context.copy(A, L)),
+	LOAD_A_TO_L(0x6F, 4, load(A, L)),
 
 	/** LD A, (BC) **/
 	LOAD_A_TO_BC(0x02, 8, context -> context.putToAddress(A, BC)),

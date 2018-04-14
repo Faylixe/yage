@@ -19,4 +19,7 @@ public interface IExecutableInstruction {
 	 */
 	void execute(IExecutionContext context) throws IllegalAccessException;
 
+	/** No operation static instance. **/
+	static IExecutableInstruction NOP = context -> {};
+
 }
