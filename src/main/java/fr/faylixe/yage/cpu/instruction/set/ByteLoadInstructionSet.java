@@ -1,6 +1,8 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.load;
+import static fr.faylixe.yage.cpu.instruction.IExecutionContext.loadAddress;
+import static fr.faylixe.yage.cpu.instruction.IExecutionContext.loadValue;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 
@@ -57,10 +59,10 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LOAD_HL_TO_A(0x7E, 8, load(HL, A)),
 
 	/** LD (nn), A **/
-	LOAD_NN_TO_A(0xFA, 16, context -> context.loadFromImmediateAddress(A)),
+	LOAD_NN_TO_A(0xFA, 16, loadAddress(A)),
 
 	/** LD #, A **/
-	LOAD_N_TO_A(0x3E, 8, context -> context.loadFromImmediateValue(A)),
+	LOAD_N_TO_A(0x3E, 8, loadValue(A)),
 
 	/** LD A, B **/
 	LOAD_A_TO_B(0x47, 4, load(A, B)),

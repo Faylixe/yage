@@ -10,11 +10,12 @@ import fr.faylixe.yage.memory.IMemoryStream;
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
 	/**
-	 * Copies value from <tt>source</tt> register to the
-	 * given <tt>destination</tt> register.
+	 * Builds an instruction that load value from <tt>source</tt>
+	 * register to the given <tt>destination</tt> register.
 	 * 
 	 * @param source Register to copy value from.
 	 * @param destination Register to copy value into.
+	 * @return Built instruction.
 	 */
 	static IExecutableInstruction load(final Register source, final Register destination) {
 		return context -> {
@@ -24,11 +25,13 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	}
 	
 	/**
-	 * Loads the value at the address held by the given <tt>source</tt>
-	 * register into the given <tt>destination</tt> register.
+	 * Builds an instruction that loads the value at the address
+	 * held by the given <tt>source</tt> register into the given
+	 * <tt>destination</tt> register.
 	 * 
 	 * @param source Register to read target memory address from.
 	 * @param destination Register to load read value into.
+	 * @return Built instruction.
 	 */
 	static IExecutableInstruction load(final ExtendedRegister source, final Register destination) {
 		return context -> {
@@ -39,30 +42,33 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	}
 
 	/**
-	 * Retrieves a memory address from next two immediates and load it
-	 * associated value into the given <tt>destination</tt> register.
+	 * Builds an instruction that retrieves a memory address from
+	 * next two immediate and load it associated value into the
+	 * given <tt>destination</tt> register.
 	 * 
 	 * @param destination Register to load read value into.
-	 * @throws IllegalAccessException If any error occurs while reading target address.
+	 * @return Built instruction.
 	 */
-	default void loadFromImmediateAddress(final Register destination)
-			throws IllegalAccessException {
-		final int address = nextShort();
-		final byte value = readByte(address);
-		getRegister(destination).set(value);
+	static IExecutableInstruction loadAddress(final Register destination) {
+		return context -> {
+			final int address = context.nextShort();
+			final byte value = context.readByte(address);
+			context.getRegister(destination).set(value);
+		};
 	}
 
 	/**
-	 * Loads value read from next immediate into the given
-	 * <tt>destination</tt> register.
+	 * Builds an instruction that loads value read from next
+	 * immediate into the given <tt>destination</tt> register.
 	 * 
 	 * @param destination Register to load read value into.
-	 * @throws IllegalAccessException If any error occurs while reading next immediate.
+	 * @return Built instruction.
 	 */
-	default void loadFromImmediateValue(final Register destination)
-			throws IllegalAccessException {
-		final byte value = nextByte();
-		getRegister(destination).set(value);
+	static IExecutableInstruction loadValue(final Register destination) {
+		return context -> {
+			final byte value = context.nextByte();
+			context.getRegister(destination).set(value);
+		};
 	}
 
 	/**

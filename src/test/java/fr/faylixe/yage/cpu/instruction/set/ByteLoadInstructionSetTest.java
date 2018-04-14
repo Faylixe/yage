@@ -3,6 +3,8 @@ package fr.faylixe.yage.cpu.instruction.set;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.instruction.set.ByteLoadInstructionSet.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +61,24 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	public void testLoadHToA() {
 		performInstructionTest(0x7C, 4, LOAD_H_TO_A, context -> {
 			assertEquals(6, context.getRegister(A).get());
+		});
+	}
+
+	/** Test LD (NN), A instruction. **/
+	@Test
+	public void testLoadNNToA() {
+		performInstructionTest(0xFA, 16, LOAD_NN_TO_A, context -> {
+			assertEquals(0, context.getRegister(A).get());
+			verify(context, times(1)).nextShort();
+			verify(context, times(1)).readByte(10794);
+		});
+	}
+
+	/** Test LD #, A instruction. **/
+	@Test
+	public void testLoadNToA() {
+		performInstructionTest(0x3E, 8, LOAD_N_TO_A, context -> {
+			assertEquals(42, context.getRegister(A).get());
 		});
 	}
 

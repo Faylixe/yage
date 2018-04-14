@@ -31,7 +31,7 @@ public interface IInstructionStreamTest {
 	static IInstructionStream createMockInstructionStream() {
 		final IInstructionStream stream = mock(IInstructionStream.class);
 		try {
-			when(stream.nextByte()).thenReturn((byte) 0);
+			when(stream.nextByte()).thenReturn((byte) 42);
 			when(stream.nextShort()).thenCallRealMethod();
 		}
 		catch (final IllegalAccessException e) {

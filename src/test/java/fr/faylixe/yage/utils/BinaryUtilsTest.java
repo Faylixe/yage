@@ -72,4 +72,9 @@ public final class BinaryUtilsTest {
 		assertEquals(3, decomposed[1]);
 	}
 
+	@Test
+	public void testValue() {
+		LOG.info("42 42 -> {}", BinaryUtils.compose((byte) 42, (byte) 42));
+	}
+
 }

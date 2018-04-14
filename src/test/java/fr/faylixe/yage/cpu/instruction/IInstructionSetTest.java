@@ -14,8 +14,6 @@ import static org.mockito.Mockito.when;
 
 import static fr.faylixe.yage.utils.MockitoUtils.toAnswer;
 
-import java.util.function.Consumer;
-
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
@@ -27,6 +25,7 @@ import fr.faylixe.yage.memory.AddressBus;
 import fr.faylixe.yage.memory.IMemoryBankTest;
 import fr.faylixe.yage.memory.IMemoryStream;
 import fr.faylixe.yage.memory.IMemoryStreamTest;
+import fr.faylixe.yage.utils.MockitoUtils.ThrowingConsumer;
 
 /**
  * Basic interface for performing instruction set tests.
@@ -83,7 +82,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 			final int expectedOpcode,
 			final int expectedCycle,
 			final IInstruction instruction,
-			final Consumer<IExecutionContext> test) {
+			final ThrowingConsumer<IExecutionContext> test) {
 		assertNotNull(instruction);
 		assertEquals(expectedOpcode, instruction.getOpcode());
 		assertEquals(expectedCycle, instruction.getCycle());
@@ -93,11 +92,11 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 		bindRegisterProvider(context, getTestRegisterProvider());
 		try {
 			instruction.execute(context);
+			test.accept(context);
 		}
-		catch (final IllegalAccessException e) {
+		catch (final Exception e) {
 			fail(e);
 		}
-		test.accept(context);
 	}
 
 	/**

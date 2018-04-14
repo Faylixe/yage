@@ -112,7 +112,7 @@ public interface IMemoryBankTest extends IMemoryStreamTest {
 				else if (address == offset + 1) {
 					return (byte) 15;
 				}
-				else if (address == offset + 2) {
+				else if (address >= offset + 2 && address < (offset + size)) {
 					return (byte) 0;
 				}
 				throw new IllegalAccessException();
