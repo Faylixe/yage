@@ -28,7 +28,7 @@ public final class EchoMemoryBankTest {
 
 	/** Initializes target instance. **/
 	@BeforeEach
-	public void setup() {
+	public void setUp() {
 		echoed = IMemoryBankTest.createMemoryBankMock();
 		echo = new EchoMemoryBank(echoed, TEST_OFFSET + TEST_SIZE);
 	}

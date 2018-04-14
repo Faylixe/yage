@@ -29,7 +29,7 @@ public final class SwitchableMemoryBankTest implements IMemoryBankTest {
 
 	/** Initializes mock banks. **/
 	@BeforeEach
-	public void setup() {
+	public void setUp() {
 		bank1 = IMemoryBankTest.createMemoryBankMock();
 		bank2 = IMemoryBankTest.createMemoryBankMock();
 	}

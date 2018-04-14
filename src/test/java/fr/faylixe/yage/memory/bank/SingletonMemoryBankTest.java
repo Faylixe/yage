@@ -23,7 +23,7 @@ public final class SingletonMemoryBankTest {
 
 	/** Initialization method. **/
 	@BeforeEach
-	public void setup() {
+	public void setUp() {
 		bank = new SingletonMemoryBank(TEST_OFFSET);
 		ErrorlessTest.run(() -> bank.writeByte((byte) 69, TEST_OFFSET));
 	}
