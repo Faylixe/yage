@@ -7,40 +7,117 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister;
+import fr.faylixe.yage.cpu.register.IRegisterProvider.Register;
+import fr.faylixe.yage.utils.MockitoUtils.ThrowingConsumer;
+import fr.faylixe.yage.utils.StreamUtils;
+
 /**
- * Test interface for components that aims to
- * deliver access to register. The test scenario
- * assumes following register states :
- * 
- * ---------------------------------
- * | A | F | B | C | D | E | H | L |
- * ---------------------------------
- * | 1 | 0 | 2 | 3 | 4 | 5 | 6 | 7 | 
- * ---------------------------------
- * 
- * Which implies following extended values :
- * 
- * --------------------------
- * | AF | BC  | DE   | HL   |
- * --------------------------
- * | 1  | 515 | 1029 | 1543 |
- * --------------------------
- * 
- * Plus following random values :
- * 
- * - SP -> 69
- * - PC -> 42
+ * Test interface for components that aims to deliver access to register.
+ * The test scenario assumes following registers states defined by
+ * {@link #EXPECTED_REGISTERS} and {@link #EXPECTED_EXTENDED_REGISTERS}
+ * maps.
  * 
  * @author fv
  */
 @TestInstance(Lifecycle.PER_CLASS)
 public interface IRegisterProviderTest {
+
+	/**
+	 * Expected values for 8-bit registers.
+	 * 
+	 * ---------------------------------
+	 * | A | F | B | C | D | E | H | L |
+	 * ---------------------------------
+	 * | 1 | 0 | 2 | 3 | 4 | 5 | 6 | 7 | 
+	 * ---------------------------------
+	 */
+	static final Map<Register, Byte> EXPECTED_REGISTERS = Map.of(
+			A, (byte) 0x1,
+			B, (byte) 0x2,
+			C, (byte) 0x3,
+			D, (byte) 0x4,
+			E, (byte) 0x5,
+			F, (byte) 0x0,
+			H, (byte) 0x6,
+			L, (byte) 0x7
+	);
+
+	/**
+	 * Expected values for 16-bit registers.
+	 * 
+	 * ------------------------------------
+	 * | AF | BC  | DE   | HL   | SP | PC |
+	 * ------------------------------------
+	 * | 1  | 515 | 1029 | 1543 | 69 | 42 |
+	 * ------------------------------------
+	 */
+	static final Map<ExtendedRegister, Short> EXPECTED_EXTENDED_REGISTERS = Map.of(
+			AF, (short) 0x1,
+			BC, (short) 0x515,
+			DE, (short) 0x1029,
+			HL, (short) 0x1543,
+			SP, (short) 0x69,
+			PC, (short) 0x42
+	);
+
+	/**
+	 * Tests values for 8-bit registers denoted
+	 * by the given <tt>stream</tt>.
+	 * 
+	 * @param stream Stream of register to test.
+	 * @param provider Provider to get register value from.
+	 */
+	private static void testRegisters(
+			final Stream<Register> stream,
+			final IRegisterProvider provider) {
+		stream.forEach(register -> {
+			assertEquals(
+					(byte) EXPECTED_REGISTERS.get(register),
+					provider.getRegister(register).get()
+				);
+		});
+	}
+	
+	/**
+	 * Tests values for 16-bit registers denoted
+	 * by the given <tt>stream</tt>.
+	 * 
+	 * @param stream Stream of register to test.
+	 * @param provider Provider to get register value from.
+	 */
+	private static void testExtendedRegisters(
+			final Stream<ExtendedRegister> stream,
+			final IRegisterProvider provider) {
+		stream.forEach(register -> {
+			assertEquals(
+					(short) EXPECTED_EXTENDED_REGISTERS.get(register),
+					provider.getExtendedRegister(register).get()
+				);
+		});
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	static <T extends IRegisterProvider> ThrowingConsumer<T> createRegistersTest(
+			final Register distinct,
+			final byte expected) {
+		return provider -> {
+			assertEquals(expected, provider.getRegister(distinct).get());
+			testRegisters(StreamUtils.of(Register.class, distinct), provider);
+			testExtendedRegisters(Stream.of(ExtendedRegister.values()), provider);
+		};
+	}
 
 	/**
 	 * Factory method that creates a target testing instance.
@@ -75,14 +152,7 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testRegisters() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(1, provider.getRegister(A).get());
-			assertEquals(2, provider.getRegister(B).get());
-			assertEquals(3, provider.getRegister(C).get());
-			assertEquals(4, provider.getRegister(D).get());
-			assertEquals(5, provider.getRegister(E).get());
-			assertEquals(0, provider.getRegister(F).get());
-			assertEquals(6, provider.getRegister(H).get());
-			assertEquals(7, provider.getRegister(L).get());
+			testRegisters(Stream.of(Register.values()), provider);
 		});		
 	}
 
@@ -90,12 +160,7 @@ public interface IRegisterProviderTest {
 	@Test
 	default void testExtendedRegisters() {
 		performRegisterProviderTest(provider -> {
-			assertEquals(256, provider.getExtendedRegister(AF).get());
-			assertEquals(515, provider.getExtendedRegister(BC).get());
-			assertEquals(1029, provider.getExtendedRegister(DE).get());
-			assertEquals(1543, provider.getExtendedRegister(HL).get());
-			assertEquals(69, provider.getExtendedRegister(SP).get());
-			assertEquals(42, provider.getExtendedRegister(PC).get());
+			testExtendedRegisters(Stream.of(ExtendedRegister.values()), provider);
 		});
 	}
 
@@ -105,15 +170,11 @@ public interface IRegisterProviderTest {
 	 * @return Built mock instance.
 	 */
 	static IRegisterProvider createMockRegisterProvider() {
-		return new MockRegisterProviderBuilder()
-				.addRegister(A, (byte) 1)
-				.addRegister(B, (byte) 2)
-				.addRegister(C, (byte) 3)
-				.addRegister(D, (byte) 4)
-				.addRegister(E, (byte) 5)
-				.addRegister(F, (byte) 0)
-				.addRegister(H, (byte) 6)
-				.addRegister(L, (byte) 7)
+		final MockRegisterProviderBuilder builder = new MockRegisterProviderBuilder();
+		for (final Register register : EXPECTED_REGISTERS.keySet()) {
+			builder.addRegister(register, EXPECTED_REGISTERS.get(register));
+		}
+		return builder
 				.addCompositeRegister(AF, A, F)
 				.addCompositeRegister(BC, B, C)
 				.addCompositeRegister(DE, D, E)
