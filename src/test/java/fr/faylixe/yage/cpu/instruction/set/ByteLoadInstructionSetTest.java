@@ -59,7 +59,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	@Test
 	public void testLoadNNToA() {
 		performInstructionTest(0xFA, 16, LOAD_NN_TO_A, context -> {
-			createRegistersTest(A, (byte) 0x0).accept(context);
+			createRegistersTest(A, (byte) 0).accept(context);
 			verify(context, times(1)).nextShort();
 			verify(context, times(1)).readByte(10794);
 		});
@@ -68,7 +68,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	/** Test LD #, A instruction. **/
 	@Test
 	public void testLoadNToA() {
-		performInstructionTest(0x3E, 8, LOAD_N_TO_A, createRegistersTest(A, (byte) 0x42));
+		performInstructionTest(0x3E, 8, LOAD_N_TO_A, createRegistersTest(A, (byte) 42));
 	}
 
 	/** Test LD A, B instruction. **/
