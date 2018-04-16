@@ -42,6 +42,23 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	}
 
 	/**
+	 * Builds an instruction that loads the value at the address
+	 * held by the given <tt>destination</tt> register from the given
+	 * <tt>source</tt> register.
+	 * 
+	 * @param source Register to get value to write from.
+	 * @param destination Register to read target memory address from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction load(final Register source, final ExtendedRegister destination) {
+		return context -> {
+			final int address = context.getExtendedRegister(destination).get();
+			final byte value = context.getRegister(source).get();
+			context.writeByte(value, address);
+		};
+	}
+
+	/**
 	 * Builds an instruction that retrieves a memory address from
 	 * next two immediate and load it associated value into the
 	 * given <tt>destination</tt> register.
@@ -58,6 +75,21 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	}
 
 	/**
+	 * Builds an instruction that write to a memory address 
+	 * denoted by the given register the next immediate value.
+	 * 
+	 * @param destination Register to get target address from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction loadAddress(final ExtendedRegister destination) {
+		return context -> {
+			final int address = context.getExtendedRegister(destination).get();
+			final byte value = context.nextByte();
+			context.writeByte(value, address);
+		};
+	}
+
+	/**
 	 * Builds an instruction that loads value read from next
 	 * immediate into the given <tt>destination</tt> register.
 	 * 
@@ -69,33 +101,6 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 			final byte value = context.nextByte();
 			context.getRegister(destination).set(value);
 		};
-	}
-
-	/**
-	 * 
-	 * @param source
-	 * @param address
-	 */
-	default void putToAddress(final Register source, final ExtendedRegister address) {
-		
-	}
-
-	/**
-	 * 
-	 * @param source
-	 * @param destination
-	 * @param offset
-	 */
-	default void putToAddress(final Register source, final Register destination, final int offset) {
-		
-	}
-
-	/**
-	 * 
-	 * @param source
-	 */
-	default void putToAddress(final Register source) {
-		// TODO : Read two immediate and put
 	}
 
 }
