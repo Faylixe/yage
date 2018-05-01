@@ -106,8 +106,24 @@ public interface IRegisterProviderTest {
 	}
 
 	/**
+	 * Static factory that creates a set of assertions for registers state.
 	 * 
-	 * @return
+	 * @return Created register provider test.
+	 */
+	static <T extends IRegisterProvider> ThrowingConsumer<T> createRegistersTest() {
+		return provider -> {
+			testRegisters(Stream.of(Register.values()), provider);
+			testExtendedRegisters(Stream.of(ExtendedRegister.values()), provider);
+		};
+	}
+
+	/**
+	 * Static factory that creates a set of assertions for register state.
+	 * Created test assumes that one register has a different value than expected.
+	 * 
+	 * @param distinct Register that is supposed to have a distinct value.
+	 * @param expected Expected value for the distinct register.
+	 * @return Created register provider test.
 	 */
 	static <T extends IRegisterProvider> ThrowingConsumer<T> createRegistersTest(
 			final Register distinct,
@@ -115,7 +131,6 @@ public interface IRegisterProviderTest {
 		return provider -> {
 			assertEquals(expected, provider.getRegister(distinct).get());
 			testRegisters(StreamUtils.of(Register.class, distinct), provider);
-			//testExtendedRegisters(Stream.of(ExtendedRegister.values()), provider);
 		};
 	}
 

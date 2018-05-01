@@ -10,6 +10,28 @@ import fr.faylixe.yage.memory.IMemoryStream;
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
 	/**
+	 * 
+	 * @param source
+	 * @param offset
+	 * @param destination
+	 * @return
+	 */
+	static IExecutableInstruction load(final Register source, final int offset, final Register destination) {
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 * @param offset
+	 * @return
+	 */
+	static IExecutableInstruction load(final Register source, final Register destination, final int offset) {
+		return null;
+	}
+
+	/**
 	 * Builds an instruction that load value from <tt>source</tt>
 	 * register to the given <tt>destination</tt> register.
 	 * 
