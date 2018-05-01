@@ -126,7 +126,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 
 	LD_A_A(0x7F, 4, NOP),
 	LD_A_B(0x78, 4, load(B, A)),
-	LD_A_C_TO_A(0x79, 4, load(C, A)),
+	LD_A_C(0x79, 4, load(C, A)),
 	LD_A_D(0x7A, 4, load(D, A)),
 	LD_A_E(0x7B, 4, load(E, A)),
 	LD_A_H(0x7C, 4, load(H, A)),
