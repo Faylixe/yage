@@ -35,6 +35,15 @@ public final class CompositeShortRegister implements IShortRegister {
 				mostSignificant.get(),
 				leastSignificant.get());
 	}
+	
+	/** {@inheritDoc} **/
+	@Override
+	public byte[] getBytes() {
+		return new byte[] {
+			mostSignificant.get(),
+			leastSignificant.get()
+		};
+	}
 
 	/** {@inheritDoc} **/
 	@Override

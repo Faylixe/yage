@@ -1,14 +1,111 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
+import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyToAddress;
+import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyNextShortValue;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
+
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstruction;
+import fr.faylixe.yage.cpu.register.FlagsRegister;
 
 /**
+ * Instruction set which contains 16-bit load operations.
+ * 
+ * TODO : Validate opcode format (0x00XX vs 0xXX)
+ * TODO : Understand stack pointer behavior.
+ * 
+ * @see GBCPUman, page 76 - 79
  * 
  * @author fv
  */
 public enum ShortLoadInstructionSet implements IInstruction {
+
+	/**
+	 * LD n, nn
+	 * 
+	 * Put the next two immediate value into 16-bit register
+	 * denoted by <tt>n</tt>. Where <tt>nn</tt> could be either
+	 * BC, DE, HL, or SP.
+	 * 
+	 * @see GBCPUMan page 76
+	 */
+
+	LD_BC_NN(0x01, 12, copyNextShortValue(BC)),
+	LD_DE_NN(0x11, 12, copyNextShortValue(DE)),
+	LD_HL_NN(0x21, 12, copyNextShortValue(HL)),
+	LD_SP_NN(0x31, 12, copyNextShortValue(SP)),
+	
+	/**
+	 * LD SP, HL
+	 * 
+	 * Put value from HL register into (SP).
+	 * 
+	 * @see GBCPUMan page 76
+	 */
+
+	LD_SP_HL(0xF9, 8, copyToAddress(HL, SP)),
+
+	/**
+	 * LDHL SP, n
+	 * 
+	 * TODO : document.
+	 * 
+	 * @see GBCPUMan page 77
+	 */
+	
+	LDHL_SP(0xF8, 12, context -> {
+		final byte n = context.nextByte();
+		// TODO : Compute value from SP.
+		final short value = 0;
+		context.getExtendedRegister(HL).set(value);
+		final FlagsRegister flags = context.getFlagsRegister();
+		flags.resetZero();
+		flags.resetSubtraction();
+		// TODO : Set or reset H flags according to operation.
+		// TODO : Set or reset C flags according to operation.
+	}),
+
+	/**
+	 * LD (nn), SP
+	 * 
+	 * TODO : document.
+	 * 
+	 * @see GBCPUMan page 78
+	 */
+
+	LD_NN_SP(0x08, 20, context -> {
+		// TODO : Validate instruction.
+		final int address = context.nextShort();
+		final byte[] values = context.getExtendedRegister(SP).getBytes();
+		context.writeBytes(values, address);
+	}),
+	
+	/**
+	 * PUSH nn
+	 * 
+	 * TODO : document.
+	 * 
+	 * @see GBCPUMan page 78
+	 */
+
+	PUSH_AF(0xF5, 16, null),
+	PUSH_BC(0xC5, 16, null),
+	PUSH_DE(0xD5, 16, null),
+	PUSH_HL(0xE5, 16, null),
+
+	/**
+	 * POP nn
+	 * 
+	 * TODO : document.
+	 * 
+	 * @see GBCPUMan page 79
+	 */
+
+	POP_AF(0xF1, 12, null),
+	POP_BC(0xC1, 12, null),
+	POP_DE(0xD1, 12, null),
+	POP_HL(0xE1, 12, null),
 
 	;
 
@@ -29,11 +126,11 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * @param executable Delegate executable instruction.
 	 */
 	private ShortLoadInstructionSet(
-			final short opcode,
-			final byte cycle,
+			final int opcode,
+			final int cycle,
 			final IExecutableInstruction executable) {
-		this.opcode = opcode;
-		this.cycle = cycle;
+		this.opcode = (short) opcode;
+		this.cycle = (byte) cycle;
 		this.executable = executable;
 	}
 

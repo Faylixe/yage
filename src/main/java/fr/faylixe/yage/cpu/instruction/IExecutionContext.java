@@ -109,6 +109,23 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	}
 
 	/**
+	 * Builds an instruction that loads the value at the address
+	 * held by the given <tt>destination</tt> register from the given
+	 * <tt>source</tt> register.
+	 * 
+	 * @param source Register to get value to write from.
+	 * @param destination Register to read target memory address from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction copyToAddress(final ExtendedRegister source, final ExtendedRegister destination) {
+		return context -> {
+			final int address = context.getExtendedRegister(destination).get();
+			final byte[] values = context.getExtendedRegister(source).getBytes();
+			context.writeBytes(values, address);
+		};
+	}
+
+	/**
 	 * Builds an instruction that loads the value from <tt>source</tt>
 	 * register at the memory address denoted by the <tt>destination</tt>
 	 * register padded by the given <tt>offset</tt>.
@@ -138,6 +155,18 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 			final int address = context.getExtendedRegister(destination).get();
 			final byte value = context.nextByte();
 			context.writeByte(value, address);
+		};
+	}
+	
+	/**
+	 * 
+	 * @param destination
+	 * @return
+	 */
+	static IExecutableInstruction copyNextShortValue(final ExtendedRegister destination) {
+		return context -> {
+			final short value =	context.nextShort();
+			context.getExtendedRegister(destination).set(value);
 		};
 	}
 
