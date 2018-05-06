@@ -5,6 +5,8 @@ import static fr.faylixe.yage.cpu.instruction.IExecutionContext.loadAddress;
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.loadValue;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
+import static fr.faylixe.yage.cpu.instruction.set.ByteALUInstructionSet.DEC_HL;
+import static fr.faylixe.yage.cpu.instruction.set.ByteALUInstructionSet.INC_HL;
 
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
@@ -12,6 +14,8 @@ import fr.faylixe.yage.cpu.instruction.IInstruction;
 
 /**
  * Instruction set which contains 8-bit load operations.
+ * 
+ * TODO : Validate opcode format (0x00XX vs 0xXX)
  * 
  * @see GBCPUman, page 65 - 75
  * @author fv
@@ -167,6 +171,12 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 * 
 	 * Put value from address ($FF00 + C) into A register.
 	 * 
+	 * @see GBCPUMan page 70
+	 */
+
+	LD_A_INTERRUPT(0xF2, 8, load(C, 0xFF00, A)),
+	
+	/**
 	 * LD (C), A
 	 * LD ($FF00 + C), A
 	 * 
@@ -174,9 +184,66 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 70
 	 */
-	
-	LD_A_INTERRUPT(0xF2, 8, load(C, 0xFF00, A)),
+
 	LD_INTERRUPT_A(0xE2, 8, load(A, C, 0xFF00)),
+
+	/**
+	 * LD A, (HLD)
+	 * LD A, (HL-)
+	 * LDD A, (HL)
+	 * 
+	 * Put value located at address (HL) into A register.
+	 * Then decrement value located at (HL).
+	 * 
+	 * @see GBCPUMan page 71
+	 */
+	
+	LDD_A_HL(0x3A, 8, LD_A_HL.then(DEC_HL)),
+	
+	/** 
+	 * LD (HLD) A
+	 * LD (HL-), A
+	 * LDD (HL), A
+
+	 * Put value from A register into memory at address (HL).
+	 * Then decrement value located at (HL).
+	 * 
+	 * @see GBCPUMan page 72
+	 */
+	
+	LDD_HL_A(0X32, 8, LD_HL_A.then(DEC_HL)),
+
+	/**
+	 * LD A, (HLI)
+	 * LD A, (HL+)
+	 * LDI A, (HL)
+	 * 
+	 * Put value located at address (HL) into A register.
+	 * Then increment value located at (HL).
+	 * 
+	 * @see GBCPUMan page 73
+	 */
+
+	LDI_A_HL(0x2A, 8, LD_A_HL.then(INC_HL)),
+
+	/**
+	 * LD (HLI), A
+	 * LD (HL+), A
+	 * LDI (HL), A
+	 * 
+	 * Put value from A register into memory at address (HL).
+	 * Then increment value located at (HL).
+	 * 
+	 * @see GBCPUMan page 74
+	 */
+	LDI_HL_A(0x22, 8, LD_HL_A.then(INC_HL)),
+
+	/**
+	 * Put A into memory address $FF00+n
+	 */
+
+	LDH_N_A(0xE0, 12, null),
+	LDH_A_N(0xF0, 12, null)
 
 	;
 

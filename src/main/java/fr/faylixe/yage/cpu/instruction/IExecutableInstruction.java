@@ -19,6 +19,20 @@ public interface IExecutableInstruction {
 	 */
 	void execute(IExecutionContext context) throws IllegalAccessException;
 
+	/**
+	 * Composite factory method that creates a new instruction from this
+	 * one and the given <tt>next</tt> immediate instruction to execute.
+	 * 
+	 * @param next Next instruction to execute after this one.
+	 * @return Composite created instruction.
+	 */
+	default IExecutableInstruction then(final IExecutableInstruction next) {
+		return context -> {
+			execute(context);
+			next.execute(context);
+		};
+	}
+
 	/** No operation static instance. **/
 	static IExecutableInstruction NOP = context -> {};
 

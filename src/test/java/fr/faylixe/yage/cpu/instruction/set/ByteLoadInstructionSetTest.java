@@ -15,7 +15,10 @@ import java.util.Collection;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
+import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstructionSetTest;
+import fr.faylixe.yage.cpu.register.IRegisterProvider.Register;
+import fr.faylixe.yage.utils.MockitoUtils.ThrowingConsumer;
 
 /**
  * 
@@ -38,10 +41,23 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 				dynamicTest("LD L, n", () -> performInstructionTest(0x2E, 8, LD_L_N, createRegistersTest(L, (byte) 42)))
 		);
 	}
-	
+
 	/**
 	 * 
+	 * @param target
 	 * @return
+	 */
+	public static ThrowingConsumer<IExecutionContext> createHLLoadTest(final Register target) {
+		return context -> {
+			createRegistersTest(target, (byte) 0).accept(context);
+			verify(context, times(1)).readByte(1543);
+		};
+	}
+
+	/**
+	 * Tests factory for byte load instruction for B register.
+	 * 
+	 * @return Collection of B load register tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadToB() {
@@ -52,16 +68,14 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 				dynamicTest("LD B, E", () -> performInstructionTest(0x43, 4, LD_B_E, createRegistersTest(B, (byte) 5))),
 				dynamicTest("LD B, H", () -> performInstructionTest(0x44, 4, LD_B_H, createRegistersTest(B, (byte) 6))),
 				dynamicTest("LD B, L", () -> performInstructionTest(0x45, 4, LD_B_L, createRegistersTest(B, (byte) 7))),
-				dynamicTest("LD B, (HL)", () -> performInstructionTest(0x46, 8, LD_B_HL, context -> {
-					createRegistersTest(B, (byte) 0).accept(context);
-					verify(context, times(1)).readByte(1543);
-				}))
+				dynamicTest("LD B, (HL)", () -> performInstructionTest(0x46, 8, LD_B_HL, createHLLoadTest(B)))
 		);
 	}
 
 	/**
+	 * Tests factory for byte load instruction for C register.
 	 * 
-	 * @return
+	 * @return Collection of C load register tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadToC() {
@@ -72,16 +86,14 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD C, E", () -> performInstructionTest(0x4B, 4, LD_C_E, createRegistersTest(C, (byte) 5))),
 			dynamicTest("LD C, H", () -> performInstructionTest(0x4C, 4, LD_C_H, createRegistersTest(C, (byte) 6))),
 			dynamicTest("LD C, L", () -> performInstructionTest(0x4D, 4, LD_C_L, createRegistersTest(C, (byte) 7))),
-			dynamicTest("LD C, (HL)", () -> performInstructionTest(0x4E, 8, LD_C_HL, context -> {
-				createRegistersTest(C, (byte) 0).accept(context);
-				verify(context, times(1)).readByte(1543);
-			}))
+			dynamicTest("LD C, (HL)", () -> performInstructionTest(0x4E, 8, LD_C_HL, createHLLoadTest(C)))
 		);
 	}
 	
 	/**
+	 * Tests factory for byte load instruction for D register.
 	 * 
-	 * @return
+	 * @return Collection of D load register tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadToD() {
@@ -92,16 +104,14 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD D, E", () -> performInstructionTest(0x53, 4, LD_D_E, createRegistersTest(D, (byte) 5))),
 			dynamicTest("LD D, H", () -> performInstructionTest(0x54, 4, LD_D_H, createRegistersTest(D, (byte) 6))),
 			dynamicTest("LD D, L", () -> performInstructionTest(0x55, 4, LD_D_L, createRegistersTest(D, (byte) 7))),
-			dynamicTest("LD D, HL", () -> performInstructionTest(0x56, 8, LD_D_HL, context -> {
-				createRegistersTest(D, (byte) 0).accept(context);
-				verify(context, times(1)).readByte(1543);
-			}))
+			dynamicTest("LD D, HL", () -> performInstructionTest(0x56, 8, LD_D_HL, createHLLoadTest(D)))
 		);
 	}
 	
 	/**
+	 * Tests factory for byte load instruction for E register.
 	 * 
-	 * @return
+	 * @return Collection of E load register tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadToE() {
@@ -112,10 +122,55 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD E, E", () -> performInstructionTest(0x5B, 4, LD_E_E, createRegistersTest())),
 			dynamicTest("LD E, H", () -> performInstructionTest(0x5C, 4, LD_E_H, createRegistersTest(E, (byte) 6))),
 			dynamicTest("LD E, L", () -> performInstructionTest(0x5D, 4, LD_E_L, createRegistersTest(E, (byte) 7))),
-			dynamicTest("LD E, HL", () -> performInstructionTest(0x5E, 8, LD_E_HL, context -> {
-				createRegistersTest(E, (byte) 0).accept(context);
-				verify(context, times(1)).readByte(1543);
-			}))
+			dynamicTest("LD E, HL", () -> performInstructionTest(0x5E, 8, LD_E_HL, createHLLoadTest(E)))
+		);
+	}
+
+	/**
+	 * Tests factory for byte load instruction for H register.
+	 * 
+	 * @return Collection of H load register tests.
+	 */
+	@TestFactory
+	public Collection<DynamicTest> testLoadToH() {
+		return asList(
+			dynamicTest("LD H, B", () -> performInstructionTest(0x60, 4, LD_H_B, createRegistersTest(H, (byte) 2))),
+			dynamicTest("LD H, C", () -> performInstructionTest(0x61, 4, LD_H_C, createRegistersTest(H, (byte) 3))),
+			dynamicTest("LD H, D", () -> performInstructionTest(0x62, 4, LD_H_D, createRegistersTest(H, (byte) 4))),
+			dynamicTest("LD H, E", () -> performInstructionTest(0x63, 4, LD_H_E, createRegistersTest(H, (byte) 5))),
+			dynamicTest("LD H, H", () -> performInstructionTest(0x64, 4, LD_H_H, createRegistersTest())),
+			dynamicTest("LD H, L", () -> performInstructionTest(0x65, 4, LD_H_L, createRegistersTest(H, (byte) 7))),
+			dynamicTest("LD H, HL", () -> performInstructionTest(0x66, 8, LD_H_HL, createHLLoadTest(H)))
+		);
+	}
+
+	/**
+	 * Tests factory for byte load instruction for L register.
+	 * 
+	 * @return Collection of L load register tests.
+	 */
+	@TestFactory
+	public Collection<DynamicTest> testLoadToL() {
+		return asList(
+			dynamicTest("LD L, B", () -> performInstructionTest(0x68, 4, LD_L_B, createRegistersTest(L, (byte) 2))),
+			dynamicTest("LD L, C", () -> performInstructionTest(0x69, 4, LD_L_C, createRegistersTest(L, (byte) 3))),
+			dynamicTest("LD L, D", () -> performInstructionTest(0x6A, 4, LD_L_D, createRegistersTest(L, (byte) 4))),
+			dynamicTest("LD L, E", () -> performInstructionTest(0x6B, 4, LD_L_E, createRegistersTest(L, (byte) 5))),
+			dynamicTest("LD L, H", () -> performInstructionTest(0x6C, 4, LD_L_H, createRegistersTest(L, (byte) 6))),
+			dynamicTest("LD L, L", () -> performInstructionTest(0x6D, 4, LD_L_L, createRegistersTest())),
+			dynamicTest("LD L, HL", () -> performInstructionTest(0x6E, 8, LD_L_HL, createHLLoadTest(L)))
+		);
+	}
+
+	/**
+	 * TODO : Document.
+	 * 
+	 * @return Collection of (HL) load tests.
+	 */
+	@TestFactory
+	public Collection<DynamicTest> testLoadToHL() {
+		return asList(
+				// TODO : Implements tests.
 		);
 	}
 
@@ -132,6 +187,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD A, D", () -> performInstructionTest(0x7A, 4, LD_A_D, createRegistersTest(A, (byte) 0x4))),
 			dynamicTest("LD A, E", () -> performInstructionTest(0x7B, 4, LD_A_E, createRegistersTest(A, (byte) 0x5))),
 			dynamicTest("LD A, H", () -> performInstructionTest(0x7C, 4, LD_A_H, createRegistersTest(A, (byte) 0x6))),
+			dynamicTest("LD A, L", () -> performInstructionTest(0x7D, 4, LD_A_L, createRegistersTest(A, (byte) 0x7))),
 			// TODO : (BC), (DE), (HL)
 			dynamicTest("LD A, NN", () -> performInstructionTest(0xFA, 16, LD_A_NN, context -> {
 					createRegistersTest(A, (byte) 0).accept(context);

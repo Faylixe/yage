@@ -10,6 +10,17 @@ import fr.faylixe.yage.cpu.instruction.IInstruction;
  */
 public enum ByteALUInstructionSet implements IInstruction {
 
+	/**
+	 * 
+	 */
+
+	INC_HL(0x34, 12, null),
+
+	/**
+	 * 
+	 */
+	DEC_HL(0x35, 12, null),
+
 	;
 
 	/** Associated opcode. **/
@@ -29,11 +40,11 @@ public enum ByteALUInstructionSet implements IInstruction {
 	 * @param executable Delegate executable instruction.
 	 */
 	private ByteALUInstructionSet(
-			final short opcode,
-			final byte cycle,
+			final int opcode,
+			final int cycle,
 			final IExecutableInstruction executable) {
-		this.opcode = opcode;
-		this.cycle = cycle;
+		this.opcode = (short) opcode;
+		this.cycle = (byte) cycle;
 		this.executable = executable;
 	}
 
