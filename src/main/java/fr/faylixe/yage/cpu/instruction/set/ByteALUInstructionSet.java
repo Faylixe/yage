@@ -1,5 +1,7 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
+
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstruction;
@@ -14,12 +16,20 @@ public enum ByteALUInstructionSet implements IInstruction {
 	 * 
 	 */
 
-	INC_HL(0x34, 12, null),
+	INC_HL(0x34, 12, context -> {
+		final int address = context.getExtendedRegister(HL).get();
+		final byte value = context.readByte(address);
+		context.writeByte((byte) (value + (byte) 1), address);
+	}),
 
 	/**
 	 * 
 	 */
-	DEC_HL(0x35, 12, null),
+	DEC_HL(0x35, 12, context -> {
+		final int address = context.getExtendedRegister(HL).get();
+		final byte value = context.readByte(address);
+		context.writeByte((byte) (value - (byte) 1), address);
+	}),
 
 	;
 

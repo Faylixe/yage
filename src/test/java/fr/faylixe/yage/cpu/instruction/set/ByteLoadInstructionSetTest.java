@@ -27,8 +27,23 @@ import fr.faylixe.yage.utils.MockitoUtils.ThrowingConsumer;
 public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 
 	/**
+	 * Factory method for creating test based on (HL) load operation.
 	 * 
-	 * @return
+	 * @param target Target register that is loaded from (HL).
+	 * @return Built test.
+	 */
+	public static ThrowingConsumer<IExecutionContext> createHLLoadTest(final Register target) {
+		return context -> {
+			createRegistersTest(target, (byte) 0).accept(context);
+			verify(context, times(1)).readByte(1543);
+		};
+	}
+
+	/**
+	 * Test factory for byte load instruction that
+	 * load next immediate value into a register.
+	 * 
+	 * @return Collection of next immediate value load test.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadFromImmediate() {
@@ -43,19 +58,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 
 	/**
-	 * 
-	 * @param target
-	 * @return
-	 */
-	public static ThrowingConsumer<IExecutionContext> createHLLoadTest(final Register target) {
-		return context -> {
-			createRegistersTest(target, (byte) 0).accept(context);
-			verify(context, times(1)).readByte(1543);
-		};
-	}
-
-	/**
-	 * Tests factory for byte load instruction for B register.
+	 * Test factory for byte load instruction for B register.
 	 * 
 	 * @return Collection of B load register tests.
 	 */
@@ -73,7 +76,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 
 	/**
-	 * Tests factory for byte load instruction for C register.
+	 * Test factory for byte load instruction for C register.
 	 * 
 	 * @return Collection of C load register tests.
 	 */
@@ -91,7 +94,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 	
 	/**
-	 * Tests factory for byte load instruction for D register.
+	 * Test factory for byte load instruction for D register.
 	 * 
 	 * @return Collection of D load register tests.
 	 */
@@ -109,7 +112,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 	
 	/**
-	 * Tests factory for byte load instruction for E register.
+	 * Test factory for byte load instruction for E register.
 	 * 
 	 * @return Collection of E load register tests.
 	 */
@@ -145,7 +148,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 
 	/**
-	 * Tests factory for byte load instruction for L register.
+	 * Test factory for byte load instruction for L register.
 	 * 
 	 * @return Collection of L load register tests.
 	 */
@@ -163,14 +166,33 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 
 	/**
-	 * TODO : Document.
+	 * Factory method that creates a test related to (HL) writring.
+	 * 
+	 * @param expected Expected value to be written to (HL).
+	 * @return Built test.
+	 */
+	public static ThrowingConsumer<IExecutionContext> createHLWriteTest(final byte expected) {
+		return context -> {
+			createRegistersTest().accept(context);
+			verify(context, times(1)).writeByte(expected, 1543);
+		};
+	}
+	
+	/**
+	 * Test factory for byte load instruction for (HL) register.
 	 * 
 	 * @return Collection of (HL) load tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadToHL() {
 		return asList(
-				// TODO : Implements tests.
+				dynamicTest("LD (HL), B", () -> performInstructionTest(0x70, 8, LD_HL_B, createHLWriteTest((byte) 2))),
+				dynamicTest("LD (HL), C", () -> performInstructionTest(0x71, 8, LD_HL_C, createHLWriteTest((byte) 3))),
+				dynamicTest("LD (HL), D", () -> performInstructionTest(0x72, 8, LD_HL_D, createHLWriteTest((byte) 4))),
+				dynamicTest("LD (HL), E", () -> performInstructionTest(0x73, 8, LD_HL_E, createHLWriteTest((byte) 5))),
+				dynamicTest("LD (HL), H", () -> performInstructionTest(0x74, 8, LD_HL_H, createHLWriteTest((byte) 6))),
+				dynamicTest("LD (HL), L", () -> performInstructionTest(0x75, 8, LD_HL_L, createHLWriteTest((byte) 7))),
+				dynamicTest("LD (HL), n", () -> performInstructionTest(0x36, 12, LD_HL_N, createHLWriteTest((byte) 42)))
 		);
 	}
 
