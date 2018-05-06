@@ -81,6 +81,22 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * <tt>source</tt> register.
 	 * 
 	 * @param source Register to get value to write from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction copyToAddress(final Register source) {
+		return context -> {
+			final int address = context.nextShort();
+			final byte value = context.getRegister(source).get();
+			context.writeByte(value, address);
+		};
+	}
+
+	/**
+	 * Builds an instruction that loads the value at the address
+	 * held by the given <tt>destination</tt> register from the given
+	 * <tt>source</tt> register.
+	 * 
+	 * @param source Register to get value to write from.
 	 * @param destination Register to read target memory address from.
 	 * @return Built instruction.
 	 */

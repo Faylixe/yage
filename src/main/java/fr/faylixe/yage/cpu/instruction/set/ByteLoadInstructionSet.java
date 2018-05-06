@@ -164,7 +164,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LD_BC_A(0x02, 8, copyToAddress(A, BC)),
 	LD_DE_A(0x12, 8, copyToAddress(A, DE)),
 	LD_HL_A(0x77, 8, copyToAddress(A, HL)),
-	LD_NN_A(0xEA, 16, copyFromAddress(A)),
+	LD_NN_A(0xEA, 16, copyToAddress(A)),
 
 	/**
 	 * LD A, (C)

@@ -174,7 +174,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	static ThrowingConsumer<IExecutionContext> createMemoryWriteTest(final int address, final byte expected) {
 		return context -> {
 			createRegistersTest().accept(context);
-			verify(context, times(1)).writeByte(expected, 1543);
+			verify(context, times(1)).writeByte(expected, address);
 		};
 	}
 

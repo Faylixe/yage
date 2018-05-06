@@ -93,7 +93,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD D, E", () -> performInstructionTest(0x53, 4, LD_D_E, createRegistersTest(D, (byte) 5))),
 			dynamicTest("LD D, H", () -> performInstructionTest(0x54, 4, LD_D_H, createRegistersTest(D, (byte) 6))),
 			dynamicTest("LD D, L", () -> performInstructionTest(0x55, 4, LD_D_L, createRegistersTest(D, (byte) 7))),
-			dynamicTest("LD D, HL", () -> performInstructionTest(0x56, 8, LD_D_HL, createMemoryReadTest(1543, (byte) 0, D)))
+			dynamicTest("LD D, (HL)", () -> performInstructionTest(0x56, 8, LD_D_HL, createMemoryReadTest(1543, (byte) 0, D)))
 		);
 	}
 	
@@ -111,7 +111,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD E, E", () -> performInstructionTest(0x5B, 4, LD_E_E, createRegistersTest())),
 			dynamicTest("LD E, H", () -> performInstructionTest(0x5C, 4, LD_E_H, createRegistersTest(E, (byte) 6))),
 			dynamicTest("LD E, L", () -> performInstructionTest(0x5D, 4, LD_E_L, createRegistersTest(E, (byte) 7))),
-			dynamicTest("LD E, HL", () -> performInstructionTest(0x5E, 8, LD_E_HL, createMemoryReadTest(1543, (byte) 0, E)))
+			dynamicTest("LD E, (HL)", () -> performInstructionTest(0x5E, 8, LD_E_HL, createMemoryReadTest(1543, (byte) 0, E)))
 		);
 	}
 
@@ -129,7 +129,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD H, E", () -> performInstructionTest(0x63, 4, LD_H_E, createRegistersTest(H, (byte) 5))),
 			dynamicTest("LD H, H", () -> performInstructionTest(0x64, 4, LD_H_H, createRegistersTest())),
 			dynamicTest("LD H, L", () -> performInstructionTest(0x65, 4, LD_H_L, createRegistersTest(H, (byte) 7))),
-			dynamicTest("LD H, HL", () -> performInstructionTest(0x66, 8, LD_H_HL, createMemoryReadTest(1543, (byte) 0, H)))
+			dynamicTest("LD H, (HL)", () -> performInstructionTest(0x66, 8, LD_H_HL, createMemoryReadTest(1543, (byte) 0, H)))
 		);
 	}
 
@@ -147,7 +147,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD L, E", () -> performInstructionTest(0x6B, 4, LD_L_E, createRegistersTest(L, (byte) 5))),
 			dynamicTest("LD L, H", () -> performInstructionTest(0x6C, 4, LD_L_H, createRegistersTest(L, (byte) 6))),
 			dynamicTest("LD L, L", () -> performInstructionTest(0x6D, 4, LD_L_L, createRegistersTest())),
-			dynamicTest("LD L, HL", () -> performInstructionTest(0x6E, 8, LD_L_HL, createMemoryReadTest(1543, (byte) 0, L)))
+			dynamicTest("LD L, (HL)", () -> performInstructionTest(0x6E, 8, LD_L_HL, createMemoryReadTest(1543, (byte) 0, L)))
 		);
 	}
 
@@ -170,7 +170,7 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 	}
 
 	/**
-	 * Test factory for byte load instruction for A register.
+	 * Test factory for byte load instruction to A register.
 	 * 
 	 * @return Collection of A load tests.
 	 */
@@ -184,20 +184,21 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD A, E", () -> performInstructionTest(0x7B, 4, LD_A_E, createRegistersTest(A, (byte) 0x5))),
 			dynamicTest("LD A, H", () -> performInstructionTest(0x7C, 4, LD_A_H, createRegistersTest(A, (byte) 0x6))),
 			dynamicTest("LD A, L", () -> performInstructionTest(0x7D, 4, LD_A_L, createRegistersTest(A, (byte) 0x7))),
-			dynamicTest("LD A, BC", () -> performInstructionTest(0x0A, 8, LD_A_BC, createMemoryReadTest(515, (byte) 0,A))),
-			dynamicTest("LD A, DE", () -> performInstructionTest(0x1A, 8, LD_A_DE, createMemoryReadTest(1029, (byte) 0,A))),
-			dynamicTest("LD A, HL", () -> performInstructionTest(0x7E, 8, LD_A_HL, createMemoryReadTest(1543, (byte) 0, A))),
-			dynamicTest("LD A, NN", () -> performInstructionTest(0xFA, 16, LD_A_NN, context -> {
+			dynamicTest("LD A, (BC)", () -> performInstructionTest(0x0A, 8, LD_A_BC, createMemoryReadTest(515, (byte) 0,A))),
+			dynamicTest("LD A, (DE)", () -> performInstructionTest(0x1A, 8, LD_A_DE, createMemoryReadTest(1029, (byte) 0,A))),
+			dynamicTest("LD A, (HL)", () -> performInstructionTest(0x7E, 8, LD_A_HL, createMemoryReadTest(1543, (byte) 0, A))),
+			dynamicTest("LD A, (nn)", () -> performInstructionTest(0xFA, 16, LD_A_NN, context -> {
 					createMemoryReadTest(10794, (byte) 0, A);
 					verify(context, times(1)).nextShort();
 			})),
-			dynamicTest("LD A, #", () -> performInstructionTest(0x3E, 8, LD_A_N, createRegistersTest(A, (byte) 42)))
+			dynamicTest("LD A, n", () -> performInstructionTest(0x3E, 8, LD_A_N, createRegistersTest(A, (byte) 42)))
 		);
 	}
 
 	/**
+	 * Test factory for byte load instruction from A register.
 	 * 
-	 * @return
+	 * @return Collection of A based load tests.
 	 */
 	@TestFactory
 	public Collection<DynamicTest> testLoadFromA() {
@@ -207,8 +208,11 @@ public final class ByteLoadInstructionSetTest implements IInstructionSetTest {
 			dynamicTest("LD D, A", () -> performInstructionTest(0x57, 4, LD_D_A, createRegistersTest(D, (byte) 0x1))),
 			dynamicTest("LD E, A", () -> performInstructionTest(0x5F, 4, LD_E_A, createRegistersTest(E, (byte) 0x1))),
 			dynamicTest("LD H, A", () -> performInstructionTest(0x67, 4, LD_H_A, createRegistersTest(H, (byte) 0x1))),
-			dynamicTest("LD L, A", () -> performInstructionTest(0x6F, 4, LD_L_A, createRegistersTest(L, (byte) 0x1)))
-			// TODO : (BC), (DE), (HL), (nn)
+			dynamicTest("LD L, A", () -> performInstructionTest(0x6F, 4, LD_L_A, createRegistersTest(L, (byte) 0x1))),
+			dynamicTest("LD (BC), A", () -> performInstructionTest(0x02, 8, LD_BC_A, createMemoryWriteTest(515, (byte) 0x1))),
+			dynamicTest("LD (DE), A", () -> performInstructionTest(0x12, 8, LD_DE_A, createMemoryWriteTest(1029, (byte) 0x1))),
+			dynamicTest("LD (HL), A", () -> performInstructionTest(0x77, 8, LD_HL_A, createMemoryWriteTest(1543, (byte) 0x1))),
+			dynamicTest("LD (nn), A", () -> performInstructionTest(0xEA, 16, LD_NN_A, createMemoryWriteTest(10794, (byte) 0x1)))
 		);
 	}
 
