@@ -10,26 +10,6 @@ import fr.faylixe.yage.memory.IMemoryStream;
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
 	/**
-	 * 
-	 * @param source
-	 * @param offset
-	 * @return
-	 */
-	static IExecutableInstruction load(final Register source, final int offset) {
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @param offset
-	 * @param source
-	 * @return
-	 */
-	static IExecutableInstruction load(final int offset, final Register source) {
-		return null;
-	}
-
-	/**
 	 * Builds an instruction that load value from <tt>source</tt>
 	 * register to the given <tt>destination</tt> register.
 	 * 
@@ -54,29 +34,11 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @param destination Destination register to copy value to.
 	 * @return Built instruction.
 	 */
-	static IExecutableInstruction copy(final Register source, final int offset, final Register destination) {
+	static IExecutableInstruction copyFromAddress(final Register source, final int offset, final Register destination) {
 		return context -> {
 			final int address = offset + context.getRegister(source).get();
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
-		};
-	}
-
-	/**
-	 * Builds an instruction that loads the value from <tt>source</tt>
-	 * register at the memory address denoted by the <tt>destination</tt>
-	 * register padded by the given <tt>offset</tt>.
-	 * 
-	 * @param source Source register to copy value from.
-	 * @param destination Register that gives the target address complement.
-	 * @param offset Memory address offset to compute target location from.
-	 * @return Built instruction.
-	 */
-	static IExecutableInstruction copy(final Register source, final Register destination, final int offset) {
-		return context -> {
-			final int address = offset + context.getRegister(destination).get();
-			final byte value = context.getRegister(source).get();
-			context.writeByte(value, address);
 		};
 	}
 
@@ -125,6 +87,24 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	static IExecutableInstruction copyToAddress(final Register source, final ExtendedRegister destination) {
 		return context -> {
 			final int address = context.getExtendedRegister(destination).get();
+			final byte value = context.getRegister(source).get();
+			context.writeByte(value, address);
+		};
+	}
+
+	/**
+	 * Builds an instruction that loads the value from <tt>source</tt>
+	 * register at the memory address denoted by the <tt>destination</tt>
+	 * register padded by the given <tt>offset</tt>.
+	 * 
+	 * @param source Source register to copy value from.
+	 * @param destination Register that gives the target address complement.
+	 * @param offset Memory address offset to compute target location from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction copyToAddress(final Register source, final Register destination, final int offset) {
+		return context -> {
+			final int address = offset + context.getRegister(destination).get();
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
 		};

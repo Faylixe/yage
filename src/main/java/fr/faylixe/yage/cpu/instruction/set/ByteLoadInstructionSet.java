@@ -1,7 +1,6 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copy;
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.load;
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyFromAddress;
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyToAddress;
 import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyNextValue;
@@ -176,7 +175,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 70
 	 */
 
-	LD_A_INTERRUPT(0xF2, 8, copy(C, 0xFF00, A)),
+	LD_A_INTERRUPT(0xF2, 8, copyFromAddress(C, 0xFF00, A)),
 	
 	/**
 	 * LD (C), A
@@ -187,7 +186,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 70
 	 */
 
-	LD_INTERRUPT_A(0xE2, 8, copy(A, C, 0xFF00)),
+	LD_INTERRUPT_A(0xE2, 8, copyToAddress(A, C, 0xFF00)),
 
 	/**
 	 * LD A, (HLD)
@@ -241,11 +240,38 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	LDI_HL_A(0x22, 8, LD_HL_A.then(INC_HL)),
 
 	/**
-	 * Put A into memory address $FF00+n
+	 * LDH (n), A
+	 * 
+	 * Put value from A register into memory at address
+	 * denoted by ($FF00 + n) where <tt>n</tt> is the next
+	 * immediate value.
+	 * 
+	 * /!\ Ensure address computation with type inference.
+	 * 
+	 * @see GBCPUMan page 75
 	 */
 
-	LDH_N_A(0xE0, 12, null),
-	LDH_A_N(0xF0, 12, null)
+	LDH_N_A(0xE0, 12, context -> {
+		final int address = 0xFF00 + context.nextByte();
+		final byte value = context.getRegister(A).get();
+		context.writeByte(value, address);
+	}),
+	
+	/**
+	 * LDH A, (n)
+	 * 
+	 * Put value memory address denoted by ($FF00 + n) where
+	 * <tt>n</tt> is the next immediate value, into A register.
+	 * 
+	 * /!\ Ensure address computation with type inference.
+	 * 
+	 * @see GBCPUMan page 75
+	 */
+	LDH_A_N(0xF0, 12, context -> {
+		final int address = 0xFF00 + context.nextByte();
+		final byte value = context.readByte(address);
+		context.getRegister(A).set(value);
+	})
 
 	;
 
