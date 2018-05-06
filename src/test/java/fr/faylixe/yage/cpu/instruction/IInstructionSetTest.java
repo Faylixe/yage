@@ -10,8 +10,10 @@ import static org.mockito.Mockito.anyByte;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static fr.faylixe.yage.cpu.register.IRegisterProviderTest.createRegistersTest;
 import static fr.faylixe.yage.utils.MockitoUtils.toAnswer;
 
 import org.junit.jupiter.api.TestInstance;
@@ -21,6 +23,7 @@ import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstruction;
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
 import fr.faylixe.yage.cpu.register.IRegisterProviderTest;
+import fr.faylixe.yage.cpu.register.IRegisterProvider.Register;
 import fr.faylixe.yage.memory.AddressBus;
 import fr.faylixe.yage.memory.IMemoryBankTest;
 import fr.faylixe.yage.memory.IMemoryStream;
@@ -147,6 +150,32 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 		when(context.getRegister(any())).then(toAnswer(provider::getRegister));
 		when(context.getFlagsRegister()).then(toAnswer(provider::getFlagsRegister));
 		when(context.getExtendedRegister(any())).then(toAnswer(provider::getExtendedRegister));
+	}
+
+	/**
+	 * Factory method for creating test based on (HL) load operation.
+	 * 
+	 * @param target Target register that is loaded from (HL).
+	 * @return Built test.
+	 */
+	static ThrowingConsumer<IExecutionContext> createMemoryReadTest(final int address, final byte expected, final Register target) {
+		return context -> {
+			createRegistersTest(target, expected).accept(context);
+			verify(context, times(1)).readByte(address);
+		};
+	}
+
+	/**
+	 * Factory method that creates a test related to (HL) writring.
+	 * 
+	 * @param expected Expected value to be written to (HL).
+	 * @return Built test.
+	 */
+	static ThrowingConsumer<IExecutionContext> createMemoryWriteTest(final int address, final byte expected) {
+		return context -> {
+			createRegistersTest().accept(context);
+			verify(context, times(1)).writeByte(expected, 1543);
+		};
 	}
 
 }
