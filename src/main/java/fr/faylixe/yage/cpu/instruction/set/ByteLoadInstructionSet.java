@@ -252,6 +252,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 */
 
 	LDH_N_A(0xE0, 12, context -> {
+		// TODO : Check for casting (signed -> unsigned).
 		final int address = 0xFF00 + context.nextByte();
 		final byte value = context.getRegister(A).get();
 		context.writeByte(value, address);
@@ -268,6 +269,7 @@ public enum ByteLoadInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 75
 	 */
 	LDH_A_N(0xF0, 12, context -> {
+		// TODO : Check for casting (signed -> unsigned).
 		final int address = 0xFF00 + context.nextByte();
 		final byte value = context.readByte(address);
 		context.getRegister(A).set(value);

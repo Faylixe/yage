@@ -9,6 +9,8 @@ import fr.faylixe.yage.cpu.register.IRegisterProvider.Register;
  * executed by using an {@link IExecutionContext} instance
  * that provides all data stream (memory, registers, etc ...).
  * 
+ * /!\ TODO : Ensure address casting.
+ * 
  * @author fv
  */
 @FunctionalInterface
@@ -80,6 +82,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final Register source, final int offset, final Register destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = offset + context.getRegister(source).get();
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
@@ -97,6 +100,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final ExtendedRegister source, final Register destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.getExtendedRegister(source).get();
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
@@ -113,6 +117,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final Register destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.nextShort();
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
@@ -129,6 +134,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.nextShort();
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
@@ -146,6 +152,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source, final ExtendedRegister destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.getExtendedRegister(destination).get();
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
@@ -163,6 +170,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final ExtendedRegister source, final ExtendedRegister destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.getExtendedRegister(destination).get();
 			final byte[] values = context.getExtendedRegister(source).getBytes();
 			context.writeBytes(values, address);
@@ -181,6 +189,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source, final Register destination, final int offset) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = offset + context.getRegister(destination).get();
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
@@ -196,6 +205,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyNextValue(final ExtendedRegister destination) {
 		return context -> {
+			// TODO : Ensure casting (signed -> unsigned).
 			final int address = context.getExtendedRegister(destination).get();
 			final byte value = context.nextByte();
 			context.writeByte(value, address);

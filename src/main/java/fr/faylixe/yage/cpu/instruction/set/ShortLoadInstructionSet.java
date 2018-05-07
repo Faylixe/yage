@@ -48,7 +48,8 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	/**
 	 * LDHL SP, n
 	 * 
-	 * Put SP + n into HL register.
+	 * Put SP + n into HL register. Where <tt>n</tt> is
+	 * the next immediate as a signed byte.
 	 * 
 	 * Flags affected :
 	 * 
@@ -61,11 +62,12 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 */
 	
 	LDHL_SP(0xF8, 12, context -> {
-		// TODO : Perform arithmetic operation by hands.
-		final int n = (int) context.nextByte();
-		final int hl = context.getExtendedRegister(SP).get();
-		context.getExtendedRegister(HL).set((short) (hl + n));
-		//context.getFlagsRegister().computeSum(hl + n);
+		final short sp = context.getExtendedRegister(SP).get();
+		// Note : Since n is interpreted as signed,
+		// it could be casted safely into short container.
+		final short n = (short) context.nextByte();
+		final short result = context.add(sp, n);
+		context.getExtendedRegister(HL).set(result);
 	}),
 
 	/**
@@ -77,7 +79,7 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 */
 
 	LD_NN_SP(0x08, 20, context -> {
-		// TODO : Validate instruction.
+		// TODO : Ensure casting (signed -> unsigned).
 		final int address = context.nextShort();
 		final byte[] values = context.getExtendedRegister(SP).getBytes();
 		context.writeBytes(values, address);
