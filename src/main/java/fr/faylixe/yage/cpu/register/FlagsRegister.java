@@ -17,6 +17,19 @@ public final class FlagsRegister extends ByteRegister {
 	public void setZero() {
 		set((byte) (get() | (1 << 7)));
 	}
+	
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setZero(final boolean value) {
+		if (value) { 
+			setZero();
+		}
+		else {
+			resetZero();
+		}
+	}
 
 	/** Resets the zero flag (Z) to 0. **/
 	public void resetZero() {
@@ -46,6 +59,19 @@ public final class FlagsRegister extends ByteRegister {
 	/** Sets the carry flag (C) to 1. **/
 	public void setCarry() {
 		set((byte) (get() | (1 << 4)));
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setCarry(final boolean value) {
+		if (value) {
+			setCarry();
+		}
+		else {
+			resetCarry();
+		}
 	}
 
 	/** Resets the carry flag (C) to 0. **/

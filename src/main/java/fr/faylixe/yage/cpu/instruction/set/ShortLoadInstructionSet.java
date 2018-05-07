@@ -1,13 +1,12 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyToAddress;
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyNextShortValue;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copy;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyNextShortValue;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
 import fr.faylixe.yage.cpu.instruction.IInstruction;
-import fr.faylixe.yage.cpu.register.FlagsRegister;
 
 /**
  * Instruction set which contains 16-bit load operations.
@@ -39,31 +38,34 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	/**
 	 * LD SP, HL
 	 * 
-	 * Put value from HL register into (SP).
+	 * Put value from HL register into SP register.
 	 * 
 	 * @see GBCPUMan page 76
 	 */
 
-	LD_SP_HL(0xF9, 8, copyToAddress(HL, SP)),
+	LD_SP_HL(0xF9, 8, copy(HL, SP)),
 
 	/**
 	 * LDHL SP, n
 	 * 
-	 * TODO : document.
+	 * Put SP + n into HL register.
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Reset
+	 * N - Reset
+	 * H - Set or reset according to operation.
+	 * C - Set or reset according to operation.
 	 * 
 	 * @see GBCPUMan page 77
 	 */
 	
 	LDHL_SP(0xF8, 12, context -> {
-		final byte n = context.nextByte();
-		// TODO : Compute value from SP.
-		final short value = 0;
-		context.getExtendedRegister(HL).set(value);
-		final FlagsRegister flags = context.getFlagsRegister();
-		flags.resetZero();
-		flags.resetSubtraction();
-		// TODO : Set or reset H flags according to operation.
-		// TODO : Set or reset C flags according to operation.
+		// TODO : Perform arithmetic operation by hands.
+		final int n = (int) context.nextByte();
+		final int hl = context.getExtendedRegister(SP).get();
+		context.getExtendedRegister(HL).set((short) (hl + n));
+		//context.getFlagsRegister().computeSum(hl + n);
 	}),
 
 	/**

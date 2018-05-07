@@ -1,9 +1,9 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copy;
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyFromAddress;
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyToAddress;
-import static fr.faylixe.yage.cpu.instruction.IExecutionContext.copyNextValue;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copy;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyFromAddress;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyToAddress;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyNextValue;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.instruction.set.ByteALUInstructionSet.DEC_HL;
