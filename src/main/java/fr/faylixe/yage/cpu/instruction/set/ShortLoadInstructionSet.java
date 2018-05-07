@@ -1,5 +1,7 @@
 package fr.faylixe.yage.cpu.instruction.set;
 
+import static java.lang.Short.toUnsignedInt;
+
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copy;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyNextShortValue;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
@@ -29,10 +31,15 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 76
 	 */
-
 	LD_BC_NN(0x01, 12, copyNextShortValue(BC)),
+	
+	/** @see #LD_BC_NN **/
 	LD_DE_NN(0x11, 12, copyNextShortValue(DE)),
+
+	/** @see #LD_BC_NN **/
 	LD_HL_NN(0x21, 12, copyNextShortValue(HL)),
+
+	/** @see #LD_BC_NN **/
 	LD_SP_NN(0x31, 12, copyNextShortValue(SP)),
 	
 	/**
@@ -42,7 +49,6 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 76
 	 */
-
 	LD_SP_HL(0xF9, 8, copy(HL, SP)),
 
 	/**
@@ -60,7 +66,6 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 77
 	 */
-	
 	LDHL_SP(0xF8, 12, context -> {
 		final short sp = context.getExtendedRegister(SP).get();
 		// Note : Since n is interpreted as signed,
@@ -73,14 +78,13 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	/**
 	 * LD (nn), SP
 	 * 
-	 * TODO : document.
+	 * Put value from register SP into memory at the
+	 * address denoted by next two immediate value.
 	 * 
 	 * @see GBCPUMan page 78
 	 */
-
 	LD_NN_SP(0x08, 20, context -> {
-		// TODO : Ensure casting (signed -> unsigned).
-		final int address = context.nextShort();
+		final int address = toUnsignedInt(context.nextShort());
 		final byte[] values = context.getExtendedRegister(SP).getBytes();
 		context.writeBytes(values, address);
 	}),
@@ -92,10 +96,15 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 78
 	 */
-
 	PUSH_AF(0xF5, 16, null),
+
+	/** @see #PUSH_AF **/
 	PUSH_BC(0xC5, 16, null),
+
+	/** @see #PUSH_AF **/
 	PUSH_DE(0xD5, 16, null),
+
+	/** @see #PUSH_AF **/
 	PUSH_HL(0xE5, 16, null),
 
 	/**
@@ -105,10 +114,15 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	 * 
 	 * @see GBCPUMan page 79
 	 */
-
 	POP_AF(0xF1, 12, null),
+
+	/** @see #POP_AF **/
 	POP_BC(0xC1, 12, null),
+
+	/** @see #POP_AF **/
 	POP_DE(0xD1, 12, null),
+
+	/** @see #POP_AF **/
 	POP_HL(0xE1, 12, null),
 
 	;
