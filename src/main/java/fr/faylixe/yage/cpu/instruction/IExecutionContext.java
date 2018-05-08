@@ -4,6 +4,7 @@ import static java.lang.Byte.toUnsignedInt;
 import static java.lang.Short.toUnsignedInt;
 import static java.lang.Math.pow;
 
+import fr.faylixe.yage.cpu.register.ByteRegister;
 import fr.faylixe.yage.cpu.register.FlagsRegister;
 import fr.faylixe.yage.cpu.register.IRegisterProvider;
 import fr.faylixe.yage.memory.IMemoryStream;
@@ -55,6 +56,16 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 		flags.setCarry(result >= pow(2, 16)); // TODO : Check for bound.
 		// TODO : Validate casting from unsigned int to equivalent short value.	
 		return result.shortValue();
+	}
+
+	/**
+	 * 
+	 * @param context
+	 */
+	static void normalizeFlagsRegister(final IExecutionContext context) {
+		final ByteRegister register = context.getFlagsRegister();
+		byte state = register.get();
+		register.set((byte) (state & 0xF0));
 	}
 
 }

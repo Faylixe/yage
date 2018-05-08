@@ -3,8 +3,13 @@ package fr.faylixe.yage.cpu.instruction.set;
 import static java.lang.Short.toUnsignedInt;
 
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copy;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyFromAddress;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyToAddress;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.copyNextShortValue;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
+import static fr.faylixe.yage.cpu.instruction.set.ShortALUInstructionSet.DEC_SP;
+import static fr.faylixe.yage.cpu.instruction.set.ShortALUInstructionSet.INC_SP;
 
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
@@ -92,38 +97,74 @@ public enum ShortLoadInstructionSet implements IInstruction {
 	/**
 	 * PUSH nn
 	 * 
-	 * TODO : document.
+	 * Pushes the content of extended register
+	 * into memory stack. And decrements SP by two.
 	 * 
 	 * @see GBCPUMan page 78
 	 */
-	PUSH_AF(0xF5, 16, null),
+	PUSH_AF(0xF5, 16,
+			DEC_SP
+			.then(copyToAddress(A, SP))
+			.then(DEC_SP)
+			.then(copyToAddress(F, SP))),
 
 	/** @see #PUSH_AF **/
-	PUSH_BC(0xC5, 16, null),
+	PUSH_BC(0xC5, 16,
+			DEC_SP
+			.then(copyToAddress(B, SP))
+			.then(DEC_SP)
+			.then(copyToAddress(C, SP))),
 
 	/** @see #PUSH_AF **/
-	PUSH_DE(0xD5, 16, null),
+	PUSH_DE(0xD5, 16,
+			DEC_SP
+			.then(copyToAddress(D, SP))
+			.then(DEC_SP)
+			.then(copyToAddress(E, SP))),
 
 	/** @see #PUSH_AF **/
-	PUSH_HL(0xE5, 16, null),
+	PUSH_HL(0xE5, 16,
+			DEC_SP
+			.then(copyToAddress(H, SP))
+			.then(DEC_SP)
+			.then(copyToAddress(L, SP))),
 
 	/**
 	 * POP nn
 	 * 
-	 * TODO : document.
+	 * Pops the content from the memory stack
+	 * into given extended register. Then
+	 * increments SP by two.
 	 * 
 	 * @see GBCPUMan page 79
 	 */
-	POP_AF(0xF1, 12, null),
+	POP_AF(0xF1, 12,
+			copyFromAddress(SP, F)
+			.then(INC_SP)
+			.then(copyFromAddress(SP, A))
+			.then(INC_SP)
+			.then(IExecutionContext::normalizeFlagsRegister)),
 
 	/** @see #POP_AF **/
-	POP_BC(0xC1, 12, null),
+	POP_BC(0xC1, 12,
+			copyFromAddress(SP, C)
+			.then(INC_SP)
+			.then(copyFromAddress(SP, B))
+			.then(INC_SP)),
 
 	/** @see #POP_AF **/
-	POP_DE(0xD1, 12, null),
+	POP_DE(0xD1, 12,
+			copyFromAddress(SP, E)
+			.then(INC_SP)
+			.then(copyFromAddress(SP, D))
+			.then(INC_SP)),
 
 	/** @see #POP_AF **/
-	POP_HL(0xE1, 12, null),
+	POP_HL(0xE1, 12,
+			copyFromAddress(SP, L)
+			.then(INC_SP)
+			.then(copyFromAddress(SP, H))
+			.then(INC_SP)),
 
 	;
 

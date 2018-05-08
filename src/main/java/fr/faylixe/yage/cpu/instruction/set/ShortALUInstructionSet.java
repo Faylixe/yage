@@ -10,6 +10,10 @@ import fr.faylixe.yage.cpu.instruction.IInstruction;
  */
 public enum ShortALUInstructionSet implements IInstruction {
 
+	INC_SP(0, 0, null),
+
+	DEC_SP(0, 0, null),
+
 	;
 
 	/** Associated opcode. **/
@@ -29,11 +33,11 @@ public enum ShortALUInstructionSet implements IInstruction {
 	 * @param executable Delegate executable instruction.
 	 */
 	private ShortALUInstructionSet(
-			final short opcode,
-			final byte cycle,
+			final int opcode,
+			final int cycle,
 			final IExecutableInstruction executable) {
-		this.opcode = opcode;
-		this.cycle = cycle;
+		this.opcode = (short) opcode;
+		this.cycle = (byte) cycle;
 		this.executable = executable;
 	}
 
