@@ -19,7 +19,6 @@ import fr.faylixe.yage.cpu.instruction.IInstruction;
  * Instruction set which contains 16-bit load operations.
  * 
  * TODO : Validate opcode format (0x00XX vs 0xXX)
- * TODO : Understand stack pointer behavior.
  * 
  * @see GBCPUman, page 76 - 79
  * 
