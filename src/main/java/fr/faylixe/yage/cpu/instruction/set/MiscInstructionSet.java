@@ -15,6 +15,16 @@ import fr.faylixe.yage.cpu.register.FlagsRegister;
 public enum MiscInstructionSet implements IInstruction {
 
 	/**
+	 * DAA
+	 * 
+	 * Adjust A register to make it correct regarding of
+	 * the BCD (Binary Coded Decimal) representation.
+	 * 
+	 * @see GBCPUMan page 95
+	 */
+	DAA(0x27, 4, null),
+
+	/**
 	 * CPL
 	 * 
 	 * Flip all bits into A register.
@@ -67,11 +77,49 @@ public enum MiscInstructionSet implements IInstruction {
 	/**
 	 * NOP
 	 * 
-	 * Do nothing againt 4 CPU cycle.
+	 * Do nothing against 4 CPU cycle.
 	 * 
 	 * @see GBCPUMan page 97
 	 */
-	NOP(0x00, 4, IExecutableInstruction.NOP)
+	NOP(0x00, 4, IExecutableInstruction.NOP),
+
+	/**
+	 * HALT
+	 * 
+	 * Power down CPU until an interrupt occurs.
+	 * 
+	 * @see GBCPUMan page 97
+	 */
+	HALT(0x76, 4, null),
+
+	/**
+	 * STOP
+	 * 
+	 * Halt CPU and LCD display until any button is pressed.
+	 * 
+	 * TODO : opcode defined as 10 00 (see for opcode paging).
+	 * 
+	 * @see GBCPUMan page 97
+	 */
+	STOP(0x10, 4, null),
+
+	/**
+	 * DI
+	 * 
+	 * Disable interruption after next instruction execution.
+	 * 
+	 * @see GBCPUMan page 98
+	 */
+	DI(0xF3, 4, null),
+	
+	/**
+	 * EI
+	 * 
+	 * Enable interruption after next instruction execution.
+	 * 
+	 * @see GBCPUMan page 98
+	 */
+	EI(0xFB, 4, null)
 
 	;
 
