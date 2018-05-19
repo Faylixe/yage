@@ -1,10 +1,21 @@
 package fr.faylixe.yage.cpu;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import fr.faylixe.yage.cpu.instruction.IExecutionContext;
+import fr.faylixe.yage.cpu.instruction.IInstruction;
 import fr.faylixe.yage.cpu.instruction.IInstructionStream;
+import fr.faylixe.yage.cpu.instruction.InstructionSetBuilder;
 import fr.faylixe.yage.cpu.register.ByteRegister;
+import fr.faylixe.yage.cpu.register.CompositeShortRegister;
 import fr.faylixe.yage.cpu.register.FlagsRegister;
+import fr.faylixe.yage.cpu.register.IShortRegister;
 import fr.faylixe.yage.cpu.register.ShortRegister;
 import fr.faylixe.yage.memory.IMemoryStream;
+
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
+import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 
 /**
  * CPU implementation for SharpLR35902 model.
@@ -13,64 +24,83 @@ import fr.faylixe.yage.memory.IMemoryStream;
  * 
  * @author fv
  */
-public class CPU implements Runnable {
+public class CPU implements Runnable, IExecutionContext {
 
-	/** **/
-	private final ByteRegister A;
+	/** 8-bit registers. **/
+	private final Map<Register, ByteRegister> registers;
 
-	/** **/
-	private final ByteRegister B;
+	/** 16-bit registers. **/
+	private final Map<ExtendedRegister, IShortRegister> extendedRegisters;
 
-	/** **/
-	private final ByteRegister C;
+	/** Instruction set supported by this CPU. **/
+	private final IInstruction [] instructionSet;
 
-	/** **/
-	private final ByteRegister D;
-
-	/** **/
-	private final ByteRegister E;
-
-	/** **/
-	private final ByteRegister H;
-
-	/** **/
-	private final ByteRegister L;
-
-	/** Flags register. **/
-	private final FlagsRegister F;
-
-	/** Stack Pointer register. **/
-	private final ShortRegister SP;
-
-	/** **/
-	private final ShortRegister PC;
-
-	/** **/
+	/** Address bus connected to this CPU. **/
 	private final IMemoryStream memoryStream;
 
-	/** **/
+	/** Instruction stream connected to this CPU. **/
 	private final IInstructionStream instructionStream;
 
 	/**
 	 * Default constructor.
 	 * Initializes registers and clock.
 	 * 
-	 * @param memoryStream
-	 * @param instructionStream
+	 * @param memoryStream Address bus connected to this CPU.
+	 * @param instructionStream Instruction stream connected to this CPU.
 	 */
 	public CPU(final IMemoryStream memoryStream, final IInstructionStream instructionStream) {
-		this.A = new ByteRegister();
-		this.B = new ByteRegister();
-		this.C = new ByteRegister();
-		this.D = new ByteRegister();
-		this.E = new ByteRegister();
-		this.H = new ByteRegister();
-		this.L = new ByteRegister();
-		this.F = new FlagsRegister();
-		this.SP = new ShortRegister();
-		this.PC = new ShortRegister();
 		this.memoryStream = memoryStream;
 		this.instructionStream = instructionStream;
+		this.instructionSet = InstructionSetBuilder.getInstructionSet();
+		this.registers = new HashMap<>(); // TODO : Check if concurrency is required.
+		this.extendedRegisters = new HashMap<>(); // TODO : Check if concurrency is required.
+		// Build register map.
+		for (final Register register : Register.values()) {
+			registers.put(register, F.equals(register) ? new FlagsRegister() : new ByteRegister());
+		}
+		// Build extended register map.
+		extendedRegisters.put(AF, new CompositeShortRegister(getRegister(A), getRegister(F)));
+		extendedRegisters.put(BC, new CompositeShortRegister(getRegister(B), getRegister(B)));
+		extendedRegisters.put(DE, new CompositeShortRegister(getRegister(D), getRegister(E)));
+		extendedRegisters.put(HL, new CompositeShortRegister(getRegister(H), getRegister(L)));
+		extendedRegisters.put(SP, new ShortRegister());
+		extendedRegisters.put(PC, new ShortRegister());
+	}
+	
+	/** {@inheritDoc} **/
+	@Override
+	public ByteRegister getRegister(final Register name) {
+		return registers.get(name);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public IShortRegister getExtendedRegister(final ExtendedRegister name) {
+		return extendedRegisters.get(name);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public byte nextByte() throws IllegalAccessException {
+		return instructionStream.nextByte();
+	}
+	
+	/** {@inheritDoc} **/
+	@Override
+	public void sendByte(final byte value) {
+		instructionStream.sendByte(value);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public byte readByte(final int address) throws IllegalAccessException {
+		return memoryStream.readByte(address);
+	}
+
+	/** {@inheritDoc} **/
+	@Override
+	public void writeByte(final byte value, final int address) throws IllegalAccessException {
+		memoryStream.writeByte(value, address);
 	}
 
 	/** {@inheritDoc} **/
@@ -78,17 +108,16 @@ public class CPU implements Runnable {
 	public void run() {
 		try {
 			final byte prefix = instructionStream.nextByte();
-			final byte opcode;
+			final byte opcode; // TODO : Read opcode (one byte).
+			// TODO : if opcode == CB16 => extended set.
 			if (prefix == 0) { // TODO : Check for CB prefix value.
 				opcode = instructionStream.nextByte();
 			}
+			// TODO : else => main set.
 			else {
 				opcode = prefix;
 			}
-			// TODO : Read opcode (one byte).
-			// TODO : if opcode == CB16 => extended set.
-				// TODO : Read next byte.
-			// TODO : else => main set.
+			instructionSet[opcode].execute(this);
 		}
 		catch (final IllegalAccessException e) {
 			// TODO
