@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.faylixe.yage.cpu.register.FlagsRegister;
-
 /**
  * Unit test to validate bits layout and transformation
  * using signed primitive types.
