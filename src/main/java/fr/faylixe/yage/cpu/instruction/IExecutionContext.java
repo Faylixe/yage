@@ -16,6 +16,9 @@ import fr.faylixe.yage.memory.IMemoryStream;
  */
 public interface IExecutionContext extends IRegisterProvider, IInstructionStream, IMemoryStream {
 
+	/** Check bound for the carry flag. **/
+	static int CARRY_LIMIT = (int) pow(2, 8) - 1;
+
 	/**
 	 * Performs a safe sum between to given byte value, assuming
 	 * that those values are considered as unsigned and though
@@ -27,14 +30,13 @@ public interface IExecutionContext extends IRegisterProvider, IInstructionStream
 	 * @return Result of the sum as a unsigned byte.
 	 */
 	default byte add(final byte a, final byte b) {
-		final Integer result = toUnsignedInt(a) + toUnsignedInt(b);
+		final int result = toUnsignedInt(a) + toUnsignedInt(b);
 		final FlagsRegister flags = getFlagsRegister();
 		flags.resetSubtraction();
 		flags.setZero(result == 0);
-		flags.setHalfCarry(); // TODO : Map to condition.
-		flags.setCarry(result >= pow(2, 8)); // TODO : Check for bound.
-		// TODO : Validate casting from unsigned int to equivalent byte value.	
-		return result.byteValue();
+		flags.setHalfCarry((a & 0xF) + (b & 0xf) > 0xF);
+		flags.setCarry(result > CARRY_LIMIT);
+		return (byte) (result & 0xFF);
 	}
 
 	/**

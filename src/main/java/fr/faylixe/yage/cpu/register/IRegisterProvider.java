@@ -1,5 +1,10 @@
 package fr.faylixe.yage.cpu.register;
 
+import static java.lang.Short.toUnsignedInt;
+
+import fr.faylixe.yage.cpu.IDataSource;
+import fr.faylixe.yage.cpu.instruction.IExecutionContext;
+
 /**
  * A register provider offer an access layer to
  * each type of register, indexed by name.
@@ -9,13 +14,41 @@ package fr.faylixe.yage.cpu.register;
 public interface IRegisterProvider {
 
 	/** Enumeration of 8-bit register name. **/
-	enum Register {
-		A, B, C, D, E, F, H, L
+	enum Register implements IDataSource {
+		A, B, C, D, E, F, H, L;
+
+		/** {@inheritDoc} **/
+		@Override
+		public byte read(final IExecutionContext context) {
+			return context.getRegister(this).get();
+		}
+
+		/** {@inheritDoc} **/
+		@Override
+		public void write(final IExecutionContext context, final byte value) {
+			context.getRegister(this).set(value);
+		}
+
 	}
 
 	/** Enumeration of 16-bit extended register name. **/
-	enum ExtendedRegister {
-		AF, BC, DE, HL, SP, PC
+	enum ExtendedRegister implements IDataSource {
+		AF, BC, DE, HL, SP, PC;
+
+		/** {@inheritDoc} **/
+		@Override
+		public byte read(final IExecutionContext context) throws IllegalAccessException {
+			final int address = toUnsignedInt(context.getExtendedRegister(this).get());
+			return context.readByte(address);
+		}
+
+		/** {@inheritDoc} **/
+		@Override
+		public void write(final IExecutionContext context, final byte value) throws IllegalAccessException {
+			final int address = toUnsignedInt(context.getExtendedRegister(this).get());
+			context.writeByte(value, address);
+		}
+
 	}
 
 	/**

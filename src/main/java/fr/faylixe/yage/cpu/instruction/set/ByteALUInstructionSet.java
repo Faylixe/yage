@@ -3,6 +3,11 @@ package fr.faylixe.yage.cpu.instruction.set;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.Register.*;
 import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.add;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.adc;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.and;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.or;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.xor;
+import static fr.faylixe.yage.cpu.IDataSource.IMMEDIATE;
 
 import fr.faylixe.yage.cpu.instruction.IExecutableInstruction;
 import fr.faylixe.yage.cpu.instruction.IExecutionContext;
@@ -31,15 +36,15 @@ public enum ByteALUInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 80
 	 */
 
-	ADD_A_A(0x87, 4, add(A, A)),
-	ADD_A_B(0x80, 4, add(B, A)),
-	ADD_A_C(0x81, 4, add(C, A)),
-	ADD_A_D(0x82, 4, add(D, A)),
-	ADD_A_E(0x83, 4, add(E, A)),
-	ADD_A_H(0x84, 4, add(H, A)),
-	ADD_A_L(0x85, 4, add(L, A)),
-	ADD_A_HL(0x86, 8, add(A, A)),
-	ADD_A_N(0xC6, 8, add(A, A)),
+	ADD_A_A(0x87, 4, add(A)),
+	ADD_A_B(0x80, 4, add(B)),
+	ADD_A_C(0x81, 4, add(C)),
+	ADD_A_D(0x82, 4, add(D)),
+	ADD_A_E(0x83, 4, add(E)),
+	ADD_A_H(0x84, 4, add(H)),
+	ADD_A_L(0x85, 4, add(L)),
+	ADD_A_HL(0x86, 8, add(HL)),
+	ADD_A_N(0xC6, 8, add(IMMEDIATE)),
 
 	/**
 	 * ADC A, n
@@ -58,15 +63,96 @@ public enum ByteALUInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 81
 	 */
 
-	ADC_A_A(0x8F, 4, null),
-	ADC_A_B(0x88, 4, null),
-	ADC_A_C(0x89, 4, null),
-	ADC_A_D(0x8A, 4, null),
-	ADC_A_E(0x8B, 4, null),
-	ADC_A_H(0x8C, 4, null),
-	ADC_A_L(0x8D, 4, null),
-	ADC_A_HL(0x8E, 8, null),
-	ADC_A_N(0xCE, 8, null),
+	ADC_A_A(0x8F, 4, adc(A)),
+	ADC_A_B(0x88, 4, adc(B)),
+	ADC_A_C(0x89, 4, adc(C)),
+	ADC_A_D(0x8A, 4, adc(D)),
+	ADC_A_E(0x8B, 4, adc(E)),
+	ADC_A_H(0x8C, 4, adc(H)),
+	ADC_A_L(0x8D, 4, adc(L)),
+	ADC_A_HL(0x8E, 8, adc(HL)),
+	ADC_A_N(0xCE, 8, adc(IMMEDIATE)),
+
+	/**
+	 * AND A, n
+	 * 
+	 * Performs a logical AND between <tt>n</tt> and A register.
+	 * Where <tt>n</tt> could either be A, B, C, D, E, H, L register,
+	 * or value located at memory address (HL), or next byte immediate value.
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Set if result is zero.
+	 * N - Reset
+	 * H - Set
+	 * C - Reset
+	 * 
+	 * @see GBCPUMan page 84
+	 */
+
+	AND_A_A(0xA7, 4, and(A)),
+	AND_A_B(0xA0, 4, and(B)),
+	AND_A_C(0xA1, 4, and(C)),
+	AND_A_D(0xA2, 4, and(D)),
+	AND_A_E(0xA3, 4, and(E)),
+	AND_A_H(0xA4, 4, and(H)),
+	AND_A_L(0xA5, 4, and(L)),
+	AND_A_HL(0xA6, 8, and(HL)),
+	AND_A_N(0xE6, 8, and(IMMEDIATE)),
+
+	/**
+	 * OR A, n
+	 * 
+	 * Performs a logical OR between <tt>n</tt> and A register.
+	 * Where <tt>n</tt> could either be A, B, C, D, E, H, L register,
+	 * or value located at memory address (HL), or next byte immediate value.
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Set if result is zero.
+	 * N - Reset
+	 * H - Reset
+	 * C - Reset
+	 * 
+	 * @see GBCPUMan page 85
+	 */
+
+	OR_A_A(0xB7, 4, or(A)),
+	OR_A_B(0xB0, 4, or(B)),
+	OR_A_C(0xB1, 4, or(C)),
+	OR_A_D(0xB2, 4, or(D)),
+	OR_A_E(0xB3, 4, or(E)),
+	OR_A_H(0xB4, 4, or(H)),
+	OR_A_L(0xB5, 4, or(L)),
+	OR_A_HL(0xB6, 8, or(HL)),
+	OR_A_N(0xF6, 8, or(IMMEDIATE)),
+
+	/**
+	 * XOR A, n
+	 * 
+	 * Performs a logical XOR between <tt>n</tt> and A register.
+	 * Where <tt>n</tt> could either be A, B, C, D, E, H, L register,
+	 * or value located at memory address (HL), or next byte immediate value.
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Set if result is zero.
+	 * N - Reset
+	 * H - Reset
+	 * C - Reset
+	 * 
+	 * @see GBCPUMan page 86
+	 */
+
+	XOR_A_A(0xAF, 4, xor(A)),
+	XOR_A_B(0xA8, 4, xor(B)),
+	XOR_A_C(0xA9, 4, xor(C)),
+	XOR_A_D(0xAA, 4, xor(D)),
+	XOR_A_E(0xAB, 4, xor(E)),
+	XOR_A_H(0xAC, 4, xor(H)),
+	XOR_A_L(0xAD, 4, xor(L)),
+	XOR_A_HL(0xAE, 8, xor(HL)),
+	XOR_A_N(0xEE, 8, xor(IMMEDIATE)),
 
 	/**
 	 * 
@@ -84,6 +170,7 @@ public enum ByteALUInstructionSet implements IInstruction {
 	DEC_HL(0x35, 12, context -> {
 		final int address = context.getExtendedRegister(HL).get();
 		final byte value = context.readByte(address);
+		// TODO : Ensure operation.
 		context.writeByte((byte) (value - (byte) 1), address);
 	}),
 

@@ -1,5 +1,11 @@
 package fr.faylixe.yage.cpu.instruction;
 
+import static java.lang.Byte.toUnsignedInt;
+import static java.lang.Short.toUnsignedInt;
+
+import fr.faylixe.yage.cpu.IDataSource;
+import fr.faylixe.yage.cpu.register.ByteRegister;
+import fr.faylixe.yage.cpu.register.FlagsRegister;
 import fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister;
 import fr.faylixe.yage.cpu.register.IRegisterProvider.Register;
 
@@ -82,8 +88,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final Register source, final int offset, final Register destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = offset + context.getRegister(source).get();
+			final int address = offset + toUnsignedInt(context.getRegister(source).get());
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
 		};
@@ -100,8 +105,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final ExtendedRegister source, final Register destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.getExtendedRegister(source).get();
+			final int address = toUnsignedInt(context.getExtendedRegister(source).get());
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
 		};
@@ -117,8 +121,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyFromAddress(final Register destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.nextShort();
+			final int address = toUnsignedInt(context.nextShort());
 			final byte value = context.readByte(address);
 			context.getRegister(destination).set(value);
 		};
@@ -134,8 +137,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.nextShort();
+			final int address = toUnsignedInt(context.nextShort());
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
 		};
@@ -152,8 +154,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source, final ExtendedRegister destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.getExtendedRegister(destination).get();
+			final int address = toUnsignedInt(context.getExtendedRegister(destination).get());
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
 		};
@@ -170,8 +171,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final ExtendedRegister source, final ExtendedRegister destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.getExtendedRegister(destination).get();
+			final int address = toUnsignedInt(context.getExtendedRegister(destination).get());
 			final byte[] values = context.getExtendedRegister(source).getBytes();
 			context.writeBytes(values, address);
 		};
@@ -189,8 +189,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyToAddress(final Register source, final Register destination, final int offset) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = offset + context.getRegister(destination).get();
+			final int address = offset + toUnsignedInt(context.getRegister(destination).get());
 			final byte value = context.getRegister(source).get();
 			context.writeByte(value, address);
 		};
@@ -205,8 +204,7 @@ public interface IExecutableInstruction {
 	 */
 	static IExecutableInstruction copyNextValue(final ExtendedRegister destination) {
 		return context -> {
-			// TODO : Ensure casting (signed -> unsigned).
-			final int address = context.getExtendedRegister(destination).get();
+			final int address = toUnsignedInt(context.getExtendedRegister(destination).get());
 			final byte value = context.nextByte();
 			context.writeByte(value, address);
 		};
@@ -239,18 +237,110 @@ public interface IExecutableInstruction {
 	}
 	
 	/**
+	 * Builds an instruction that adds the value from the
+	 * data <tt>source</tt> to the A. Updating flag
+	 * register if required.
 	 * 
-	 * @param source
-	 * @param destination
-	 * @return
+	 * @param source Source to add value from.
+	 * @return Built instruction.
 	 */
-	static IExecutableInstruction add(final Register source, final Register destination) {
+	static IExecutableInstruction add(final IDataSource source) {
 		return context -> {
-			final byte a = context.getRegister(source).get();
-			final byte b = context.getRegister(destination).get();
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final byte a = source.read(context);
+			final byte b = accumulator.get();
 			final byte result = context.add(a, b);
-			context.getRegister(destination).set(result);
+			accumulator.set(result);
+		};
+	}
+	
+	/**
+	 * Builds an instruction that adds the value from the
+	 * data <tt>source</tt> plus value of the carry flag
+	 * to the A register. Updating flag register if required.
+	 * 
+	 * @param source Source to add value from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction adc(final IDataSource source) {
+		return context -> {
+			final int carry = context
+				.getFlagsRegister()
+				.isCarry() ? 1 : 0;
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final int a = toUnsignedInt(source.read(context));
+			final byte b = accumulator.get();
+			final byte result = context.add((byte) ((a + carry) & 0xFF), b);
+			accumulator.set(result);
 		};
 	}
 
+	/**
+	 * Builds an instruction that performs a logical AND from
+	 * data <tt>source</tt> to the A register. Updating
+	 * flag register if required.
+	 * 
+	 * @param source Source to perform AND with.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction and(final IDataSource source) {
+		return context -> {
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final int a = toUnsignedInt(source.read(context));
+			final int b = toUnsignedInt(accumulator.get());
+			final int result = a & b;
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.setZero(result == 0);
+			flags.resetSubtraction();
+			flags.setHalfCarry();
+			flags.resetCarry();
+			accumulator.set((byte) (result & 0xFF));
+		};
+	}
+
+	/**
+	 * Builds an instruction that performs a logical OR from
+	 * data <tt>source</tt> to the A register. Updating
+	 * flag register if required.
+	 * 
+	 * @param source Source to perform OR with.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction or(final IDataSource source) {
+		return context -> {
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final int a = toUnsignedInt(source.read(context));
+			final int b = toUnsignedInt(accumulator.get());
+			final int result = a | b;
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.setZero(result == 0);
+			flags.resetSubtraction();
+			flags.resetHalfCarry();
+			flags.resetCarry();
+			accumulator.set((byte) (result & 0xFF));
+		};
+	}
+
+	/**
+	 * Builds an instruction that performs a logical XOR from
+	 * data <tt>source</tt> to the A register. Updating
+	 * flag register if required.
+	 * 
+	 * @param source Source to perform XOR with.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction xor(final IDataSource source) {
+		return context -> {
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final int a = toUnsignedInt(source.read(context));
+			final int b = toUnsignedInt(accumulator.get());
+			final int result = a ^ b;
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.setZero(result == 0);
+			flags.resetSubtraction();
+			flags.resetHalfCarry();
+			flags.resetCarry();
+			accumulator.set((byte) (result & 0xFF));
+		};
+	}
 }

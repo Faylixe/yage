@@ -1,5 +1,6 @@
 package fr.faylixe.yage.utils;
 
+import static java.lang.Byte.toUnsignedInt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.BitSet;
@@ -8,6 +9,8 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.faylixe.yage.cpu.register.FlagsRegister;
 
 /**
  * Unit test to validate bits layout and transformation
@@ -74,7 +77,17 @@ public final class BinaryUtilsTest {
 
 	@Test
 	public void testValue() {
-		LOG.info("42 42 -> {}", BinaryUtils.compose((byte) 42, (byte) 42));
+		final byte a = (byte) 150;
+		final byte b = (byte) 150;
+		final int result = toUnsignedInt(a) + toUnsignedInt(b);
+		LOG.info(
+				"150 + 150 = {}; H = {}; C = {}",
+				new Object[] {
+						Byte.valueOf((byte) (result & 0xFF)),
+						Boolean.valueOf(((a & 0xF) + (b & 0xf) > 0xF)),
+						Boolean.valueOf(result > (Math.pow(2, 8) - 1))
+				}
+		);
 	}
 
 }

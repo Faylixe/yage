@@ -19,8 +19,10 @@ public final class FlagsRegister extends ByteRegister {
 	}
 	
 	/**
+	 * Sets the zero flag (Z) according to
+	 * the given boolean <tt>value</tt>.
 	 * 
-	 * @param value
+	 * @param value Value to set.
 	 */
 	public void setZero(final boolean value) {
 		if (value) { 
@@ -51,6 +53,21 @@ public final class FlagsRegister extends ByteRegister {
 		set((byte) (get() | (1 << 5)));
 	}
 
+	/**
+	 * Sets the half carry flag (H) according to
+	 * the given boolean <tt>value</tt>.
+	 * 
+	 * @param value Value to set.
+	 */
+	public void setHalfCarry(final boolean value) {
+		if (value) {
+			setHalfCarry();
+		}
+		else {
+			resetHalfCarry();
+		}
+	}
+
 	/** Resets the half carry flag (H) to 0. **/
 	public void resetHalfCarry() {
 		set((byte) (get() & ~(1 << 5)));
@@ -62,8 +79,10 @@ public final class FlagsRegister extends ByteRegister {
 	}
 	
 	/**
+	 * Sets the carry flag (C) according to
+	 * the given boolean <tt>value</tt>.
 	 * 
-	 * @param value
+	 * @param value Value to set.
 	 */
 	public void setCarry(final boolean value) {
 		if (value) {
