@@ -5,8 +5,9 @@ import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.add;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.adc;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.and;
-import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.inc;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.increment;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.or;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.sub;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.xor;
 import static fr.faylixe.yage.cpu.IDataSource.IMMEDIATE;
 
@@ -73,6 +74,33 @@ public enum ByteALUInstructionSet implements IInstruction {
 	ADC_A_L(0x8D, 4, adc(L)),
 	ADC_A_HL(0x8E, 8, adc(HL)),
 	ADC_A_N(0xCE, 8, adc(IMMEDIATE)),
+
+	/**
+	 * SUB A, n
+	 * 
+	 * Subtract value from <tt>n</tt> into A register. Where <tt>n</tt>
+	 * could either be A, B, C, D, E, H, L register, or value located
+	 * at memory address (HL), or next byte immediate value.
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Set if result is zero.
+	 * N - Set.
+	 * H - Set if no borrow from bit 4.
+	 * C - Set if no borrow.
+	 *  
+	 * @see GBCPUMan page 82
+	 */
+
+	SUB_A_A(0x97, 4, sub(A)),
+	SUB_A_B(0x90, 4, sub(B)),
+	SUB_A_C(0x91, 4, sub(C)),
+	SUB_A_D(0x92, 4, sub(D)),
+	SUB_A_E(0x93, 4, sub(E)),
+	SUB_A_H(0x94, 4, sub(H)),
+	SUB_A_L(0x95, 4, sub(L)),
+	SUB_A_HL(0x96, 8, sub(HL)),
+	SUB_A_N(0xD6, 8, sub(IMMEDIATE)),
 
 	/**
 	 * AND A, n
@@ -172,14 +200,14 @@ public enum ByteALUInstructionSet implements IInstruction {
 	 * @see GBCPUMan page 88
 	 */
 
-	INC_A(0x3C, 4, inc(A)),
-	INC_B(0x04, 4, inc(B)),
-	INC_C(0x0C, 4, inc(C)),
-	INC_D(0x14, 4, inc(D)),
-	INC_E(0x1C, 4, inc(E)),
-	INC_H(0x24, 4, inc(H)),
-	INC_L(0x2C, 4, inc(L)),
-	INC_HL(0x34, 8, inc(HL)),
+	INC_A(0x3C, 4, increment(A)),
+	INC_B(0x04, 4, increment(B)),
+	INC_C(0x0C, 4, increment(C)),
+	INC_D(0x14, 4, increment(D)),
+	INC_E(0x1C, 4, increment(E)),
+	INC_H(0x24, 4, increment(H)),
+	INC_L(0x2C, 4, increment(L)),
+	INC_HL(0x34, 8, increment(HL)),
 
 	/**
 	 * 

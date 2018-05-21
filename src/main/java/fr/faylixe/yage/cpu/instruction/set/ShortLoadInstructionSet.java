@@ -75,8 +75,9 @@ public enum ShortLoadInstructionSet implements IInstruction {
 		// Note : Since n is interpreted as signed,
 		// it could be casted safely into short container.
 		final short n = (short) context.nextByte();
-		final short result = context.add(sp, n);
-		context.getExtendedRegister(HL).set(result);
+		//final short result = context.add(sp, n);
+		//context.getExtendedRegister(HL).set(result);
+		// TODO : Validate
 	}),
 
 	/**

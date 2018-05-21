@@ -1,6 +1,7 @@
 package fr.faylixe.yage.cpu.instruction;
 
 import static java.lang.Byte.toUnsignedInt;
+import static java.lang.Math.pow;
 import static java.lang.Short.toUnsignedInt;
 
 import fr.faylixe.yage.cpu.IDataSource;
@@ -235,10 +236,13 @@ public interface IExecutableInstruction {
 			context.getRegister(destination).set(value);
 		};
 	}
-	
+
+	/** Check bound for the carry flag. **/
+	static int BYTE_CARRY_LIMIT = (int) pow(2, 8) - 1;
+
 	/**
 	 * Builds an instruction that adds the value from the
-	 * data <tt>source</tt> to the A. Updating flag
+	 * data <tt>source</tt> to A register. Updating flag
 	 * register if required.
 	 * 
 	 * @param source Source to add value from.
@@ -249,8 +253,13 @@ public interface IExecutableInstruction {
 			final ByteRegister accumulator = context.getRegister(Register.A);
 			final byte a = source.read(context);
 			final byte b = accumulator.get();
-			final byte result = context.add(a, b);
-			accumulator.set(result);
+			final int result = toUnsignedInt(a) + toUnsignedInt(b);
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.resetSubtraction();
+			flags.setZero(result == 0);
+			flags.setHalfCarry((a & 0xF) + (b & 0xf) > 0xF);
+			flags.setCarry(result > BYTE_CARRY_LIMIT);
+			accumulator.set((byte) (result & 0xFF));
 		};
 	}
 	
@@ -269,12 +278,41 @@ public interface IExecutableInstruction {
 				.isCarry() ? 1 : 0;
 			final ByteRegister accumulator = context.getRegister(Register.A);
 			final int a = toUnsignedInt(source.read(context));
-			final byte b = accumulator.get();
-			final byte result = context.add((byte) ((a + carry) & 0xFF), b);
-			accumulator.set(result);
+			final byte b = accumulator.get();			
+			final int result = toUnsignedInt((byte) ((a + carry) & 0xFF)) + toUnsignedInt(b);
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.resetSubtraction();
+			flags.setZero(result == 0);
+			flags.setHalfCarry((a & 0xF) + (b & 0xf) > 0xF);
+			flags.setCarry(result > BYTE_CARRY_LIMIT);
+			accumulator.set((byte) (result & 0xFF));
 		};
 	}
 
+	/**
+	 * Builds an instruction that substract the value from the
+	 * data <tt>source</tt> to A register. Updating flag
+	 * register if required.
+	 * 
+	 * @param source Source to add value from.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction sub(final IDataSource source) {
+		return context -> {
+			final ByteRegister accumulator = context.getRegister(Register.A);
+			final byte a = source.read(context);
+			final byte b = accumulator.get();
+			final int result = toUnsignedInt(a) - toUnsignedInt(b);
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.setSubtraction();
+			flags.setZero(result == 0);
+			// TODO : Validate carry flags.
+			flags.setHalfCarry((a & 0xF) + (b & 0xf) > 0xF);
+			flags.setCarry(result < 0);
+			accumulator.set((byte) (result & 0xFF));			
+		};
+	}
+	
 	/**
 	 * Builds an instruction that performs a logical AND from
 	 * data <tt>source</tt> to the A register. Updating
@@ -351,13 +389,33 @@ public interface IExecutableInstruction {
 	 * @param source Source to increment.
 	 * @return Built instruction.
 	 */
-	static IExecutableInstruction inc(final IDataSource source) {
+	static IExecutableInstruction increment(final IDataSource source) {
 		return context -> {
 			final byte value = source.read(context);
 			final int result = toUnsignedInt(value) + 1;
 			final FlagsRegister flags = context.getFlagsRegister();
 			flags.resetSubtraction();
 			flags.setZero(result == 0);
+			flags.setHalfCarry((value & 0xF) + (1 & 0xf) > 0xF);
+			source.write(context, (byte) (result & 0xFF));
+		};
+	}
+
+	/**
+	 * Builds an instruction that decrements the given data
+	 * <tt>source</tt>. Updating flag register if required.
+	 * 
+	 * @param source Source to decrement.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction decrement(final IDataSource source) {
+		return context -> {
+			final byte value = source.read(context);
+			final int result = toUnsignedInt(value) - 1;
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.resetSubtraction();
+			flags.setZero(result == 0);
+			// TODO : Check from SUB.
 			flags.setHalfCarry((value & 0xF) + (1 & 0xf) > 0xF);
 			source.write(context, (byte) (result & 0xFF));
 		};
