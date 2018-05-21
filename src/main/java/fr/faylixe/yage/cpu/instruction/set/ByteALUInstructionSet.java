@@ -5,6 +5,7 @@ import static fr.faylixe.yage.cpu.register.IRegisterProvider.ExtendedRegister.*;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.add;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.adc;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.and;
+import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.inc;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.or;
 import static fr.faylixe.yage.cpu.instruction.IExecutableInstruction.xor;
 import static fr.faylixe.yage.cpu.IDataSource.IMMEDIATE;
@@ -155,14 +156,30 @@ public enum ByteALUInstructionSet implements IInstruction {
 	XOR_A_N(0xEE, 8, xor(IMMEDIATE)),
 
 	/**
+	 * INC n
 	 * 
+	 * Increments <tt>n</tt> here <tt>n</tt> could either
+	 * be A, B, C, D, E, H, L register, or value located
+	 * at memory address (HL).
+	 * 
+	 * Flags affected :
+	 * 
+	 * Z - Set if result is zero.
+	 * N - Reset
+	 * H - Set if carry from bit 3
+	 * C - Not affected
+	 * 
+	 * @see GBCPUMan page 88
 	 */
 
-	INC_HL(0x34, 12, context -> {
-		final int address = context.getExtendedRegister(HL).get();
-		final byte value = context.readByte(address);
-		context.writeByte((byte) (value + (byte) 1), address);
-	}),
+	INC_A(0x3C, 4, inc(A)),
+	INC_B(0x04, 4, inc(B)),
+	INC_C(0x0C, 4, inc(C)),
+	INC_D(0x14, 4, inc(D)),
+	INC_E(0x1C, 4, inc(E)),
+	INC_H(0x24, 4, inc(H)),
+	INC_L(0x2C, 4, inc(L)),
+	INC_HL(0x34, 8, inc(HL)),
 
 	/**
 	 * 

@@ -343,4 +343,24 @@ public interface IExecutableInstruction {
 			accumulator.set((byte) (result & 0xFF));
 		};
 	}
+
+	/**
+	 * Builds an instruction that increments the given data
+	 * <tt>source</tt>. Updating flag register if required.
+	 * 
+	 * @param source Source to increment.
+	 * @return Built instruction.
+	 */
+	static IExecutableInstruction inc(final IDataSource source) {
+		return context -> {
+			final byte value = source.read(context);
+			final int result = toUnsignedInt(value) + 1;
+			final FlagsRegister flags = context.getFlagsRegister();
+			flags.resetSubtraction();
+			flags.setZero(result == 0);
+			flags.setHalfCarry((value & 0xF) + (1 & 0xf) > 0xF);
+			source.write(context, (byte) (result & 0xFF));
+		};
+	}
+
 }
