@@ -148,7 +148,7 @@ public interface IInstructionSetTest extends IInstructionStreamTest, IMemoryStre
 	 */
 	private static void bindRegisterProvider(final IExecutionContext context, final IRegisterProvider provider) {
 		when(context.getRegister(any())).then(toAnswer(provider::getRegister));
-		when(context.getFlagsRegister()).then(toAnswer(provider::getFlagsRegister));
+		when(context.getFlagsRegister()).thenCallRealMethod();
 		when(context.getExtendedRegister(any())).then(toAnswer(provider::getExtendedRegister));
 	}
 

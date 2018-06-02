@@ -207,7 +207,7 @@ public enum ByteALUInstructionSet implements IInstruction {
 	INC_E(0x1C, 4, increment(E)),
 	INC_H(0x24, 4, increment(H)),
 	INC_L(0x2C, 4, increment(L)),
-	INC_HL(0x34, 8, increment(HL)),
+	INC_HL(0x34, 12, increment(HL)),
 
 	/**
 	 * 

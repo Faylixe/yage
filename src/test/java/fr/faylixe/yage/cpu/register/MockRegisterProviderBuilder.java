@@ -32,6 +32,20 @@ public final class MockRegisterProviderBuilder {
 	}
 	
 	/**
+	 * Factory method that creates an appropriate byte
+	 * register instance for a given name. 
+	 *
+	 * @param name Name of the register instance to create.
+	 * @return Created instance.
+	 */
+	private ByteRegister createByteRegister(final Register name) {
+		if (name == Register.F) {
+			return new FlagsRegister();
+		}
+		return new ByteRegister();
+	}
+
+	/**
 	 * Adds an 8-bit register indexed by the given <tt>name</tt>
 	 * settled with the given <tt>value</tt>.
 	 * 
@@ -46,7 +60,7 @@ public final class MockRegisterProviderBuilder {
 		if (registers.containsKey(name)) {
 			throw new IllegalStateException("Register " + name.toString() + " already exists");
 		}
-		final ByteRegister register = new ByteRegister();
+		final ByteRegister register = createByteRegister(name	);
 		register.set(value);
 		registers.put(name, register);
 		return this;
